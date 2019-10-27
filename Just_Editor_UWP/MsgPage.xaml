@@ -1,0 +1,37 @@
+﻿<Page
+    x:Class="Just_Editor_UWP.MsgPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Just_Editor_UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" FontFamily="Fonts/SourceCodeVariable-Roman.ttf#Source Code Variable" 
+    >
+    <Grid Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel>
+        <TextBlock Text="Host"/>
+        <TextBox Name="ipBox" Padding="5" Margin="5" UseSystemFocusVisuals="True"/>
+        <TextBlock Text="Port"/>
+        <TextBox Name="portBox" Padding="5" Margin="5"/>
+        <Button Name="connBtn" Content="Connect" Click="connBtn_Click" Margin="5"/>
+        </StackPanel>
+        <ScrollViewer Grid.Row="5" Style="{StaticResource EditorScrollViewer}" Padding="0,0,18,18" HorizontalScrollMode="Auto">
+            <StackPanel>
+                <TextBlock Text="Body"/>
+                <local:DrnCodeEditor x:Name="reqEditor" MinHeight="300" MaxHeight="300" Margin="5"/>
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="sendBtn" Content="Send" Click="sendBtn_Click"  Margin="5" IsEnabled="False"/>
+                    <Button Name="clearBtn" Content="Clear" Click="clearBtn_Click"  Margin="5"/>
+                </StackPanel>
+                <TextBlock Text="Result"/>
+                <ScrollViewer Margin="5" Style="{StaticResource EditorScrollViewer}" MaxHeight="400">
+                    <TextBlock Name="resultBlock" IsTextSelectionEnabled="True"/>
+                </ScrollViewer>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

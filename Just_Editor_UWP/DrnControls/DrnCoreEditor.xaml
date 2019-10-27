@@ -1,0 +1,44 @@
+﻿<UserControl
+    x:Class="Just_Editor_UWP.DrnCoreEditor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Just_Editor_UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" HorizontalAlignment="Stretch" PointerPressed="EditorContent_PointerPressed"
+    d:DesignHeight="300"
+    d:DesignWidth="400" IsTapEnabled="True" IsTabStop="True" TabNavigation="Cycle"
+    Unloaded="CoreEditor_Unloaded" FocusVisualPrimaryThickness="0" FocusVisualSecondaryThickness="0"
+    TabFocusNavigation="Cycle" Loaded="CoreEditor_Loaded" x:Name="EditorContent"
+    FontFamily="../Fonts/SourceCodeVariable-Roman.ttf#Source Code Variable" FontSize="18"
+    >
+    <ScrollViewer HorizontalScrollBarVisibility="Visible" HorizontalScrollMode="Enabled"
+                      Style="{StaticResource EditorScrollViewer}" Padding="0,0,18,18"
+                      ViewChanging="editorScrollViewer_ViewChanging" AutomationProperties.AccessibilityView="Raw"
+                      FocusVisualPrimaryThickness="0" FocusVisualSecondaryThickness="0"
+                      IsTabStop="False" XYFocusKeyboardNavigation="Disabled"
+                      ZoomMode="Disabled" x:Name="editorScrollViewer" ViewChanged="editorScrollViewer_ViewChanged"
+                      AllowFocusOnInteraction="False">
+        <Grid Background="{x:Bind Background}" PointerEntered="EditorContent_PointerEntered"
+                           PointerExited="EditorContent_PointerExited" Padding="0,0,0,400"
+                           TabFocusNavigation="Cycle" >
+            <Line x:Name="drnCursor" Opacity="0" HorizontalAlignment="Left" VerticalAlignment="Top" Stroke="#60EFEFEF"
+              StrokeThickness="3"
+              X1="0" X2="0" Y1="0" Y2="23">
+                <Line.RenderTransform>
+                    <TranslateTransform x:Name="cursorTrans"/>
+                </Line.RenderTransform>
+            </Line>
+            <Grid x:Name="selectionPanel" AutomationProperties.AccessibilityView="Raw"/>
+            <Rectangle x:Name="drnHighlihgtLine" Fill="#3777" Height="23" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <TranslateTransform x:Name="lineTrans"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <ItemsControl x:Name="textChildren" VerticalAlignment="Top" xml:space="preserve" AutomationProperties.AccessibilityView="Raw"/>
+            <TextBlock x:Name="MsgTest" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            <TextBlock x:Name="ChrBlock" Text="a" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity="0"/>
+            <TextBlock x:Name="WChrBlock" Text="哈" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity="0"/>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

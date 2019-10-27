@@ -1,0 +1,18 @@
+/x86
+/x64
+/ARM
+/ARM64
+/Debug
+/Release
+/AppPackages
+/.vs
+/Just_Editor_UWP/Release
+/Just_Editor_UWP/x86
+/Just_Editor_UWP/x64
+/Just_Editor_UWP/ARM
+/Just_Editor_UWP/ARM64
+/Just_Editor_UWP/Debug
+/Just_Editor_UWP/Generated Files
+/Just_Editor_UWP/Package.StoreAssociation.xml
+/Just_Editor_UWP/Assets/Background.jpg
+/Just_Editor_UWP/Assets/Background.png

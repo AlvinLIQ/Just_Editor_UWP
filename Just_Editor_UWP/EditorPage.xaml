@@ -1,0 +1,47 @@
+﻿<Page
+    x:Class="Just_Editor_UWP.EditorPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Just_Editor_UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" FontFamily="Fonts/SourceCodeVariable-Roman.ttf#Source Code Variable" FontSize="18"
+    >
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Background="#80343434">
+            <Button x:Name="saveBtn" Click="saveBtn_Click" Padding="10">
+                <Rectangle Width="14" Height="15">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="Assets/SaveIcon.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button x:Name="searchBtn" Padding="10">
+                <Button.Flyout>
+                    <Flyout x:Name="searchFlyout">
+                        <StackPanel BorderBrush="#3FFF" BorderThickness="0.3">
+                            <TextBox x:Name="searchBox" HorizontalAlignment="Left" PlaceholderText="Find..." Width="200"
+                                     KeyUp="searchBox_KeyUp"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="findLastBtn" Content="&lt;" Click="findLastBtn_Click"/>
+                                <Button x:Name="findNextBtn" Content="&gt;" Click="findNextBtn_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+                <Rectangle Width="17.5" Height="16">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="Assets/SearchIcon.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+        </StackPanel>
+        <local:DrnCodeEditor x:Name="drnCodeEditor" Grid.Row="1" Background="#60232323" LineNumBackground="#60343434"
+                             EditorTextChanged="drnCodeEditor_EditorTextChanged" EditorSavedRequested="drnCodeEditor_EditorSavedRequested"/>
+    </Grid>
+</Page>

@@ -1,0 +1,24 @@
+﻿<Page
+    x:Class="Just_Editor_UWP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Just_Editor_UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    >
+    <Page.Background>
+        <ImageBrush>
+            <ImageBrush.ImageSource>
+                <BitmapImage UriSource="ms-appx:///Assets/bgi"/>
+            </ImageBrush.ImageSource>
+        </ImageBrush>
+    </Page.Background>
+    <Grid x:Name="mainGrid" Background="#60787878">
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="34"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Rectangle x:Name="titleRect" Fill="#50121212"/>
+    </Grid>
+</Page>

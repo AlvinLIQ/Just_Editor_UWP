@@ -1,0 +1,37 @@
+﻿<ContentDialog
+    x:Class="Just_Editor_UWP.DrnFileDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Just_Editor_UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" HorizontalContentAlignment="Center" 
+    VerticalContentAlignment="Center"
+    mc:Ignorable="d" Background="#6333" FontFamily="Fonts/SourceCodeVariable-Roman.ttf#Source Code Variable" >
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="TitleBlock" Grid.ColumnSpan="2" Text="Title" VerticalAlignment="Center" FontSize="20"/>
+        <Button x:Name="DialogClsBtn" Content="x" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center"
+                Margin="10" Click="DialogClsBtn_Click"/>
+        <TextBlock Grid.Row="1" Text="File Name" VerticalAlignment="Center"/>
+        <TextBox x:Name="FileNameBox" Grid.Row="1" Grid.Column="1" Margin="10"/>
+        <TextBlock Grid.Row="2" Text="Save Path" VerticalAlignment="Center"/>
+        <TextBlock x:Name="FilePathBlock" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"/>
+        <Button x:Name="ChangePathBtn" Background="#1FFF" Content="Change" Grid.Row="2" Grid.Column="2" VerticalAlignment="Stretch"
+                Click="ChangePathBtn_Click"/>
+        <Button x:Name="SaveBtn" Content="Save" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="10"
+                Click="SaveBtn_Click"/>
+        <Button Content="Cancel" Grid.Row="3" Grid.Column="2" VerticalAlignment="Stretch"
+                Margin="10" Click="DialogClsBtn_Click"/>
+    </Grid>
+</ContentDialog>

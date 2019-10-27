@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  IgnorableNamespaces="uap mp">
+
+  <Identity
+    Name="10688Duronsoft.JustEditor"
+    Publisher="CN=45CC454F-71BD-4227-BA24-168CAF6CC92E"
+    Version="0.1.3.0" />
+
+  <mp:PhoneIdentity PhoneProductId="efa895ad-01a2-47d8-824e-f61d904b19e6" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+
+  <Properties>
+    <DisplayName>Just Editor</DisplayName>
+    <PublisherDisplayName>Duronsoft</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="x-generate"/>
+  </Resources>
+
+  <Applications>
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="Just_Editor_UWP.App">
+      <uap:VisualElements
+        DisplayName="Just Editor"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png"
+        Description="Just_Editor_UWP"
+        BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" ShortName="Just Editor" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square310x310Logo"/>
+            <uap:ShowOn Tile="wide310x150Logo"/>
+            <uap:ShowOn Tile="square150x150Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile >
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+      </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation  Name="text">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.txt</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>Text</uap:DisplayName>
+            <uap:Logo>Assets\CodeIcon.png</uap:Logo>
+            <uap:InfoTip>JustEditor</uap:InfoTip>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="cs">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.cs</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>C# File</uap:DisplayName>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="c">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.c</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>C File</uap:DisplayName>
+            <uap:Logo>CodeIcon.png</uap:Logo>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="header">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.h</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>C\CPP Header File</uap:DisplayName>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="js">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.js</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>JavaScript File</uap:DisplayName>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="html">
+            <uap:SupportedFileTypes>
+              <uap:FileType>.html</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>HTML File</uap:DisplayName>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="hpp">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/plain">.hpp</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>CPP Header File</uap:DisplayName>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="asm">
+            <uap:SupportedFileTypes>
+              <uap:FileType>.s</uap:FileType>
+              <uap:FileType>.asm</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>Assembly File</uap:DisplayName>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <Capability Name="internetClientServer"/>
+    <Capability Name="privateNetworkClientServer"/>
+  </Capabilities>
+</Package>

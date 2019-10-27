@@ -1,0 +1,43 @@
+﻿<Grid
+    x:Class="Just_Editor_UWP.DrnTabPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Just_Editor_UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="250"
+    d:DesignWidth="400">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition/>
+    </Grid.RowDefinitions>
+
+    <Grid x:Name="topPanel" Height="34" SizeChanged="topPanel_SizeChanged">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition x:Name="tabColumn" Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <local:DrnMenu x:Name="justEditorBtn" IsCustom="true"
+                    VerticalAlignment="Stretch">
+            <local:DrnMenu.menuItems>
+                <x:String>New Socket</x:String>
+                <x:String>Open File</x:String>
+                <x:String>Exit</x:String>
+            </local:DrnMenu.menuItems>
+            <Rectangle Width="16" Height="17">
+                <Rectangle.Fill>
+                    <ImageBrush ImageSource="../Assets/JustEditor_Logo.png"/>
+                </Rectangle.Fill>
+            </Rectangle>
+        </local:DrnMenu>
+        <ScrollViewer x:Name="tabScrollViewer" Grid.Column="1" SizeChanged="tabScrollViewer_SizeChanged"
+                        VerticalScrollBarVisibility="Hidden" VerticalScrollMode="Disabled"
+                      HorizontalScrollBarVisibility="Hidden" HorizontalScrollMode="Enabled" Padding="0">
+            <StackPanel x:Name="tabPanel" AreScrollSnapPointsRegular="True" Orientation="Horizontal" SizeChanged="tabPanel_SizeChanged"/>
+        </ScrollViewer>
+        <Button x:Name="drnBtn" Grid.Column="2" Content="+" Click="drnBtn_Click" VerticalAlignment="Stretch"/>
+    </Grid>
+    <ContentPresenter x:Name="pagePanel" Grid.Row="1"/>
+</Grid>
