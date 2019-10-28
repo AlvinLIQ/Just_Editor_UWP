@@ -36,5 +36,6 @@ void Just_Editor_UWP::DrnCodeEditor::drnCoreEditor_CursorChanged(default::uint32
 
 void Just_Editor_UWP::DrnCodeEditor::drnCoreEditor_EditorViewChanging(default::float64 verticalOffset)
 {
-	lineNumScroll->ChangeView(lineNumScroll->HorizontalOffset, verticalOffset, lineNumScroll->ZoomFactor);
+	lineNumTrans->Y = -verticalOffset;
+//	lineNumScroll->ChangeView(lineNumScroll->HorizontalOffset, verticalOffset, lineNumScroll->ZoomFactor);
 }

@@ -23,7 +23,7 @@
             </Button>
             <Button x:Name="searchBtn" Padding="10">
                 <Button.Flyout>
-                    <Flyout x:Name="searchFlyout">
+                    <Flyout x:Name="searchFlyout" Placement="Right">
                         <StackPanel BorderBrush="#3FFF" BorderThickness="0.3">
                             <TextBox x:Name="searchBox" HorizontalAlignment="Left" PlaceholderText="Find..." Width="200"
                                      KeyUp="searchBox_KeyUp"/>

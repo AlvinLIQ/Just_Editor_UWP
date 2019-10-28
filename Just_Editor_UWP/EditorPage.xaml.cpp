@@ -89,6 +89,8 @@ void Just_Editor_UWP::EditorPage::searchBox_KeyUp(Platform::Object^ sender, Wind
 	e->Handled = true;
 	if (e->Key == Windows::System::VirtualKey::Enter)
 		findNextBtn_Click(nullptr, nullptr);
+	else if (e->Key == Windows::System::VirtualKey::Escape)
+		searchFlyout->Hide();
 }
 
 

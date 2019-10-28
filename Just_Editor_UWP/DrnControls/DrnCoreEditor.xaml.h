@@ -363,6 +363,7 @@ namespace Just_Editor_UWP
 				currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(tIndex, currentLength - tIndex)).c_str());
 				currentLength -= tIndex - cursor;
 			}
+			EditorTextChanged();
 			
 			CancelSelection();
 	//		HighlightDetect(currentBlock);
