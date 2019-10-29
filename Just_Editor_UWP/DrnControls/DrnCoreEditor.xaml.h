@@ -138,7 +138,40 @@ namespace Just_Editor_UWP
 		unsigned int currentLine = 0, cursor = 0, currentLength = 0, virtualKeyCode = -1;
 		double cursorX = 0;
 
-		Platform::String^ identifiersMap[2] = { L"int", L"internal" };
+		std::wstring identifiersMap[5] = { L"const", L"int", L"internal", L"char", L"wchar_t" };
+
+		class DrnWord
+		{
+		public:
+			std::wstring currentWord = L"";
+			unsigned int length = 0;
+			void AppendWcharAt(wchar_t newWChar, unsigned int sIndex)
+			{
+				if (sIndex < length)
+					currentWord = currentWord.substr(0, sIndex) + newWChar + currentWord.substr(sIndex, length - sIndex);
+				else
+					currentWord += newWChar;
+
+				length++;
+			}
+			void RemoveWcharAt(wchar_t newWChar, unsigned int sIndex)
+			{
+				if (!length)
+					return;
+
+				if (sIndex < length)
+				{
+					if (sIndex)
+						currentWord = currentWord.substr(0, sIndex - 1) + currentWord.substr(sIndex, length - sIndex);
+					else
+						currentWord = currentWord.substr(1, length - 1);
+				}
+				else
+					currentWord = currentWord.substr(0, length - 1);
+
+				length--;
+			}
+		};
 
 		void CoreEditor_Unloaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void CoreEditor_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
@@ -259,21 +292,6 @@ namespace Just_Editor_UWP
 			UpdateCursor();
 		}
 
-		bool HighlightDetect(TXTBLOCK^ block)
-		{
-			Platform::String^ curBlockStr = block->Content->ToString();
-			for (int i = 2; i >= 0; --i)
-			{
-				if (curBlockStr == identifiersMap[i])
-				{
-					block->Foreground = IdentifiersHighlightColor;
-					return true;
-				}
-			}
-			block->Foreground = this->Foreground;
-			return false;
-		}
-
 		Platform::String^ GetSelectionStr()
 		{
 			Platform::String^ result = L"";
@@ -368,10 +386,36 @@ namespace Just_Editor_UWP
 			CancelSelection();
 	//		HighlightDetect(currentBlock);
 		}
+		void Copy()
+		{
+			auto dataPkg = ref new Windows::ApplicationModel::DataTransfer::DataPackage;
+			dataPkg->SetText(GetSelectionStr());
+			Windows::ApplicationModel::DataTransfer::Clipboard::SetContent(dataPkg);
+		}
+		void Cut()
+		{
+			Copy();
+			ClearSelection();
+		}
+		void Paste()
+		{
+			if (IsTextSelected())
+				ClearSelection();
+			auto dataView = Windows::ApplicationModel::DataTransfer::Clipboard::GetContent();
+			if (dataView->Contains(Windows::ApplicationModel::DataTransfer::StandardDataFormats::Text))
+				concurrency::create_task(dataView->GetTextAsync()).then([this](Platform::String^ clipStr)
+					{
+						if (clipStr != nullptr && clipStr != L"")
+						{
+							AppendStrAtCursor(clipStr->Data());
+						}
+					}, concurrency::task_continuation_context::use_current());
+		}
 		void EditorContent_PointerPressed(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);
 		void EditorContent_PointerEntered(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);
 		void EditorContent_PointerExited(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);
 		void editorScrollViewer_ViewChanging(Platform::Object^ sender, Windows::UI::Xaml::Controls::ScrollViewerViewChangingEventArgs^ e);
 		void editorScrollViewer_ViewChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::ScrollViewerViewChangedEventArgs^ e);
+		void menuItem_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 };
 }

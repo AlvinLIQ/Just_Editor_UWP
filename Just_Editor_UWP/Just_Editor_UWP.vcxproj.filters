@@ -17,6 +17,9 @@
     <Filter Include="DrnHeaders">
       <UniqueIdentifier>{aba4f1ce-4098-4168-9813-1b0a78acaf50}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DrnControls\DrnEditor">
+      <UniqueIdentifier>{a97ce4fd-c601-49ec-b2f4-b72acffb74d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
@@ -235,16 +238,7 @@
     <Page Include="MsgPage.xaml" />
     <Page Include="EditorPage.xaml" />
     <Page Include="HomePage.xaml" />
-    <Page Include="DrnControls\DrnCodeEditor.xaml">
-      <Filter>DrnControls</Filter>
-    </Page>
     <Page Include="DrnControls\DrnContentDialog.xaml">
-      <Filter>DrnControls</Filter>
-    </Page>
-    <Page Include="DrnControls\DrnCoreEditor.xaml">
-      <Filter>DrnControls</Filter>
-    </Page>
-    <Page Include="DrnControls\DrnCoreEditorSelectionBlock.xaml">
       <Filter>DrnControls</Filter>
     </Page>
     <Page Include="DrnControls\DrnFileDialog.xaml">
@@ -263,6 +257,15 @@
       <Filter>DrnControls</Filter>
     </Page>
     <Page Include="CryptPage.xaml" />
+    <Page Include="DrnControls\DrnCodeEditor.xaml">
+      <Filter>DrnControls\DrnEditor</Filter>
+    </Page>
+    <Page Include="DrnControls\DrnCoreEditor.xaml">
+      <Filter>DrnControls\DrnEditor</Filter>
+    </Page>
+    <Page Include="DrnControls\DrnCoreEditorSelectionBlock.xaml">
+      <Filter>DrnControls\DrnEditor</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\SourceCodeVariable-Roman.ttf">

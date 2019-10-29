@@ -10,81 +10,96 @@
     <ContentPresenter.RenderTransform>
         <TranslateTransform x:Name="contentTrans"/>
     </ContentPresenter.RenderTransform>
-    <ScrollViewer VerticalScrollBarVisibility="Hidden">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <StackPanel Padding="20, 20" HorizontalAlignment="Center">
-                <Image Source="Assets\JustEditor_Logo.png" Width="150"/>
-                <ContentPresenter Content="Ver.0.1.3-Beta" FontSize="13" HorizontalAlignment="Right"/>
-                <ContentPresenter Content="Just Editor" FontSize="50"/>
-                <ContentPresenter Content="New" FontSize="30"/>
-                <StackPanel>
-                    <Button x:Name="newText" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0"
-                            HorizontalAlignment="Stretch" Click="newText_Click">
-                        <StackPanel Padding="15" Orientation="Horizontal">
-                            <Rectangle Width="50" Height="46">
-                                <Rectangle.Fill>
-                                    <ImageBrush ImageSource="Assets\CodeIcon.png"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <ContentPresenter Content="  New File" HorizontalAlignment="Center" FontSize="20"/>
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="newSocket" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0"
-                            HorizontalAlignment="Stretch" Click="newSocket_Click">
-                        <StackPanel Padding="15" Orientation="Horizontal">
-                            <Rectangle Width="50" Height="46">
-                                <Rectangle.Fill>
-                                    <ImageBrush ImageSource="Assets\SocketIcon.png"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <ContentPresenter Content="  New Socket" HorizontalAlignment="Center" FontSize="20"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-                <ContentPresenter Content="Tools" FontSize="30"/>
-                <StackPanel Orientation="Horizontal">
-                    <Button x:Name="newCrypt" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0" Click="newCrypt_Click">
-                        <StackPanel Padding="15">
-                            <Rectangle Width="50" Height="40">
-                                <Rectangle.Fill>
-                                    <ImageBrush ImageSource="Assets\CryptIcon.png"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <ContentPresenter Content="Base64" HorizontalAlignment="Center" FontSize="20"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-                <ContentPresenter Content="Open" FontSize="30"/>
-                <StackPanel Orientation="Horizontal">
-                    <Button x:Name="openText" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0" Click="openText_Click">
-                        <StackPanel Padding="15">
-                            <Rectangle Width="50" Height="46">
-                                <Rectangle.Fill>
-                                    <ImageBrush ImageSource="Assets\FileIcon.png"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <ContentPresenter Content="Text" HorizontalAlignment="Center" FontSize="20"/>
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="openImage" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0"
-                            Click="openImage_Click">
-                        <StackPanel Padding="15">
-                            <Rectangle Width="50" Height="46">
-                                <Rectangle.Fill>
-                                    <ImageBrush ImageSource="Assets\ImageIcon.png"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <ContentPresenter Content="Image" HorizontalAlignment="Center" FontSize="20"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-                <ContentPresenter Content="Recent" FontSize="30" Width="0"/>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Column="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Padding="20, 20">
+                    <Image Source="Assets\JustEditor_Logo.png" Width="150"/>
+                    <ContentPresenter Content="Ver.0.1.3-Beta" FontSize="13" HorizontalAlignment="Right"/>
+                    <ContentPresenter Content="Just Editor" FontSize="50"/>
+                    <ContentPresenter Content="New" FontSize="30"/>
+                    <StackPanel>
+                        <Button x:Name="newText" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0"
+                                HorizontalAlignment="Stretch" Click="newText_Click">
+                            <StackPanel Padding="15" Orientation="Horizontal">
+                                <Rectangle Width="50" Height="46">
+                                    <Rectangle.Fill>
+                                        <ImageBrush ImageSource="Assets\CodeIcon.png"/>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <ContentPresenter Content="  New File" HorizontalAlignment="Center" FontSize="20"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="newSocket" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0"
+                                HorizontalAlignment="Stretch" Click="newSocket_Click">
+                            <StackPanel Padding="15" Orientation="Horizontal">
+                                <Rectangle Width="50" Height="46">
+                                    <Rectangle.Fill>
+                                        <ImageBrush ImageSource="Assets\SocketIcon.png"/>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <ContentPresenter Content="  New Socket" HorizontalAlignment="Center" FontSize="20"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <ContentPresenter Content="Tools" FontSize="30"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="newCrypt" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0" Click="newCrypt_Click">
+                            <StackPanel Padding="15">
+                                <Rectangle Width="50" Height="40">
+                                    <Rectangle.Fill>
+                                        <ImageBrush ImageSource="Assets\CryptIcon.png"/>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <ContentPresenter Content="Base64" HorizontalAlignment="Center" FontSize="20"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <ContentPresenter Content="Open" FontSize="30"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="openText" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0" Click="openText_Click">
+                            <StackPanel Padding="15">
+                                <Rectangle Width="50" Height="46">
+                                    <Rectangle.Fill>
+                                        <ImageBrush ImageSource="Assets\FileIcon.png"/>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <ContentPresenter Content="Text" HorizontalAlignment="Center" FontSize="20"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="openImage" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0"
+                                Click="openImage_Click">
+                            <StackPanel Padding="15">
+                                <Rectangle Width="50" Height="46">
+                                    <Rectangle.Fill>
+                                        <ImageBrush ImageSource="Assets\ImageIcon.png"/>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <ContentPresenter Content="Image" HorizontalAlignment="Center" FontSize="20"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <ContentPresenter Content="Recent" FontSize="30" Width="0"/>
 
-            </StackPanel>
-        </Grid>
-    </ScrollViewer>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+        <local:DrnMenu Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsCustom="True">
+            <local:DrnMenu.menuItems>
+                <ListViewItem>
+                    Test
+                </ListViewItem>
+            </local:DrnMenu.menuItems>
+            Settings
+        </local:DrnMenu>
+    </Grid>
 </ContentPresenter>

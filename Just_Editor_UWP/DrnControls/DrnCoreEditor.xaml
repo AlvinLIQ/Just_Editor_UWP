@@ -19,8 +19,19 @@
                       IsTabStop="False" XYFocusKeyboardNavigation="Disabled"
                       ZoomMode="Disabled" x:Name="editorScrollViewer" ViewChanged="editorScrollViewer_ViewChanged"
                       AllowFocusOnInteraction="False">
+        <ScrollViewer.ContextFlyout>
+            <Flyout x:Name="coreEditorFlyout" Placement="BottomEdgeAlignedLeft">
+                <StackPanel x:Name="coreEditorMenu">
+                    <Button HorizontalAlignment="Stretch" Click="menuItem_Click">Cut</Button>
+                    <Button HorizontalAlignment="Stretch" Click="menuItem_Click">Copy</Button>
+                    <Button HorizontalAlignment="Stretch" Click="menuItem_Click">Paste</Button>
+                    <Rectangle Margin="10,0,10,0" Height="1" Fill="#3FFF"/>
+                    <Button HorizontalAlignment="Stretch" Click="menuItem_Click">SelectAll</Button>
+                </StackPanel>
+            </Flyout>
+        </ScrollViewer.ContextFlyout>
         <Grid Background="{x:Bind Background}" PointerEntered="EditorContent_PointerEntered"
-                           PointerExited="EditorContent_PointerExited" Padding="0,0,0,400"
+                           PointerExited="EditorContent_PointerExited" Padding="3,0,0,400"
                            TabFocusNavigation="Cycle" >
             <Line x:Name="drnCursor" Opacity="0" HorizontalAlignment="Left" VerticalAlignment="Top" Stroke="#60EFEFEF"
               StrokeThickness="3"
@@ -30,7 +41,7 @@
                 </Line.RenderTransform>
             </Line>
             <Grid x:Name="selectionPanel" AutomationProperties.AccessibilityView="Raw"/>
-            <Rectangle x:Name="drnHighlihgtLine" Fill="#3777" Height="23" VerticalAlignment="Top">
+            <Rectangle x:Name="drnHighlihgtLine" Stroke="#3777" StrokeThickness="2" Height="23" VerticalAlignment="Top">
                 <Rectangle.RenderTransform>
                     <TranslateTransform x:Name="lineTrans"/>
                 </Rectangle.RenderTransform>

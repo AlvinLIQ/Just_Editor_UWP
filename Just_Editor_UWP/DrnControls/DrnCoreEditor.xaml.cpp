@@ -104,40 +104,33 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 
 	if (isCtrlHeld)
 	{
-		if (keyMap[virtualKeyCode] == L'F' && searchFlyout != nullptr)
+		switch (keyMap[virtualKeyCode])
 		{
-			isActivated = false;
-			drnCursor->Opacity = 0;
-
-			searchFlyout->ShowAt(this);
-		}
-		else if (keyMap[virtualKeyCode] == L'A')
-			SelectAll();
-		else if (keyMap[virtualKeyCode] == L'S')
-			EditorSaveRequested();
-		else if (keyMap[virtualKeyCode] == L'V')
-		{
-			if (IsTextSelected())
-				ClearSelection();
-			auto dataView = Windows::ApplicationModel::DataTransfer::Clipboard::GetContent();
-			if (dataView->Contains(Windows::ApplicationModel::DataTransfer::StandardDataFormats::Text))
-				concurrency::create_task(dataView->GetTextAsync()).then([this](Platform::String^ clipStr)
-					{
-						if (clipStr != nullptr && clipStr != L"")
-						{
-							AppendStrAtCursor(clipStr->Data());
-						}
-					}, concurrency::task_continuation_context::use_current());
-		}
-		else if (keyMap[virtualKeyCode] == L'X' || keyMap[virtualKeyCode] == L'C' && IsTextSelected())
-		{
-			auto dataPkg = ref new Windows::ApplicationModel::DataTransfer::DataPackage;
-			dataPkg->SetText(GetSelectionStr());
-			Windows::ApplicationModel::DataTransfer::Clipboard::SetContent(dataPkg);
-			if (keyMap[virtualKeyCode] == L'X')
+		case L'F':
+			if (searchFlyout != nullptr)
 			{
-				ClearSelection();
+				isActivated = false;
+				drnCursor->Opacity = 0;
+
+				searchFlyout->ShowAt(this);
 			}
+			break;
+		case L'A':
+			SelectAll();
+			break;
+		case L'S':
+			EditorSaveRequested();
+			break;
+		case L'V':
+			Paste();
+		case L'X':
+			if (IsTextSelected())
+				Cut();
+			break;
+		case L'C':
+			if (IsTextSelected())
+				Copy();
+			break;
 		}
 	}
 	else
@@ -468,12 +461,16 @@ void DrnCoreEditor::MoveTo(unsigned int col, unsigned int ln)
 	if (ln >= textChildren->Items->Size)
 		return;
 
-	std::wstring wStr = currentBlock->Content->ToString()->Data();
+	std::wstring wStr;
 	if (ln != currentLine)
 	{
 		currentBlock = (TXTBLOCK^)textChildren->Items->GetAt(ln);
+		wStr = currentBlock->Content->ToString()->Data();
 		currentLength = (unsigned int)wStr.length();
 	}
+	else
+		wStr = currentBlock->Content->ToString()->Data();
+
 	if (cursor != col)
 	{
 		cursor = col > currentLength ? currentLength : col;
@@ -639,14 +636,22 @@ void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr)
 
 void DrnCoreEditor::EditorContent_PointerPressed(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
 {
-	if (selectionPanel->Children->Size)
-		selectionPanel->Children->Clear();
 	isActivated = true;
-	Focus(Windows::UI::Xaml::FocusState::Keyboard);
 	isTapped = true;
 	drnCursor->Opacity = 1;
-	
-	auto curPosition = e->GetCurrentPoint((UIElement^)textChildren)->Position;
+	auto curPoint = e->GetCurrentPoint((UIElement^)textChildren);
+	if (IsTextSelected())
+	{
+		if (curPoint->Properties->IsRightButtonPressed)
+		{
+			e->Handled = true;
+			return;
+		}
+		else
+			selectionPanel->Children->Clear();
+	}
+	auto curPosition = curPoint->Position;
+
 	leftMargin = curPosition.X;
 	curPosition.X += (float)(fWidth / 2);
 	if (abs(curPosition.X - selPosition.Y) < fWidth && curPosition.Y == selPosition.Y)
@@ -724,4 +729,28 @@ void DrnCoreEditor::editorScrollViewer_ViewChanging(Platform::Object^ sender, Wi
 void Just_Editor_UWP::DrnCoreEditor::editorScrollViewer_ViewChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::ScrollViewerViewChangedEventArgs^ e)
 {
 	EditorViewChanging(editorScrollViewer->VerticalOffset);
+}
+
+
+void Just_Editor_UWP::DrnCoreEditor::menuItem_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	coreEditorFlyout->Hide();
+
+	switch (Drn_UWP::getChildNum(coreEditorMenu->Children, (UIElement^)sender))
+	{
+	case 0:
+		if (IsTextSelected())
+			Cut();
+		break;
+	case 1:
+		if (IsTextSelected())
+			Copy();
+		break;
+	case 2:
+		Paste();
+		break;
+	case 4:
+		SelectAll();
+		break;
+	}
 }
