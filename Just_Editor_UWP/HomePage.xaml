@@ -24,7 +24,7 @@
                 </Grid.RowDefinitions>
                 <StackPanel Padding="20, 20">
                     <Image Source="Assets\JustEditor_Logo.png" Width="150"/>
-                    <ContentPresenter Content="Ver.0.1.3-Beta" FontSize="13" HorizontalAlignment="Right"/>
+                    <ContentPresenter Content="Ver.0.1.4-Beta" FontSize="13" HorizontalAlignment="Right"/>
                     <ContentPresenter Content="Just Editor" FontSize="50"/>
                     <ContentPresenter Content="New" FontSize="30"/>
                     <StackPanel>
@@ -93,10 +93,11 @@
                 </StackPanel>
             </Grid>
         </ScrollViewer>
-        <local:DrnMenu Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsCustom="True" IsTabStop="False">
+        <local:DrnMenu Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsCustom="True" IsTabStop="False"
+                       MenuSelected="DrnMenu_MenuSelected">
             <local:DrnMenu.menuItems>
                 <ListViewItem>
-                    Test
+                    You don't want to see that.
                 </ListViewItem>
             </local:DrnMenu.menuItems>
             Settings

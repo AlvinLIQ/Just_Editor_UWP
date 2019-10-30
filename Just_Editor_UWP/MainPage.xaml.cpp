@@ -7,6 +7,7 @@
 #include "MainPage.xaml.h"
 
 using namespace Just_Editor_UWP;
+using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Media;
 
 
@@ -25,10 +26,10 @@ MainPage::MainPage()
 	titleBar->ButtonBackgroundColor = btnColor;
 	titleBar->ButtonInactiveBackgroundColor = btnColor;
 
-	tabPanel = ref new DrnTabPanel(this);
+/*	tabPanel = ref new DrnTabPanel(this);
 	tabPanel->HoverBrush = ref new SolidColorBrush(Windows::UI::Color{ 0x90, 0x43, 0x43, 0x43 });
 	tabPanel->SelectedColor = ref new SolidColorBrush(Windows::UI::Color{ 0xCC, 0x34, 0x34, 0x34 });
 	mainGrid->Children->Append(tabPanel);
-	mainGrid->SetRowSpan(tabPanel, 2);
+	mainGrid->SetRowSpan(tabPanel, 2);*/
 }
 

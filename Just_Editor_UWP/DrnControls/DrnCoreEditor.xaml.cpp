@@ -654,23 +654,24 @@ void DrnCoreEditor::EditorContent_PointerPressed(Platform::Object^ sender, Windo
 	auto curPosition = curPoint->Position;
 
 	leftMargin = curPosition.X;
-	curPosition.X += (float)(fWidth / 2);
-	if (abs(curPosition.X - selPosition.Y) < fWidth && curPosition.Y == selPosition.Y)
+	if (curPoint->Timestamp - pointTimeStamp < 200000 && abs(curPosition.X - selPosition.X) < fWidth && (unsigned int)(curPosition.Y / fHeight) == (unsigned int)(selPosition.Y / fHeight))
 	{
 		selPosition.X = 0;
-		cursorX = 0;
-		cursor = 0;
+		cursorX = GetCursorXFromWStr(currentBlock->Content->ToString()->Data(), currentLength);
+		cursor = currentLength;
 		UpdateCursor();
 
 		Select(cursor, currentLine);
 	}
 	else
 	{
+		curPosition.X += (float)(fWidth / 2);
 		MoveToPosition(curPosition);
 		selPosition.X = (float)cursorX;
 		selPosition.Y = (float)currentLine * fHeight;
 	}
 
+	pointTimeStamp = curPoint->Timestamp;
 	if (e->Pointer->PointerDeviceType != Windows::Devices::Input::PointerDeviceType::Mouse)
 		insideKeyboard->Show();
 }

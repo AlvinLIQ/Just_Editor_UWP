@@ -30,5 +30,6 @@ namespace Just_Editor_UWP
 		void openImage_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void ContentPresenter_Unloaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void newCrypt_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void DrnMenu_MenuSelected(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e);
 	};
 }

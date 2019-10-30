@@ -134,6 +134,8 @@ namespace Just_Editor_UWP
 		bool isCtrlHeld = false;
 		bool isWord = false;
 
+		unsigned long long int pointTimeStamp;
+
 		float leftMargin = 0, topMargin = 0;
 		unsigned int currentLine = 0, cursor = 0, currentLength = 0, virtualKeyCode = -1;
 		double cursorX = 0;

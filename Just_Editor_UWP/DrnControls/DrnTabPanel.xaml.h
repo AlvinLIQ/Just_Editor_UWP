@@ -21,7 +21,7 @@ namespace Just_Editor_UWP
 	public ref class DrnTabPanel sealed
 	{
 	public:
-		DrnTabPanel(Windows::UI::Xaml::Controls::Page^ mPage);
+		DrnTabPanel();
 
 		property Windows::UI::Xaml::Media::SolidColorBrush^ HoverBrush;
 		property Windows::UI::Xaml::Media::SolidColorBrush^ SelectedColor;
@@ -43,5 +43,6 @@ namespace Just_Editor_UWP
 		void topPanel_SizeChanged(Platform::Object^ sender, Windows::UI::Xaml::SizeChangedEventArgs^ e);
 		void tabScrollViewer_SizeChanged(Platform::Object^ sender, Windows::UI::Xaml::SizeChangedEventArgs^ e);
 		void tabPanel_SizeChanged(Platform::Object^ sender, Windows::UI::Xaml::SizeChangedEventArgs^ e);
+		void Grid_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }

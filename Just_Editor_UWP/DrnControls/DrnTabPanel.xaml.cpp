@@ -20,7 +20,7 @@ unsigned int selectedIndex;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-DrnTabPanel::DrnTabPanel(Windows::UI::Xaml::Controls::Page^ mPage)
+DrnTabPanel::DrnTabPanel()
 {
 	InitializeComponent();
 	auto leaveEvent = ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>([](CoreWindow^ coreWindow, Windows::UI::Core::PointerEventArgs^ e)
@@ -30,9 +30,6 @@ DrnTabPanel::DrnTabPanel(Windows::UI::Xaml::Controls::Page^ mPage)
 	auto coreWindow = CoreWindow::GetForCurrentThread();
 	coreWindow->PointerCaptureLost += leaveEvent;
 	coreWindow->PointerReleased += leaveEvent;
-	pagePanel->Content = (homePage = ref new HomePage(mPage, this->justEditorBtn));
-	homePage->NewTabRequested 
-		+= ref new Just_Editor_UWP::NewTabRequestEventHandler(this, &DrnTabPanel::HomePage_NewTabRequested);
 }
 
 void DrnTabPanel::AddNewTab(Platform::String^ title, Windows::UI::Xaml::UIElement^ content, Windows::Storage::StorageFile^ tabFile)
@@ -178,4 +175,12 @@ void Just_Editor_UWP::DrnTabPanel::tabPanel_SizeChanged(Platform::Object^ sender
 {
 	tabScrollViewer->MaxWidth = newWidth;
 	tabScrollViewer->ChangeView(tabScrollViewer->ScrollableWidth, tabScrollViewer->VerticalOffset, tabScrollViewer->ZoomFactor);
+}
+
+
+void Just_Editor_UWP::DrnTabPanel::Grid_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	pagePanel->Content = (homePage = ref new HomePage((Page^)((Panel^)this->Parent)->Parent, this->justEditorBtn));
+	homePage->NewTabRequested
+		+= ref new Just_Editor_UWP::NewTabRequestEventHandler(this, &DrnTabPanel::HomePage_NewTabRequested);
 }

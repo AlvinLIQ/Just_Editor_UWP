@@ -18,7 +18,7 @@
                       FocusVisualPrimaryThickness="0" FocusVisualSecondaryThickness="0"
                       IsTabStop="False" XYFocusKeyboardNavigation="Disabled"
                       ZoomMode="Disabled" x:Name="editorScrollViewer" ViewChanged="editorScrollViewer_ViewChanged"
-                      AllowFocusOnInteraction="False">
+                      AllowFocusOnInteraction="False" FontWeight="Bold">
         <ScrollViewer.ContextFlyout>
             <Flyout x:Name="coreEditorFlyout" Placement="BottomEdgeAlignedLeft">
                 <StackPanel x:Name="coreEditorMenu">

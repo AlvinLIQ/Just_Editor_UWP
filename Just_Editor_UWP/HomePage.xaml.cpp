@@ -11,6 +11,7 @@ using namespace Just_Editor_UWP;
 using namespace concurrency;
 
 using namespace Platform;
+using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls;
 
 
@@ -97,4 +98,10 @@ void Just_Editor_UWP::HomePage::openImage_Click(Platform::Object^ sender, Window
 void Just_Editor_UWP::HomePage::newCrypt_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 	NewTabRequested(L"?Crypt", nullptr);
+}
+
+
+void Just_Editor_UWP::HomePage::DrnMenu_MenuSelected(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e)
+{
+	mainPage->RequestedTheme = mainPage->RequestedTheme == ElementTheme::Dark ? ElementTheme::Light : ElementTheme::Dark;
 }

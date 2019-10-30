@@ -20,5 +20,6 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Rectangle x:Name="titleRect" Fill="#50121212"/>
+        <local:DrnTabPanel HoverBrush="#90434343" SelectedColor="#CC343434" Grid.RowSpan="2"/>
     </Grid>
 </Page>
