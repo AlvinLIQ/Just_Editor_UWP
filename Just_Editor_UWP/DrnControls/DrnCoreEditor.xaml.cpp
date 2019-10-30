@@ -183,9 +183,10 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 				}
 				else if (currentLine)
 				{
-					wStr = GetLineStr(--currentLine)->Data();
-					cursorX = GetCursorXFromWStr(wStr, currentLength = (unsigned int)wStr.length());
-					Select(cursor = currentLength, currentLine);
+					currentBlock = (TXTBLOCK^)textChildren->Items->GetAt(--currentLine);
+					wStr = currentBlock->Content->ToString()->Data();
+					cursorX = GetCursorXFromWStr(wStr, cursor = (currentLength = (unsigned int)wStr.length()));
+					Select(cursor, currentLine);
 				}
 				UpdateCursor();
 			}
@@ -205,7 +206,8 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 				}
 				else if (currentLine + 1 < textChildren->Items->Size)
 				{
-					currentLength = GetLineStrLength(++currentLine);
+					currentBlock = (TXTBLOCK^)textChildren->Items->GetAt(++currentLine);
+					currentLength = currentBlock->Content->ToString()->Length();
 					cursorX = 0;
 					Select(cursor = 0, currentLine);
 
@@ -472,11 +474,9 @@ void DrnCoreEditor::MoveTo(unsigned int col, unsigned int ln)
 	else
 		wStr = currentBlock->Content->ToString()->Data();
 
-	if (cursor != col)
-	{
-		cursor = col > currentLength ? currentLength : col;
-		cursorX = GetCursorXFromWStr(wStr, cursor);
-	}
+	cursor = col > currentLength ? currentLength : col;
+	cursorX = GetCursorXFromWStr(wStr, cursor);
+
 	currentLine = ln;
 	UpdateCursor();
 }
