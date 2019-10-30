@@ -20,7 +20,7 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <local:DrnMenu x:Name="justEditorBtn" IsCustom="true"
-                    VerticalAlignment="Stretch">
+                    VerticalAlignment="Stretch" IsTabStop="False">
             <local:DrnMenu.menuItems>
                 <x:String>New Socket</x:String>
                 <x:String>Open File</x:String>

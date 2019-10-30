@@ -4,5 +4,7 @@ Remake Version
 <br>
 coming soon
 
-<h3>Designs</h3>
-<img src="Design/DrnCoreEditor_Design.png">
+<h3>Screenshot</h3>
+<img src="Designs/Just_Editor_s1.png">
+<br>
+<img src="Designs/Just_Editor_s2.png">

@@ -89,11 +89,11 @@
                         </Button>
                     </StackPanel>
                     <ContentPresenter Content="Recent" FontSize="30" Width="0"/>
-
+                    <Image Source="Assets/CodeIcon.svg"/>
                 </StackPanel>
             </Grid>
         </ScrollViewer>
-        <local:DrnMenu Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsCustom="True">
+        <local:DrnMenu Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsCustom="True" IsTabStop="False">
             <local:DrnMenu.menuItems>
                 <ListViewItem>
                     Test

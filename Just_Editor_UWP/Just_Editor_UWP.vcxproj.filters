@@ -274,5 +274,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Package.StoreAssociation.xml" />
+    <None Include="Assets\CodeIcon.svg">
+      <Filter>Assets</Filter>
+    </None>
   </ItemGroup>
 </Project>
