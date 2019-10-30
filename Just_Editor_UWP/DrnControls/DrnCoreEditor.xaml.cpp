@@ -177,15 +177,17 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 			{
 				if (cursor)
 				{
-					Select(--cursor, currentLine);
-					UpdateCursor();
+					wStr = currentBlock->Content->ToString()->Data();
+					cursorX = GetCursorXFromWStr(wStr, --cursor);
+					Select(cursor, currentLine);
 				}
 				else if (currentLine)
 				{
-					Select(cursor = GetLineStrLength(currentLine), --currentLine);
-					currentLength = cursor;
-					UpdateCursor();
+					wStr = GetLineStr(--currentLine)->Data();
+					cursorX = GetCursorXFromWStr(wStr, currentLength = (unsigned int)wStr.length());
+					Select(cursor = currentLength, currentLine);
 				}
+				UpdateCursor();
 			}
 			else
 				MoveLeft();
@@ -196,18 +198,17 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 			{
 				if (cursor < currentLength)
 				{
-					Select(++cursor, currentLine);
-
 					wStr = currentBlock->Content->ToString()->Data();
-					cursorX = GetCursorXFromWStr(wStr, cursor);
+					cursorX = GetCursorXFromWStr(wStr, ++cursor);
+					Select(cursor, currentLine);
 					UpdateCursor();
 				}
 				else if (currentLine + 1 < textChildren->Items->Size)
 				{
-					Select(cursor = 0, ++currentLine);
-					currentLength = GetLineStrLength(currentLine);
-
+					currentLength = GetLineStrLength(++currentLine);
 					cursorX = 0;
+					Select(cursor = 0, currentLine);
+
 					UpdateCursor();
 				}
 			}
@@ -342,7 +343,7 @@ void DrnCoreEditor::Select(unsigned int col, unsigned int ln)
 				tRect->SetSelection(0, len * fHeight, GetLineWidth(len) + fWidth / 2);
 			}
 			tRect = (DrnCoreEditorSelectionBlock^)selectionPanel->Children->GetAt(0);
-			tRect->SetSelection(selPosition.X, selLine * fHeight, GetLineWidth(selLine) - selPosition.X + fWidth / 2);
+			tRect->SetSelection(selPosition.X, selLine * fHeight, selPosition.X ? GetLineWidth(selLine) - selPosition.X : GetLineWidth(selLine) - selPosition.X + fWidth / 2);
 		}
 		else
 		{
@@ -353,7 +354,7 @@ void DrnCoreEditor::Select(unsigned int col, unsigned int ln)
 				tRect->SetSelection(0, len * fHeight, GetLineWidth(len) + fWidth / 2);
 			}
 			tRect = (DrnCoreEditorSelectionBlock^)selectionPanel->Children->GetAt(0);
-			tRect->SetSelection(0, selLine * fHeight, selPosition.X + fWidth / 2);
+			tRect->SetSelection(0, selLine * fHeight, selPosition.X == GetLineWidth(selLine) ? selPosition.X + fWidth / 2 : selPosition.X);
 		}
 
 	}
@@ -362,25 +363,25 @@ void DrnCoreEditor::Select(unsigned int col, unsigned int ln)
 
 	if (selLine == ln)
 	{
-		if (cursorTrans->X > (double)selPosition.X)
+		if (cursorX > (double)selPosition.X)
 		{
-			selEnd = cursorTrans->X;
+			selEnd = cursorX;
 			selOffset = (double)selPosition.X;
 		}
 		else
 		{
-			selOffset = cursorTrans->X;
+			selOffset = cursorX;
 			selEnd = (double)selPosition.X;
 		}
 	}
 	else if (ln > selLine)
 	{
-		selEnd = cursorTrans->X;
+		selEnd = cursorX;
 		selOffset = 0;
 	}
 	else
 	{
-		selOffset = cursorTrans->X;
+		selOffset = cursorX;
 		selEnd = GetCursorXFromWStr(wStr, currentLength);
 	}
 
