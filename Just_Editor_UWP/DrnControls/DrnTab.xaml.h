@@ -39,7 +39,9 @@ namespace Just_Editor_UWP
 
 		void CloseTab()
 		{
-			concurrency::create_task(Drn_UWP::DrnAnimeX(scaleTrans, 0, -this->ActualWidth, 8, this)).then([this]()
+			auto tVisual = Windows::UI::Xaml::Hosting::ElementCompositionPreview::GetElementVisual(this);
+
+			concurrency::create_task(Drn_UWP::DrnAnimeY(tVisual, tVisual->Offset.y, tVisual->Offset.y - (float)this->ActualHeight, 30, this)).then([this]()
 				{
 					clsBtnClicked(this);
 				}, concurrency::task_continuation_context::use_current());

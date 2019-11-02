@@ -31,6 +31,10 @@ namespace Just_Editor_UWP
 		};
 		property bool IsCustom 
 		{
+			bool get() 
+			{
+				return UserMode;
+			}
 			void set(bool newStat)
 			{
 				UserMode = newStat;

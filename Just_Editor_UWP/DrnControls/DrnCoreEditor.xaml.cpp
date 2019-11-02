@@ -345,7 +345,7 @@ void DrnCoreEditor::Select(unsigned int col, unsigned int ln)
 				tRect->SetSelection(0, len * fHeight, GetLineWidth(len) + fWidth / 2);
 			}
 			tRect = (DrnCoreEditorSelectionBlock^)selectionPanel->Children->GetAt(0);
-			tRect->SetSelection(selPosition.X, selLine * fHeight, selPosition.X ? GetLineWidth(selLine) - selPosition.X : GetLineWidth(selLine) - selPosition.X + fWidth / 2);
+			tRect->SetSelection(selPosition.X, selLine * fHeight, GetLineWidth(selLine) - selPosition.X + fWidth / 2);
 		}
 		else
 		{

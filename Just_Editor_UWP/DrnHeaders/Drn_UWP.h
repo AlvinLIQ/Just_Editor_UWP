@@ -1,4 +1,5 @@
 #pragma once
+#include <windowsnumerics.h>
 
 const char keyMap[] = " \t1234567890-=__QWERTYUIOP[]\n_ASDFGHJKL;'`_\\ZXCVBNM,./_*_ ________________-___+____._____________________________________0123456789";
 const char shiftKeyMap[] = " \t!@#$%^&*()_+__QWERTYUIOP{}\n_ASDFGHJKL:\"~_|ZXCVBNM<>?_*_ ________________-___+____._____________________________________0123456789";
@@ -76,56 +77,59 @@ public:
 		return Windows::Storage::FileIO::WriteTextAsync(tFile, tStr);
 	}
 
-	static concurrency::task<void> DrnAnimeX(Windows::UI::Xaml::Media::TranslateTransform^ theTrans, double startValue, double finalValue, unsigned int time, Windows::UI::Xaml::UIElement^ sourceControl = nullptr)
+	static concurrency::task<void> DrnAnimeX(Windows::UI::Composition::Visual^ tVisual, float startValue, float finalValue, unsigned int time, bool dOpacity)
 	{
-		double moveStep = (finalValue - startValue) / time, opacity = 1 / (double)time;
-		if (sourceControl != nullptr && sourceControl->Opacity)
+		float opacity = 1 / (float)time;
+		if (dOpacity)
+		{
+			tVisual->Opacity = 1;
 			opacity = -opacity;
-		if (theTrans != nullptr)
-			theTrans->X = startValue;
-		return concurrency::create_task([theTrans, moveStep, finalValue, time, opacity, sourceControl]()
+		}
+		else
+			tVisual->Opacity = 0;
+
+		tVisual->Offset = Windows::Foundation::Numerics::float3(startValue, tVisual->Offset.y, tVisual->Offset.z);
+
+		return concurrency::create_task([tVisual, startValue, finalValue, time, opacity]()
 			{
+				float moveStep = (finalValue - startValue) / time;
 				unsigned int tTime = time;
 				
 				while (tTime--)
 				{
-					theTrans->Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new Windows::UI::Core::DispatchedHandler([theTrans, moveStep, finalValue, sourceControl, opacity]()
+					tVisual->Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new Windows::UI::Core::DispatchedHandler([tVisual, moveStep, finalValue, opacity]()
 						{
-							if (theTrans != nullptr)
-							{
-								if (abs(finalValue - theTrans->X) < abs(moveStep))
-									theTrans->X = finalValue;
-								else
-									theTrans->X += moveStep;
-							}
-							if (sourceControl != nullptr)
-								sourceControl->Opacity += opacity;
+							if (abs(finalValue - tVisual->Offset.x) < abs(moveStep))
+								tVisual->Offset = Windows::Foundation::Numerics::float3(finalValue, tVisual->Offset.y, tVisual->Offset.z);
+							else
+								tVisual->Offset = Windows::Foundation::Numerics::float3(tVisual->Offset.x + moveStep, tVisual->Offset.y, tVisual->Offset.z);
+							tVisual->Opacity += opacity;
 						}));
 					Sleep(3);
 				}
 			});
 	}
-	static concurrency::task<void> DrnAnimeY(Windows::UI::Xaml::Media::TranslateTransform^ theTrans, double startValue, double finalValue, unsigned int time, Windows::UI::Xaml::UIElement^ sourceControl = nullptr)
+	static concurrency::task<void> DrnAnimeY(Windows::UI::Composition::Visual^ tVisual, float startValue, float finalValue, unsigned int time, Windows::UI::Xaml::UIElement^ sourceControl = nullptr)
 	{
-		double moveStep = (finalValue - startValue) / time, opacity = 1 / (double)time;
+		float moveStep = (finalValue - startValue) / time, opacity = 1 / (float)time;
 		if (sourceControl != nullptr && sourceControl->Opacity)
 			opacity = -opacity;
-		if (theTrans != nullptr)
-			theTrans->Y = startValue;
-		return concurrency::create_task([theTrans, moveStep, finalValue, time, opacity, sourceControl]()
+		if (tVisual != nullptr)
+			tVisual->Offset = Windows::Foundation::Numerics::float3(tVisual->Offset.x, startValue, tVisual->Offset.z);
+		return concurrency::create_task([tVisual, moveStep, finalValue, time, opacity, sourceControl]()
 			{
 				unsigned int tTime = time;
 
 				while (tTime--)
 				{
-					theTrans->Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new Windows::UI::Core::DispatchedHandler([theTrans, moveStep, finalValue, sourceControl, opacity]()
+					tVisual->Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new Windows::UI::Core::DispatchedHandler([tVisual, moveStep, finalValue, sourceControl, opacity]()
 						{
-							if (theTrans != nullptr)
+							if (tVisual != nullptr)
 							{
-								if (abs(finalValue - theTrans->Y) < abs(moveStep))
-									theTrans->Y = finalValue;
+								if (abs(finalValue - tVisual->Offset.y) < abs(moveStep))
+									tVisual->Offset = Windows::Foundation::Numerics::float3(tVisual->Offset.x, finalValue, tVisual->Offset.z);
 								else
-									theTrans->Y += moveStep;
+									tVisual->Offset = Windows::Foundation::Numerics::float3(tVisual->Offset.x, tVisual->Offset.y + moveStep, tVisual->Offset.z);
 							}
 							if (sourceControl != nullptr)
 								sourceControl->Opacity += opacity;

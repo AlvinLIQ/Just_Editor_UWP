@@ -8,10 +8,7 @@
     mc:Ignorable="d"
     d:DesignHeight="45" PointerPressed="StackPanel_PointerPressed"
     d:DesignWidth="190" Background="{x:Bind Background}" Orientation="Horizontal" Padding="3" PointerEntered="StackPanel_PointerEntered"
-    PointerExited="StackPanel_PointerExited" PointerCaptureLost="StackPanel_PointerExited" Loaded="StackPanel_Loaded" Opacity="0">
-    <StackPanel.RenderTransform>
-        <TranslateTransform x:Name="scaleTrans" X="-200"/>
-    </StackPanel.RenderTransform>
+    PointerExited="StackPanel_PointerExited" PointerCaptureLost="StackPanel_PointerExited" Loaded="StackPanel_Loaded">
     <TextBlock x:Name="titleBlock" Width="150" VerticalAlignment="Center"/>
     <TextBlock x:Name="statusBlock" VerticalAlignment="Center"/>
     <Button x:Name="clsBtn" Content="x" Click="clsBtn_Click"/>

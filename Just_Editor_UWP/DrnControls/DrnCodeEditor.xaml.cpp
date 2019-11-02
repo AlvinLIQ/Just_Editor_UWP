@@ -6,6 +6,8 @@
 #include "pch.h"
 #include "DrnCodeEditor.xaml.h"
 
+#include <windowsnumerics.h>
+
 using namespace Just_Editor_UWP;
 
 using namespace Platform;
@@ -36,6 +38,14 @@ void Just_Editor_UWP::DrnCodeEditor::drnCoreEditor_CursorChanged(default::uint32
 
 void Just_Editor_UWP::DrnCodeEditor::drnCoreEditor_EditorViewChanging(default::float64 verticalOffset)
 {
-	lineNumTrans->Y = -verticalOffset;
+	if (lineNumVisual != nullptr)
+		lineNumVisual->Offset = Windows::Foundation::Numerics::float3(lineNumVisual->Offset.x, (float)-verticalOffset, lineNumVisual->Offset.z);
+//	lineNumTrans->Y = -verticalOffset;
 //	lineNumScroll->ChangeView(lineNumScroll->HorizontalOffset, verticalOffset, lineNumScroll->ZoomFactor);
+}
+
+
+void Just_Editor_UWP::DrnCodeEditor::drnLineNum_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	lineNumVisual = Hosting::ElementCompositionPreview::GetElementVisual(drnLineNum);
 }

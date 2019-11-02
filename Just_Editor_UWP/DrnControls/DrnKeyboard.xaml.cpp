@@ -113,7 +113,7 @@ void DrnKeyboard::Show()
 
 	this->Opacity = 0;
 	Height = 250;
-	Drn_UWP::DrnAnimeY(tarTrans, 250, 0, 25, this);
+	Drn_UWP::DrnAnimeY(Hosting::ElementCompositionPreview::GetElementVisual(this), 250, 0, 25, this);
 }
 
 void DrnKeyboard::Hide()
@@ -121,7 +121,7 @@ void DrnKeyboard::Hide()
 	if (!Height)
 		return;
 
-	Drn_UWP::DrnAnimeY(tarTrans, 0, 250, 25, this).then([this]()
+	Drn_UWP::DrnAnimeY(Hosting::ElementCompositionPreview::GetElementVisual(this), 0, 250, 25, this).then([this]()
 			{
 				Height = 0;
 			}, concurrency::task_continuation_context::use_current());

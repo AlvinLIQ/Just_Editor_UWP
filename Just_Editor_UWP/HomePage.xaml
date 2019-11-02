@@ -4,12 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Just_Editor_UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Opacity="0"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" FontFamily="Fonts/SourceCodeVariable-Roman.ttf#Source Code Variable" FontSize="18" Loaded="ContentPresenter_Loaded"
     Unloaded="ContentPresenter_Unloaded">
-    <ContentPresenter.RenderTransform>
-        <TranslateTransform x:Name="contentTrans"/>
-    </ContentPresenter.RenderTransform>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>

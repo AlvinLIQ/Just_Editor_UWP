@@ -47,7 +47,7 @@ void Just_Editor_UWP::HomePage::ContentPresenter_Loaded(Platform::Object^ sender
 	this->Opacity = 0;
 	menuBtn->Width = 0;
 	menuBtn->IsEnabled = false;
-	Drn_UWP::DrnAnimeY(contentTrans, 30, 0, 30, this);
+	Drn_UWP::DrnAnimeY(Hosting::ElementCompositionPreview::GetElementVisual(this), 30, 0, 30, this);
 }
 
 void Just_Editor_UWP::HomePage::ContentPresenter_Unloaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)

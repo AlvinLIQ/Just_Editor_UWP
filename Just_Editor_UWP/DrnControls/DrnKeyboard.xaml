@@ -7,9 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" FontSize="20" Background="#0000" Opacity="0"
     >
-    <ContentPresenter.RenderTransform>
-        <TranslateTransform x:Name="tarTrans" Y="-250"/>
-    </ContentPresenter.RenderTransform>
 
     <Grid Background="#6777" x:Name="keyGrid" Loaded="keyGrid_Loaded" Unloaded="keyGrid_Unloaded">
     </Grid>

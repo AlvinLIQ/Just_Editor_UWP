@@ -19,10 +19,7 @@
             <ColumnDefinition MinWidth="35" Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <StackPanel x:Name="drnLineNum" FlowDirection="RightToLeft" Padding="3,0,10,418">
-            <StackPanel.RenderTransform>
-                <TranslateTransform x:Name="lineNumTrans"/>
-            </StackPanel.RenderTransform>
+        <StackPanel x:Name="drnLineNum" FlowDirection="RightToLeft" Padding="3,0,10,418" Loaded="drnLineNum_Loaded">
             <ContentPresenter Content="1" Height="23"/>
         </StackPanel>
         <local:DrnCoreEditor x:Name="drnCoreEditor" Grid.Column="1" Background="{x:Bind Background}" 

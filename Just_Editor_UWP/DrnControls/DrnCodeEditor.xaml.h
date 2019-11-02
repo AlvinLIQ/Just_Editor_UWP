@@ -71,7 +71,10 @@ namespace Just_Editor_UWP
 			}
 		}
 	private:
+		Windows::UI::Composition::Visual^ lineNumVisual = nullptr;
+
 		void drnCoreEditor_CursorChanged(default::uint32 col, default::uint32 ln, default::uint32 lineNum);
 		void drnCoreEditor_EditorViewChanging(default::float64 verticalOffset);
+		void drnLineNum_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }
