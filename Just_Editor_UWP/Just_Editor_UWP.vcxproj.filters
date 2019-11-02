@@ -271,11 +271,11 @@
     <Font Include="Fonts\SourceCodeVariable-Roman.ttf">
       <Filter>Fonts</Filter>
     </Font>
+    <Font Include="Fonts\Just_Editor_Icons.ttf">
+      <Filter>Fonts</Filter>
+    </Font>
   </ItemGroup>
   <ItemGroup>
     <None Include="Package.StoreAssociation.xml" />
-    <None Include="Assets\CodeIcon.svg">
-      <Filter>Assets</Filter>
-    </None>
   </ItemGroup>
 </Project>

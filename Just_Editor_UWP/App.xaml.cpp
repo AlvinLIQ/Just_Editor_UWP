@@ -19,10 +19,11 @@ using namespace Windows::UI::Xaml::Interop;
 App::App()
 {
     InitializeComponent();
+	AppConfig = ref new AppConfigs::DrnConfig(true);
     Suspending += ref new SuspendingEventHandler(this, &App::OnSuspending);
 }
 
-void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs^ e)
+void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs^ args)
 {
     auto mainPage = dynamic_cast<MainPage^>(Window::Current->Content);
 
@@ -31,7 +32,7 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 	if (mainPage == nullptr)
     {
 		mainPage = ref new MainPage;
-        if (e->PreviousExecutionState == ApplicationExecutionState::Terminated)
+        if (args->PreviousExecutionState == ApplicationExecutionState::Terminated)
         {
             // TODO: Restore the saved session state only when appropriate, scheduling the
             // final launch steps after the restore is complete
@@ -41,7 +42,7 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 		Window::Current->Content = mainPage;
     }
 
-	if (e->PrelaunchActivated == false)
+	if (args->PrelaunchActivated == false)
 	{
 		Window::Current->Activate();
 	}

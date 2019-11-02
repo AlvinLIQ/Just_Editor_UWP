@@ -22,7 +22,13 @@ namespace Just_Editor_UWP
 			if (thisFile != nullptr)
 				tabPanel->HomePage_NewTabRequested(thisFile->Name, thisFile);
 		}
-
+		property AppConfigs::DrnConfig^ CurrentConfig
+		{
+			AppConfigs::DrnConfig^ get()
+			{
+				return ((App^)App::Current)->AppConfig;
+			}
+		};
 	private:
 		DrnTabPanel^ tabPanel;
 	};

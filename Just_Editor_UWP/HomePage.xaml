@@ -8,19 +8,18 @@
     mc:Ignorable="d" FontFamily="Fonts/SourceCodeVariable-Roman.ttf#Source Code Variable" FontSize="18" Loaded="ContentPresenter_Loaded"
     Unloaded="ContentPresenter_Unloaded">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Column="1">
-            <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+            <Grid HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Padding="20, 20">
-                    <Image Source="Assets\JustEditor_Logo.png" Width="150"/>
+                    <FontIcon FontFamily="Fonts/Just_Editor_Icons.ttf#Just_Editor_Icons" Glyph="&#xE609;" FontSize="140" HorizontalAlignment="Center" Margin="0,20,0,0">
+                        <FontIcon.RenderTransform>
+                            <RotateTransform Angle="-10"/>
+                        </FontIcon.RenderTransform>
+                    </FontIcon>
                     <ContentPresenter Content="Ver.0.1.4-Beta" FontSize="13" HorizontalAlignment="Right"/>
                     <ContentPresenter Content="Just Editor" FontSize="50"/>
                     <ContentPresenter Content="New" FontSize="30"/>
@@ -28,22 +27,14 @@
                         <Button x:Name="newText" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0"
                                 HorizontalAlignment="Stretch" Click="newText_Click">
                             <StackPanel Padding="15" Orientation="Horizontal">
-                                <Rectangle Width="50" Height="46">
-                                    <Rectangle.Fill>
-                                        <ImageBrush ImageSource="Assets\CodeIcon.png"/>
-                                    </Rectangle.Fill>
-                                </Rectangle>
+                                <FontIcon FontFamily="Fonts/Just_Editor_Icons.ttf#Just_Editor_Icons" Glyph="&#xE60a;" FontSize="40"/>
                                 <ContentPresenter Content="  New File" HorizontalAlignment="Center" FontSize="20"/>
                             </StackPanel>
                         </Button>
                         <Button x:Name="newSocket" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0"
                                 HorizontalAlignment="Stretch" Click="newSocket_Click">
                             <StackPanel Padding="15" Orientation="Horizontal">
-                                <Rectangle Width="50" Height="46">
-                                    <Rectangle.Fill>
-                                        <ImageBrush ImageSource="Assets\SocketIcon.png"/>
-                                    </Rectangle.Fill>
-                                </Rectangle>
+                                <FontIcon FontFamily="Fonts/Just_Editor_Icons.ttf#Just_Editor_Icons" Glyph="&#xE60d;" FontSize="40"/>
                                 <ContentPresenter Content="  New Socket" HorizontalAlignment="Center" FontSize="20"/>
                             </StackPanel>
                         </Button>
@@ -51,12 +42,8 @@
                     <ContentPresenter Content="Tools" FontSize="30"/>
                     <StackPanel Orientation="Horizontal">
                         <Button x:Name="newCrypt" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0" Click="newCrypt_Click">
-                            <StackPanel Padding="15">
-                                <Rectangle Width="50" Height="40">
-                                    <Rectangle.Fill>
-                                        <ImageBrush ImageSource="Assets\CryptIcon.png"/>
-                                    </Rectangle.Fill>
-                                </Rectangle>
+                            <StackPanel>
+                                <FontIcon FontFamily="Fonts/Just_Editor_Icons.ttf#Just_Editor_Icons" Glyph="&#xE60e;" FontSize="40"/>
                                 <ContentPresenter Content="Base64" HorizontalAlignment="Center" FontSize="20"/>
                             </StackPanel>
                         </Button>
@@ -65,32 +52,23 @@
                     <StackPanel Orientation="Horizontal">
                         <Button x:Name="openText" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0" Click="openText_Click">
                             <StackPanel Padding="15">
-                                <Rectangle Width="50" Height="46">
-                                    <Rectangle.Fill>
-                                        <ImageBrush ImageSource="Assets\FileIcon.png"/>
-                                    </Rectangle.Fill>
-                                </Rectangle>
+                                <FontIcon FontFamily="Fonts/Just_Editor_Icons.ttf#Just_Editor_Icons" Glyph="&#xE60c;" FontSize="40"/>
                                 <ContentPresenter Content="Text" HorizontalAlignment="Center" FontSize="20"/>
                             </StackPanel>
                         </Button>
                         <Button x:Name="openImage" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0"
                                 Click="openImage_Click">
                             <StackPanel Padding="15">
-                                <Rectangle Width="50" Height="46">
-                                    <Rectangle.Fill>
-                                        <ImageBrush ImageSource="Assets\ImageIcon.png"/>
-                                    </Rectangle.Fill>
-                                </Rectangle>
+                                <FontIcon FontFamily="Fonts/Just_Editor_Icons.ttf#Just_Editor_Icons" Glyph="&#xE608;" FontSize="40"/>
                                 <ContentPresenter Content="Image" HorizontalAlignment="Center" FontSize="20"/>
                             </StackPanel>
                         </Button>
                     </StackPanel>
                     <ContentPresenter Content="Recent" FontSize="30" Width="0"/>
-                    <Image Source="Assets/CodeIcon.svg"/>
                 </StackPanel>
             </Grid>
         </ScrollViewer>
-        <local:DrnMenu Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsCustom="True" IsTabStop="False"
+        <local:DrnMenu HorizontalAlignment="Right" VerticalAlignment="Bottom" IsCustom="True" IsTabStop="False"
                        MenuSelected="DrnMenu_MenuSelected">
             <local:DrnMenu.menuItems>
                 <ListViewItem>

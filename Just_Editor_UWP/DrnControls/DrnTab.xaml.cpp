@@ -82,6 +82,6 @@ void Just_Editor_UWP::DrnTab::StackPanel_PointerPressed(Platform::Object^ sender
 void Just_Editor_UWP::DrnTab::StackPanel_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 	auto tVisual = Hosting::ElementCompositionPreview::GetElementVisual(this);
-	Drn_UWP::DrnAnimeX(tVisual, tVisual->Offset.x, tVisual->Offset.x, 50, false);
+	Drn_UWP::DrnAnimeX(tVisual, tVisual->Offset.x, tVisual->Offset.x, 15, false);
 }
 

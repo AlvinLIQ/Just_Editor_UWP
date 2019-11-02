@@ -41,7 +41,7 @@ namespace Just_Editor_UWP
 		{
 			auto tVisual = Windows::UI::Xaml::Hosting::ElementCompositionPreview::GetElementVisual(this);
 
-			concurrency::create_task(Drn_UWP::DrnAnimeY(tVisual, tVisual->Offset.y, tVisual->Offset.y - (float)this->ActualHeight, 30, this)).then([this]()
+			concurrency::create_task(Drn_UWP::DrnAnimeY(tVisual, tVisual->Offset.y, tVisual->Offset.y - (float)this->ActualHeight, 11, this)).then([this]()
 				{
 					clsBtnClicked(this);
 				}, concurrency::task_continuation_context::use_current());

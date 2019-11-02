@@ -35,7 +35,8 @@ HomePage::HomePage(Windows::UI::Xaml::Controls::Page^ mPage, DrnMenu^ mBtn)
 					openText_Click(sender, nullptr);
 					break;
 				case L'E':
-					exit(0);
+					App::Current->Exit();
+				//	exit(0);
 					break;
 				}
 		});
