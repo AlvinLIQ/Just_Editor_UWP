@@ -104,5 +104,8 @@ void Just_Editor_UWP::HomePage::newCrypt_Click(Platform::Object^ sender, Windows
 
 void Just_Editor_UWP::HomePage::DrnMenu_MenuSelected(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e)
 {
-	mainPage->RequestedTheme = mainPage->RequestedTheme == ElementTheme::Dark ? ElementTheme::Light : ElementTheme::Dark;
+//	mainPage->RequestedTheme = mainPage->RequestedTheme == ElementTheme::Dark ? ElementTheme::Light : ElementTheme::Dark;
+	auto appConfig = ((App^)App::Current)->AppConfig;
+	appConfig->IsDark = mainPage->RequestedTheme == ElementTheme::Light;
+	appConfig->UpdateConfig();
 }

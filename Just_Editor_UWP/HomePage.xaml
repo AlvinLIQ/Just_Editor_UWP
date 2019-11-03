@@ -15,7 +15,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Padding="20, 20">
-                    <FontIcon FontFamily="Fonts/Just_Editor_Icons.ttf#Just_Editor_Icons" Glyph="&#xE609;" FontSize="140" HorizontalAlignment="Center" Margin="0,20,0,0">
+                    <FontIcon FontFamily="Fonts/Just_Editor_Icons.ttf#Just_Editor_Icons" Glyph="&#xE60F;" FontSize="140" HorizontalAlignment="Center" Margin="0,20,0,0">
                         <FontIcon.RenderTransform>
                             <RotateTransform Angle="-10"/>
                         </FontIcon.RenderTransform>
@@ -41,7 +41,7 @@
                     </StackPanel>
                     <ContentPresenter Content="Tools" FontSize="30"/>
                     <StackPanel Orientation="Horizontal">
-                        <Button x:Name="newCrypt" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0" Click="newCrypt_Click">
+                        <Button x:Name="newCrypt" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="15" Click="newCrypt_Click">
                             <StackPanel>
                                 <FontIcon FontFamily="Fonts/Just_Editor_Icons.ttf#Just_Editor_Icons" Glyph="&#xE60e;" FontSize="40"/>
                                 <ContentPresenter Content="Base64" HorizontalAlignment="Center" FontSize="20"/>

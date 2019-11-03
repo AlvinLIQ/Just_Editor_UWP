@@ -9,12 +9,18 @@
 
 namespace AppConfigs
 {
+	ref class DrnConfig;
+	public delegate void AppSettingsUpdatedEventHandler(DrnConfig^ newConfig);
 	public ref class DrnConfig sealed
 	{
 	public:
+		event AppSettingsUpdatedEventHandler^ Updated;
 		property Windows::UI::Xaml::Media::SolidColorBrush^ CoverBrush;
+		property Windows::UI::Xaml::Media::SolidColorBrush^ SubCoverBrush;
 		property Windows::UI::Xaml::Media::SolidColorBrush^ BackBrush;
+		property Windows::UI::Xaml::Media::SolidColorBrush^ SubBackBrush;
 		property Windows::UI::Xaml::Media::SolidColorBrush^ HoverBrush;
+		property Windows::UI::Xaml::Media::SolidColorBrush^ SelectedBrush;
 		property Windows::UI::Xaml::Media::SolidColorBrush^ ForeBrush;
 		property bool IsDark;
 		property Windows::UI::Xaml::ElementTheme CurrentTheme
@@ -29,13 +35,22 @@ namespace AppConfigs
 			if (IsDark)
 			{
 				CoverBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x55, 0x12, 0x12, 0x12});
+				SubCoverBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x80, 0x34, 0x34, 0x34 });
 				BackBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x60, 0x78, 0x78, 0x78 });
+				SubBackBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x60, 0x23, 0x23, 0x23 });
+				HoverBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x90, 0x43, 0x43, 0x43 });
+				SelectedBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x6F, 0x34, 0x34, 0x34 });
 			}
 			else
 			{
-				CoverBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x70, 0x70, 0x70, 0x55 });
-				BackBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x60, 0xFF, 0xFF, 0xFF });
+				CoverBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x55, 0x70, 0x70, 0x70 });
+				SubCoverBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x80, 0xBC, 0xBC, 0xBC });
+				BackBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x60, 0xD0, 0xD0, 0xD0 });
+				SubBackBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x60, 0xDC, 0xDC, 0xDC });
+				HoverBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0xCC, 0xCB, 0xCB, 0xCB });
+				SelectedBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x6F, 0xB1, 0xB1, 0xB1 });
 			}
+			Updated(this);
 		}
 		DrnConfig(bool isDark)
 		{
@@ -64,5 +79,6 @@ namespace Just_Editor_UWP
 
 	private:
 		void OnSuspending(Platform::Object^ sender, Windows::ApplicationModel::SuspendingEventArgs^ e);
+		void OnUpdated(AppConfigs::DrnConfig^ newConfig);
 	};
 }

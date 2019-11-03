@@ -20,6 +20,9 @@
     <Filter Include="DrnControls\DrnEditor">
       <UniqueIdentifier>{a97ce4fd-c601-49ec-b2f4-b72acffb74d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThemeResources">
+      <UniqueIdentifier>{adb1abe2-ec1c-4a5a-86b1-729be720efcd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
@@ -265,6 +268,9 @@
     </Page>
     <Page Include="DrnControls\DrnCoreEditorSelectionBlock.xaml">
       <Filter>DrnControls\DrnEditor</Filter>
+    </Page>
+    <Page Include="ThemeResources\ColorResources.xaml">
+      <Filter>ThemeResources</Filter>
     </Page>
   </ItemGroup>
   <ItemGroup>

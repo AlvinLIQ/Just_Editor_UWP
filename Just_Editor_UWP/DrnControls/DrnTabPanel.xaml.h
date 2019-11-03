@@ -23,8 +23,31 @@ namespace Just_Editor_UWP
 	public:
 		DrnTabPanel();
 
-		property Windows::UI::Xaml::Media::SolidColorBrush^ HoverBrush;
-		property Windows::UI::Xaml::Media::SolidColorBrush^ SelectedColor;
+		property Windows::UI::Xaml::Media::SolidColorBrush^ HoverBrush
+		{
+			Windows::UI::Xaml::Media::SolidColorBrush^ get()
+			{
+				return ((App^)App::Current)->AppConfig->HoverBrush;
+			}
+		};
+		property Windows::UI::Xaml::Media::SolidColorBrush^ SelectedColor
+		{
+			Windows::UI::Xaml::Media::SolidColorBrush^ get()
+			{
+				return ((App^)App::Current)->AppConfig->SelectedBrush;
+			}
+		};
+		/*
+		{
+			Windows::UI::Xaml::Media::SolidColorBrush^ get()
+			{
+				return selectedBrush;
+			}
+			void set(Windows::UI::Xaml::Media::SolidColorBrush^ newBrush)
+			{
+				selectedBrush = newBrush;
+			}
+		};*/
 
 		property DrnTab^ SelectedItem;
 
@@ -35,6 +58,7 @@ namespace Just_Editor_UWP
 		void RemoveAt(unsigned int page_n);
 
 	private:
+//		Windows::UI::Xaml::Media::SolidColorBrush^ selectedBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush;
 		HomePage^ homePage;
 		void drnBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void drnTab_Clicked(DrnTab^ tab);

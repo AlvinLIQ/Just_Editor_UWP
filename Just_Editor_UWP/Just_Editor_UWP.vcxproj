@@ -266,6 +266,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MsgPage.xaml" />
+    <Page Include="ThemeResources\ColorResources.xaml">
+      <DeploymentContent>true</DeploymentContent>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

@@ -17,18 +17,20 @@ namespace Just_Editor_UWP
 	{
 	public:
 		MainPage();
-		void ReadToEditor(Windows::Storage::StorageFile^ thisFile)
-		{
-			if (thisFile != nullptr)
-				tabPanel->HomePage_NewTabRequested(thisFile->Name, thisFile);
-		}
-		property AppConfigs::DrnConfig^ CurrentConfig
+
+		property AppConfigs::DrnConfig^ AppConfig
 		{
 			AppConfigs::DrnConfig^ get()
 			{
 				return ((App^)App::Current)->AppConfig;
 			}
 		};
+
+		void ReadToEditor(Windows::Storage::StorageFile^ thisFile)
+		{
+			if (thisFile != nullptr)
+				tabPanel->HomePage_NewTabRequested(thisFile->Name, thisFile);
+		}
 	private:
 		DrnTabPanel^ tabPanel;
 	};

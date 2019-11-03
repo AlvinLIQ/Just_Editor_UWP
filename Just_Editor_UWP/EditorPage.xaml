@@ -13,7 +13,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Background="#80343434">
+        <StackPanel Orientation="Horizontal" Background="{x:Bind AppConfig.SubCoverBrush}">
             <Button x:Name="saveBtn" Click="saveBtn_Click" Padding="10">
                 <Rectangle Width="14" Height="15">
                     <Rectangle.Fill>
@@ -41,7 +41,7 @@
                 </Rectangle>
             </Button>
         </StackPanel>
-        <local:DrnCodeEditor x:Name="drnCodeEditor" Grid.Row="1" Background="#60232323" LineNumBackground="#60343434"
+        <local:DrnCodeEditor x:Name="drnCodeEditor" Grid.Row="1" Background="{x:Bind AppConfig.SubBackBrush}" LineNumBackground="{x:Bind AppConfig.SelectedBrush}"
                              EditorTextChanged="drnCodeEditor_EditorTextChanged" EditorSavedRequested="drnCodeEditor_EditorSavedRequested"/>
     </Grid>
 </Page>

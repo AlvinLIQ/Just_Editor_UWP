@@ -20,6 +20,14 @@ namespace Just_Editor_UWP
 	public:
 		EditorPage(Windows::Storage::StorageFile^ tFile);
 
+		property AppConfigs::DrnConfig^ AppConfig
+		{
+			AppConfigs::DrnConfig^ get()
+			{
+				return ((App^)App::Current)->AppConfig;
+			}
+		};
+
 		property Windows::Storage::StorageFile^ thisFile;
 		property DrnTab^ thisTab;
 		property DrnCodeEditor^ codeEditor

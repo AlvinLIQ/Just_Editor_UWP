@@ -9,7 +9,7 @@
     d:DesignHeight="45" PointerPressed="StackPanel_PointerPressed"
     d:DesignWidth="190" Background="{x:Bind Background}" Orientation="Horizontal" Padding="3" PointerEntered="StackPanel_PointerEntered"
     PointerExited="StackPanel_PointerExited" PointerCaptureLost="StackPanel_PointerExited" Loaded="StackPanel_Loaded">
-    <TextBlock x:Name="titleBlock" Width="150" VerticalAlignment="Center"/>
-    <TextBlock x:Name="statusBlock" VerticalAlignment="Center"/>
+    <TextBlock x:Name="titleBlock" Width="140" VerticalAlignment="Center" FontWeight="Bold"/>
+    <TextBlock x:Name="statusBlock" Width="11" VerticalAlignment="Center"/>
     <Button x:Name="clsBtn" Content="x" Click="clsBtn_Click"/>
 </StackPanel>

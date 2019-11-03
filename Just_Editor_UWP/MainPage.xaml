@@ -5,7 +5,7 @@
     xmlns:local="using:Just_Editor_UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" RequestedTheme="{x:Bind CurrentConfig.CurrentTheme}"
+    mc:Ignorable="d"
     >
     <Page.Background>
         <ImageBrush>
@@ -14,12 +14,12 @@
             </ImageBrush.ImageSource>
         </ImageBrush>
     </Page.Background>
-    <Grid x:Name="mainGrid" Background="{x:Bind CurrentConfig.BackBrush}">
+    <Grid x:Name="mainGrid" Background="{x:Bind AppConfig.BackBrush}">
         <Grid.RowDefinitions>
             <RowDefinition MaxHeight="34"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Rectangle x:Name="titleRect" Fill="{x:Bind CurrentConfig.CoverBrush}"/>
-        <local:DrnTabPanel HoverBrush="#90434343" SelectedColor="#CC343434" Grid.RowSpan="2"/>
+        <Rectangle x:Name="titleRect" Fill="{x:Bind AppConfig.CoverBrush}"/>
+        <local:DrnTabPanel Grid.RowSpan="2"/>
     </Grid>
 </Page>

@@ -105,7 +105,7 @@ public:
 								tVisual->Offset = Windows::Foundation::Numerics::float3(tVisual->Offset.x + moveStep, tVisual->Offset.y, tVisual->Offset.z);
 							tVisual->Opacity += opacity;
 						}));
-					Sleep(3);
+					Sleep(10);
 				}
 			});
 	}
@@ -134,7 +134,7 @@ public:
 							if (sourceControl != nullptr)
 								sourceControl->Opacity += opacity;
 						}));
-					Sleep(3);
+					Sleep(10);
 				}
 			});
 	}

@@ -19,7 +19,8 @@ using namespace Windows::UI::Xaml::Interop;
 App::App()
 {
     InitializeComponent();
-	AppConfig = ref new AppConfigs::DrnConfig(true);
+	AppConfig = ref new AppConfigs::DrnConfig(this->RequestedTheme == ApplicationTheme::Dark);
+	AppConfig->Updated += ref new AppConfigs::AppSettingsUpdatedEventHandler(this, &Just_Editor_UWP::App::OnUpdated);
     Suspending += ref new SuspendingEventHandler(this, &App::OnSuspending);
 }
 
@@ -38,7 +39,7 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
             // final launch steps after the restore is complete
 
         }
-
+		mainPage->RequestedTheme = this->AppConfig->IsDark ? ElementTheme::Dark : ElementTheme::Light;
 		Window::Current->Content = mainPage;
     }
 
@@ -52,6 +53,14 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 void App::OnSuspending(Object^ sender, SuspendingEventArgs^ e)
 {
 
+}
+
+void App::OnUpdated(AppConfigs::DrnConfig^ newConfig)
+{
+	auto mainPage = ref new MainPage;
+	mainPage->RequestedTheme = newConfig->IsDark ? ElementTheme::Dark : ElementTheme::Light;
+
+	Window::Current->Content = mainPage;
 }
 
 void App::OnFileActivated(Windows::ApplicationModel::Activation::FileActivatedEventArgs^ args)
