@@ -20,17 +20,17 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <local:DrnMenu x:Name="justEditorBtn" IsCustom="true"
-                    VerticalAlignment="Stretch" IsTabStop="False">
+                    VerticalAlignment="Stretch" IsTabStop="False" Padding="6, 8, 6, 4">
             <local:DrnMenu.menuItems>
                 <x:String>New Socket</x:String>
                 <x:String>Open File</x:String>
                 <x:String>Exit</x:String>
             </local:DrnMenu.menuItems>
-            <Rectangle Width="16" Height="17">
-                <Rectangle.Fill>
-                    <ImageBrush ImageSource="../Assets/JustEditor_Logo.png"/>
-                </Rectangle.Fill>
-            </Rectangle>
+            <FontIcon FontFamily="../Fonts/Just_Editor_Icons.ttf#Just_Editor_Icons" Glyph="&#xE60F;" FontSize="11">
+                <FontIcon.RenderTransform>
+                    <RotateTransform Angle="-10"/>
+                </FontIcon.RenderTransform>
+            </FontIcon>
         </local:DrnMenu>
         <ScrollViewer x:Name="tabScrollViewer" Grid.Column="1" SizeChanged="tabScrollViewer_SizeChanged"
                         VerticalScrollBarVisibility="Hidden" VerticalScrollMode="Disabled"

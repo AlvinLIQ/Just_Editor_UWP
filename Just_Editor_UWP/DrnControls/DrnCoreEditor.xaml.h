@@ -419,5 +419,13 @@ namespace Just_Editor_UWP
 		void editorScrollViewer_ViewChanging(Platform::Object^ sender, Windows::UI::Xaml::Controls::ScrollViewerViewChangingEventArgs^ e);
 		void editorScrollViewer_ViewChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::ScrollViewerViewChangedEventArgs^ e);
 		void menuItem_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void NotifyEditorUpdate()
+		{
+			EditorTextChanged();
+
+			selPosition.X = (float)cursorX;
+			selPosition.Y = (float)(currentLine * fHeight);
+			UpdateCursor();
+		}
 };
 }

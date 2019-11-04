@@ -577,17 +577,93 @@ void DrnCoreEditor::AppendUserWchar(unsigned int keyCode, bool isDown)
 
 void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr)
 {
-	unsigned int sIndex, tLen;
+//	std::wstring wStr = newWStr;
+	unsigned int tLen;
+	Platform::String^ tLineStr = currentBlock->Content->ToString();
 	std::wstring afterCursor = L"";
+	/*
+	if (wStr.find(L'\n') == -1 && wStr.find(L'\r') == -1)
+	{
+		tLen = (unsigned int)wStr.length();
+
+		afterCursor = currentBlock->Content->ToString()->Data();
+		wStr = afterCursor.substr(0, cursor) + wStr + afterCursor.substr(cursor, currentLength - cursor);
+		currentBlock->Content = ref new String(wStr.c_str());
+
+		currentLength += tLen;
+		cursor += tLen;
+		cursorX = GetCursorXFromWStr(wStr, cursor);
+		NotifyEditorUpdate();
+		return;
+	}
+	else */
 	if (currentLength > cursor)
 	{
-		afterCursor = currentBlock->Content->ToString()->Data();
-		currentBlock->Content = ref new String(afterCursor.substr(0, cursor).c_str());
+		afterCursor = tLineStr->Data();
+		tLineStr = ref new String(afterCursor.substr(0, cursor).c_str());
 
-		afterCursor = afterCursor.substr(cursor, currentLength -= cursor);
-		tLen = currentLength;
+		afterCursor = afterCursor.substr(cursor, tLen = currentLength - cursor);
+		currentLength = cursor;
 	}
-	for (sIndex = 0; newWStr[sIndex]; sIndex++)
+	/*
+	double fwidth = fWidth, fbwidth = fBWidth;
+	concurrency::create_task([newWStr = wStr, col = cursor, x = cursorX, fwidth, fbwidth]()
+		{
+			TXTBLOCK^ currentBlock;
+			Platform::String^ tLineStr = L"";
+			unsigned int cursor = col, currentLength = col;
+			double cursorX = x;
+			Platform::Array<TXTBLOCK^>^ newBlocksContainer;
+			newBlocksContainer->set(newBlocksContainer->Length, newTextBlock);
+			for (unsigned int sIndex = 0; newWStr[sIndex]; sIndex++)
+			{
+				if (newWStr[sIndex] == L'\r' && newWStr[sIndex + 1] == L'\n')
+				{
+					sIndex++;
+				}
+				if (newWStr[sIndex] == L'\n' || newWStr[sIndex] == L'\r')
+				{
+					currentBlock->Content = tLineStr;
+					tLineStr = L"";
+					newBlocksContainer->set(newBlocksContainer->Length, currentBlock = newTextBlock);
+					cursorX = 0;
+					currentLength = 0;
+					cursor = 0;
+				}
+				else
+				{
+					if (newWStr[sIndex] == L'\t')
+					{
+						String^ sTab = L"";
+						for (unsigned int i = 4 - cursor % 4; i-- > 0; cursor++, currentLength++, cursorX += fwidth)
+						{
+							sTab += L" ";
+						}
+						tLineStr = tLineStr + sTab;
+					}
+					else
+					{
+						tLineStr = tLineStr + newWStr[sIndex];
+						cursor++;
+						currentLength++;
+						cursorX += newWStr[sIndex] < 128 ? fwidth : fbwidth;
+					}
+				}
+			}
+			currentBlock->Content = tLineStr;
+		//	return newBlocksContainer;
+		}).then([this, afterCursor, tLen]() 
+			{
+				if (afterCursor[0])
+				{
+					currentBlock->Content += ref new String(afterCursor.c_str());
+					currentLength += tLen;
+				}
+
+				NotifyEditorUpdate();
+			}, concurrency::task_continuation_context::use_current());
+		*/
+	for (unsigned int sIndex = 0; newWStr[sIndex]; sIndex++)
 	{
 		if (newWStr[sIndex] == L'\r' && newWStr[sIndex + 1] == L'\n')
 		{
@@ -595,6 +671,8 @@ void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr)
 		}
 		if (newWStr[sIndex] == L'\n' || newWStr[sIndex] == L'\r')
 		{
+			currentBlock->Content = tLineStr;
+			tLineStr = L"";
 			currentLine++;
 			textChildren->Items->InsertAt(currentLine, currentBlock = newTextBlock);
 			cursorX = 0;
@@ -605,16 +683,15 @@ void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr)
 		{
 			if (newWStr[sIndex] == L'\t')
 			{
-				String^ sTab = L"";
-				for (unsigned int i = 4 - cursor % 4; i-- > 0; cursor++, currentLength++, cursorX += fWidth)
+				for (unsigned int i = 4 - cursor % 4; i-- > 0;)
 				{
-					sTab += L" ";
+					tLineStr += L" ";
+					currentLength++, cursor++, cursorX += fWidth;
 				}
-				currentBlock->Content = currentBlock->Content->ToString() + sTab;
 			}
 			else
 			{
-				currentBlock->Content = currentBlock->Content->ToString() + newWStr[sIndex];
+				tLineStr = tLineStr + newWStr[sIndex];
 				cursor++;
 				currentLength++;
 				cursorX += newWStr[sIndex] < 128 ? fWidth : fBWidth;
@@ -623,15 +700,13 @@ void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr)
 	}
 	if (afterCursor[0])
 	{
-		currentBlock->Content += ref new String(afterCursor.c_str());
+		tLineStr += ref new String(afterCursor.c_str());
 		currentLength += tLen;
 	}
 
-	EditorTextChanged();
+	currentBlock->Content = tLineStr;
 
-	selPosition.X = (float)cursorX;
-	selPosition.Y = (float)(currentLine * fHeight);
-	UpdateCursor();
+	NotifyEditorUpdate();
 }
 
 
@@ -670,7 +745,6 @@ void DrnCoreEditor::EditorContent_PointerPressed(Platform::Object^ sender, Windo
 		selPosition.X = (float)cursorX;
 		selPosition.Y = (float)currentLine * fHeight;
 	}
-
 	pointTimeStamp = curPoint->Timestamp;
 	if (e->Pointer->PointerDeviceType != Windows::Devices::Input::PointerDeviceType::Mouse)
 		insideKeyboard->Show();
@@ -756,3 +830,4 @@ void Just_Editor_UWP::DrnCoreEditor::menuItem_Click(Platform::Object^ sender, Wi
 		break;
 	}
 }
+

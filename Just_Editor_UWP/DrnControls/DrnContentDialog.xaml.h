@@ -14,6 +14,16 @@ namespace Just_Editor_UWP
 	{
 	public:
 		DrnContentDialog(Platform::String^ content, Platform::String^ Fst, Platform::String^ Sec, Platform::String^ Cls);
+		property AppConfigs::DrnConfig^ AppConfig
+		{
+			AppConfigs::DrnConfig^ get()
+			{
+				return ((App^)App::Current)->AppConfig;
+			}
+		};
+		property bool IsClosed;
 	private:
+		void ContentDialog_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void ContentDialog_Closed(Windows::UI::Xaml::Controls::ContentDialog^ sender, Windows::UI::Xaml::Controls::ContentDialogClosedEventArgs^ args);
 	};
 }

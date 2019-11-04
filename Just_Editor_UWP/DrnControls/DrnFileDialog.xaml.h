@@ -19,16 +19,26 @@ namespace Just_Editor_UWP
 
 		event InfoChangedHandler^ InfoChanged;
 
+		property AppConfigs::DrnConfig^ AppConfig
+		{
+			AppConfigs::DrnConfig^ get()
+			{
+				return ((App^)App::Current)->AppConfig;
+			}
+		};
 		property Platform::String^ dialogTitle
 		{
 			Platform::String^ get() { return FileNameBox->Text; }
 		};
 		property Windows::Storage::StorageFile^ dialogFile;
+		property bool IsClosed;
 	private:
 		Windows::Storage::StorageFolder^ newFolder = nullptr;
 
 		void DialogClsBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void ChangePathBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void SaveBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void ContentDialog_Closed(Windows::UI::Xaml::Controls::ContentDialog^ sender, Windows::UI::Xaml::Controls::ContentDialogClosedEventArgs^ args);
+		void ContentDialog_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }

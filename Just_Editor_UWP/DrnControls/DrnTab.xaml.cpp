@@ -53,7 +53,7 @@ void DrnTab::StackPanel_PointerExited(Platform::Object^ sender, Windows::UI::Xam
 
 void DrnTab::clsBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	if (statusBlock->Text == L"*" && MakeSureDialog != nullptr)
+	if (statusBlock->Text == L"*" && MakeSureDialog != nullptr && MakeSureDialog->IsClosed)
 		MakeSureDialog->ShowAsync();
 	else
 		CloseTab();
@@ -73,9 +73,8 @@ void Just_Editor_UWP::DrnTab::StackPanel_PointerPressed(Platform::Object^ sender
 	}
 	else
 	{
-		if (FileDialog == nullptr)
-			return;
-		FileDialog->ShowAsync();
+		if (FileDialog != nullptr && FileDialog->IsClosed)
+			FileDialog->ShowAsync();
 	}
 }
 

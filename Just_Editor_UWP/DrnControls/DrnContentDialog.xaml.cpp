@@ -13,8 +13,21 @@ using namespace Just_Editor_UWP;
 Just_Editor_UWP::DrnContentDialog::DrnContentDialog(Platform::String^ content, Platform::String^ Fst, Platform::String^ Sec, Platform::String^ Cls)
 {
 	InitializeComponent();
+	this->IsClosed = true;
 	this->Content = content;
 	this->PrimaryButtonText = Fst;
 	this->SecondaryButtonText = Sec;
 	this->CloseButtonText = Cls;
+}
+
+
+void Just_Editor_UWP::DrnContentDialog::ContentDialog_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	this->IsClosed = false;
+}
+
+
+void Just_Editor_UWP::DrnContentDialog::ContentDialog_Closed(Windows::UI::Xaml::Controls::ContentDialog^ sender, Windows::UI::Xaml::Controls::ContentDialogClosedEventArgs^ args)
+{
+	this->IsClosed = true;
 }

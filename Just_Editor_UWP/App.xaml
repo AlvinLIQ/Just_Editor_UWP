@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Just_Editor_UWP"
     xml:space="preserve"
-    RequestedTheme="Dark">
+    >
     <Application.Resources>
             <Style TargetType="TextBox">
                 <Setter Property="Background" Value="#6333"/>
@@ -157,7 +157,7 @@
                                                     <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonPointerOverBackgroundThemeBrush}"/>
                                                 </ObjectAnimationUsingKeyFrames>
                                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ThumbPointerOverBorderThemeBrush}"/>
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonPointerOverForegroundThemeBrush}"/>
                                                 </ObjectAnimationUsingKeyFrames>
                                                 <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
                                             </Storyboard>
@@ -165,10 +165,10 @@
                                         <VisualState x:Name="Pressed">
                                             <Storyboard>
                                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Background">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#90767676"/>
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#80767676"/>
                                                 </ObjectAnimationUsingKeyFrames>
                                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#AAA"/>
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#BBB"/>
                                                 </ObjectAnimationUsingKeyFrames>
                                                 <PointerDownThemeAnimation Storyboard.TargetName="RootGrid"/>
                                             </Storyboard>
@@ -751,7 +751,7 @@
                 </Setter>
             </Style>
             <Style TargetType="ContentDialog">
-                <Setter Property="Background" Value="#6333"/>
+                <Setter Property="Background" Value="{ThemeResource ButtonPointerOverBackgroundThemeBrush}"/>
                 <Setter Property="PrimaryButtonStyle" Value="{StaticResource NormalButton}"/>
                 <Setter Property="SecondaryButtonStyle" Value="{StaticResource NormalButton}"/>
                 <Setter Property="CloseButtonStyle" Value="{StaticResource NormalButton}"/>

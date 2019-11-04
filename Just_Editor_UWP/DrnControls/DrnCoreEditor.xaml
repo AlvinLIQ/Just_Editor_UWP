@@ -12,44 +12,47 @@
     TabFocusNavigation="Cycle" Loaded="CoreEditor_Loaded" x:Name="EditorContent"
     FontFamily="../Fonts/SourceCodeVariable-Roman.ttf#Source Code Variable" FontSize="18"
     >
-    <ScrollViewer HorizontalScrollBarVisibility="Visible" HorizontalScrollMode="Enabled"
-                      Style="{StaticResource EditorScrollViewer}" Padding="0,0,18,18"
-                      ViewChanging="editorScrollViewer_ViewChanging" AutomationProperties.AccessibilityView="Raw"
-                      FocusVisualPrimaryThickness="0" FocusVisualSecondaryThickness="0"
-                      IsTabStop="False" XYFocusKeyboardNavigation="Disabled"
-                      ZoomMode="Disabled" x:Name="editorScrollViewer" ViewChanged="editorScrollViewer_ViewChanged"
-                      AllowFocusOnInteraction="False" FontWeight="Bold">
-        <ScrollViewer.ContextFlyout>
-            <Flyout x:Name="coreEditorFlyout" Placement="BottomEdgeAlignedLeft">
-                <StackPanel x:Name="coreEditorMenu">
-                    <Button HorizontalAlignment="Stretch" Click="menuItem_Click">Cut</Button>
-                    <Button HorizontalAlignment="Stretch" Click="menuItem_Click">Copy</Button>
-                    <Button HorizontalAlignment="Stretch" Click="menuItem_Click">Paste</Button>
-                    <Rectangle Margin="10,0,10,0" Height="1" Fill="#3FFF"/>
-                    <Button HorizontalAlignment="Stretch" Click="menuItem_Click">SelectAll</Button>
-                </StackPanel>
-            </Flyout>
-        </ScrollViewer.ContextFlyout>
-        <Grid Background="{x:Bind Background}" PointerEntered="EditorContent_PointerEntered"
-                           PointerExited="EditorContent_PointerExited" Padding="3,0,0,400"
-                           TabFocusNavigation="Cycle" >
-            <Line x:Name="drnCursor" Opacity="0" HorizontalAlignment="Left" VerticalAlignment="Top" Stroke="#60EFEFEF"
-              StrokeThickness="3"
-              X1="0" X2="0" Y1="0" Y2="23">
-                <Line.RenderTransform>
-                    <TranslateTransform x:Name="cursorTrans"/>
-                </Line.RenderTransform>
-            </Line>
-            <Grid x:Name="selectionPanel" AutomationProperties.AccessibilityView="Raw"/>
-            <Rectangle x:Name="drnHighlihgtLine" Stroke="#3777" StrokeThickness="2" Height="23" VerticalAlignment="Top">
-                <Rectangle.RenderTransform>
-                    <TranslateTransform x:Name="lineTrans"/>
-                </Rectangle.RenderTransform>
-            </Rectangle>
-            <ItemsControl x:Name="textChildren" VerticalAlignment="Top" xml:space="preserve" AutomationProperties.AccessibilityView="Raw"/>
-            <TextBlock x:Name="MsgTest" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-            <TextBlock x:Name="ChrBlock" Text="a" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity="0"/>
-            <TextBlock x:Name="WChrBlock" Text="哈" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity="0"/>
-        </Grid>
-    </ScrollViewer>
+    <Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Visible" HorizontalScrollMode="Enabled"
+                          Style="{StaticResource EditorScrollViewer}" Padding="0,0,18,18"
+                          ViewChanging="editorScrollViewer_ViewChanging" AutomationProperties.AccessibilityView="Raw"
+                          FocusVisualPrimaryThickness="0" FocusVisualSecondaryThickness="0"
+                          IsTabStop="False" XYFocusKeyboardNavigation="Disabled"
+                          ZoomMode="Disabled" x:Name="editorScrollViewer" ViewChanged="editorScrollViewer_ViewChanged"
+                          AllowFocusOnInteraction="False">
+            <ScrollViewer.ContextFlyout>
+                <Flyout x:Name="coreEditorFlyout" Placement="BottomEdgeAlignedLeft">
+                    <StackPanel x:Name="coreEditorMenu">
+                        <Button HorizontalAlignment="Stretch" Click="menuItem_Click">Cut</Button>
+                        <Button HorizontalAlignment="Stretch" Click="menuItem_Click">Copy</Button>
+                        <Button HorizontalAlignment="Stretch" Click="menuItem_Click">Paste</Button>
+                        <Rectangle Margin="10,0,10,0" Height="1" Fill="#3FFF"/>
+                        <Button HorizontalAlignment="Stretch" Click="menuItem_Click">SelectAll</Button>
+                    </StackPanel>
+                </Flyout>
+            </ScrollViewer.ContextFlyout>
+            <Grid Background="{x:Bind Background}" PointerEntered="EditorContent_PointerEntered"
+                               PointerExited="EditorContent_PointerExited" Padding="3,0,0,400"
+                               TabFocusNavigation="Cycle" >
+                <Line x:Name="drnCursor" Opacity="0" HorizontalAlignment="Left" VerticalAlignment="Top" Stroke="#60EFEFEF"
+                  StrokeThickness="3"
+                  X1="0" X2="0" Y1="0" Y2="23">
+                    <Line.RenderTransform>
+                        <TranslateTransform x:Name="cursorTrans"/>
+                    </Line.RenderTransform>
+                </Line>
+                <Grid x:Name="selectionPanel" AutomationProperties.AccessibilityView="Raw"/>
+                <Rectangle x:Name="drnHighlihgtLine" Stroke="#3777" StrokeThickness="2" Height="23" VerticalAlignment="Top">
+                    <Rectangle.RenderTransform>
+                        <TranslateTransform x:Name="lineTrans"/>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+                <ItemsControl x:Name="textChildren" VerticalAlignment="Top" xml:space="preserve" AutomationProperties.AccessibilityView="Raw">
+                    </ItemsControl>
+                <TextBlock x:Name="MsgTest" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBlock x:Name="ChrBlock" Text="a" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity="0"/>
+                <TextBlock x:Name="WChrBlock" Text="哈" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity="0"/>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
 </UserControl>

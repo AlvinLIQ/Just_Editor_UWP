@@ -43,12 +43,12 @@ namespace AppConfigs
 			}
 			else
 			{
-				CoverBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x55, 0x70, 0x70, 0x70 });
-				SubCoverBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x80, 0xBC, 0xBC, 0xBC });
-				BackBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x60, 0xD0, 0xD0, 0xD0 });
-				SubBackBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x60, 0xDC, 0xDC, 0xDC });
+				CoverBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x70, 0xE4, 0xE4, 0xE4 });
+				SubCoverBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x80, 0xD5, 0xD5, 0xD5 });
+				BackBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0xCC, 0xFF, 0xFF, 0xFF });
+				SubBackBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x9A, 0xDC, 0xDC, 0xDC });
 				HoverBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0xCC, 0xCB, 0xCB, 0xCB });
-				SelectedBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x6F, 0xB1, 0xB1, 0xB1 });
+				SelectedBrush = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Color{ 0x6F, 0xEF, 0xEF, 0xEF });
 			}
 			Updated(this);
 		}

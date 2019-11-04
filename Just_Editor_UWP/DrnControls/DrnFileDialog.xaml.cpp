@@ -16,6 +16,7 @@ using namespace concurrency;
 Just_Editor_UWP::DrnFileDialog::DrnFileDialog(Platform::String^ dialogTitle, Platform::String^ fileName, Windows::Storage::StorageFile^ dFile)
 {
 	InitializeComponent();
+	IsClosed = true;
 	TitleBlock->Text = dialogTitle;
 	FileNameBox->Text = fileName;
 	dialogFile = dFile;
@@ -74,4 +75,16 @@ void Just_Editor_UWP::DrnFileDialog::SaveBtn_Click(Platform::Object^ sender, Win
 		InfoChanged(this);
 
 	this->Hide();
+}
+
+
+void Just_Editor_UWP::DrnFileDialog::ContentDialog_Closed(Windows::UI::Xaml::Controls::ContentDialog^ sender, Windows::UI::Xaml::Controls::ContentDialogClosedEventArgs^ args)
+{
+	IsClosed = true;
+}
+
+
+void Just_Editor_UWP::DrnFileDialog::ContentDialog_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	IsClosed = false;
 }

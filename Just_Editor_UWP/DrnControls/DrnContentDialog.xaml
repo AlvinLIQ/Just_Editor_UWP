@@ -5,11 +5,11 @@
     xmlns:local="using:Just_Editor_UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="#6333" PrimaryButtonStyle="{StaticResource ResourceKey=NormalButton}"
+    mc:Ignorable="d" Background="{x:Bind AppConfig.BackBrush}"
+    PrimaryButtonStyle="{StaticResource ResourceKey=NormalButton}"
      SecondaryButtonStyle="{StaticResource ResourceKey=NormalButton}"
      CloseButtonStyle="{StaticResource ResourceKey=NormalButton}" HorizontalContentAlignment="Center" 
-    VerticalContentAlignment="Center"
-    Title="Tips"
+    VerticalContentAlignment="Center" Closed="ContentDialog_Closed"
+    Title="Tips" Loaded="ContentDialog_Loaded"
     >
 </ContentDialog>
