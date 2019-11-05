@@ -70,9 +70,6 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
       <Filter>Assets</Filter>
     </Image>
-    <Image Include="Assets\CodeIcon.png">
-      <Filter>Assets</Filter>
-    </Image>
     <Image Include="Assets\SocketIcon.png">
       <Filter>Assets</Filter>
     </Image>
@@ -214,22 +211,10 @@
     <Image Include="Assets\JustEditor_Logo.png">
       <Filter>Assets</Filter>
     </Image>
-    <Image Include="Assets\FileIcon.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="CodeIcon.png">
-      <Filter>Assets</Filter>
-    </Image>
     <Image Include="Assets\SaveIcon.png">
       <Filter>Assets</Filter>
     </Image>
-    <Image Include="Assets\ImageIcon.png">
-      <Filter>Assets</Filter>
-    </Image>
     <Image Include="Assets\SearchIcon.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\CryptIcon.png">
       <Filter>Assets</Filter>
     </Image>
   </ItemGroup>

@@ -109,3 +109,15 @@ void Just_Editor_UWP::EditorPage::findNextBtn_Click(Platform::Object^ sender, Wi
 //		searchBox->Focus(Windows::UI::Xaml::FocusState::Unfocused);
 	}
 }
+
+
+void Just_Editor_UWP::EditorPage::UndoBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+
+}
+
+
+void Just_Editor_UWP::EditorPage::RedoBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+
+}

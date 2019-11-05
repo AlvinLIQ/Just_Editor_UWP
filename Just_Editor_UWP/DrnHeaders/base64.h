@@ -1,3 +1,5 @@
+#pragma once
+
 #include "universal.h"
 #include "Drn_Tools.h"
 
@@ -8,7 +10,7 @@ uchar* base64_decrypt(const uchar* cipher)
     size_t sLen = strlen((const char*)cipher), j = 0;
     while(cipher[--sLen] == '=');
     schar offset = 0;
-    uchar* result = (uchar*)malloc (sLen * 3 / 4), sIndex;
+    uchar* result = new uchar[sLen * 3 / 4], sIndex;
     result[0] = 0;
     for (size_t i = 0; i <= sLen; i++)
     {            
@@ -34,7 +36,7 @@ uchar* base64_encrypt(const uchar* source)
 	if (j)
 		j++;
     const size_t cLen = sLen * 4 / 3 + j;
-    uchar* result = (uchar*)malloc (cLen), offset = 0, b = 2;
+	uchar* result = new uchar[cLen], offset = 0, b = 2;
     while(j)
         result[cLen - --j] = '=';
     

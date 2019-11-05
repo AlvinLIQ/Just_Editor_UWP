@@ -5,11 +5,13 @@
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Dark">
             <SolidColorBrush x:Key="BackBrush" Color="#60787878"/>
+            <SolidColorBrush x:Key="TextBoxBackBrush" Color="#6111"/>
             <SolidColorBrush x:Key="CoverBrush" Color="#55121212"/>
             <SolidColorBrush x:Key="SelectedBrush" Color="#CC343434"/>
         </ResourceDictionary>
         <ResourceDictionary x:Key="Light">
             <SolidColorBrush x:Key="BackBrush" Color="#60FFFFFF"/>
+            <SolidColorBrush x:Key="TextBoxBackBrush" Color="#AEEE"/>
             <SolidColorBrush x:Key="CoverBrush" Color="#55707070"/>
             <SolidColorBrush x:Key="SelectedBrush" Color="#CCCBCBCB"/>
         </ResourceDictionary>

@@ -131,6 +131,9 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 			if (IsTextSelected())
 				Copy();
 			break;
+		case L'Z':
+			
+			break;
 		}
 	}
 	else
@@ -559,11 +562,7 @@ void DrnCoreEditor::AppendWCharAtCursor(wchar_t newWChar)
 		cursorX += newWChar < 128 ? fWidth : fBWidth;;
 	}
 
-	EditorTextChanged();
-
-	selPosition.X = (float)cursorX;
-	selPosition.Y = (float)(currentLine * fHeight);
-	UpdateCursor();
+	NotifyEditorUpdate();
 }
 
 void DrnCoreEditor::AppendUserWchar(unsigned int keyCode, bool isDown)

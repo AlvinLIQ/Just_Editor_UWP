@@ -14,12 +14,14 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Background="{x:Bind AppConfig.SubCoverBrush}">
+            <Button x:Name="UndoBtn" Click="UndoBtn_Click">
+                &lt;
+            </Button>
+            <Button x:Name="RedoBtn" Click="RedoBtn_Click">
+                &gt;
+            </Button>
             <Button x:Name="saveBtn" Click="saveBtn_Click" Padding="10">
-                <Rectangle Width="14" Height="15">
-                    <Rectangle.Fill>
-                        <ImageBrush ImageSource="Assets/SaveIcon.png"/>
-                    </Rectangle.Fill>
-                </Rectangle>
+                <FontIcon FontFamily="Fonts/Just_Editor_Icons.ttf#Just_Editor_Icons" Glyph="&#xE611;" FontSize="12"/>
             </Button>
             <Button x:Name="searchBtn" Padding="10">
                 <Button.Flyout>
@@ -34,11 +36,7 @@
                         </StackPanel>
                     </Flyout>
                 </Button.Flyout>
-                <Rectangle Width="17.5" Height="16">
-                    <Rectangle.Fill>
-                        <ImageBrush ImageSource="Assets/SearchIcon.png"/>
-                    </Rectangle.Fill>
-                </Rectangle>
+                <FontIcon FontFamily="Fonts/Just_Editor_Icons.ttf#Just_Editor_Icons" Glyph="&#xE610;" FontSize="12"/>
             </Button>
         </StackPanel>
         <local:DrnCodeEditor x:Name="drnCodeEditor" Grid.Row="1" Background="{x:Bind AppConfig.SubBackBrush}" LineNumBackground="{x:Bind AppConfig.SelectedBrush}"

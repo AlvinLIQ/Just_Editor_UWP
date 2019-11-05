@@ -1,9 +1,11 @@
+#pragma once
+
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <windows.h>
-#include <stdlib.h>
 
-#pragma once
+#pragma comment(lib,"ws2_32.lib")
+
 class Drn_Tools
 {
 public:
@@ -39,7 +41,7 @@ public:
 		ADDRINFOW hints;
 		PADDRINFOW addr = NULL;
 		struct sockaddr_in* result;
-		ZeroMemory(&hints, sizeof(hints));
+		memset(&hints, 0, sizeof(hints));
 		hints.ai_family = AF_INET;
 		hints.ai_flags = AI_PASSIVE;
 		hints.ai_protocol = IPPROTO_TCP;
@@ -92,14 +94,6 @@ public:
 	{
 		closesocket(*s_fd);
 		WSACleanup();
-	}
-
-
-	static void onConn(DWORD WINAPI Callback(LPVOID sender), void* args)
-	{
-		DWORD th_id;
-		HANDLE th_hdl = CreateThread(NULL, 0, Callback, args, 0, &th_id);
-		CloseHandle(th_hdl);
 	}
 
 	static std::string wctos(const wchar_t* source)

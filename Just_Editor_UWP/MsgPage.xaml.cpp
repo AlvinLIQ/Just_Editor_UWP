@@ -24,9 +24,9 @@ MsgPage::MsgPage()
 
 void Just_Editor_UWP::MsgPage::connBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
+	connBtn->IsEnabled = false;
 	if (isConnected)
 	{
-		connBtn->IsEnabled = false;
 		isConnected = false;
 
 		return;
@@ -49,6 +49,7 @@ void Just_Editor_UWP::MsgPage::connBtn_Click(Platform::Object^ sender, Windows::
 						resultBlock->Text += L"Connected\n";
 						sendBtn->IsEnabled = true;
 						isConnected = true;
+						connBtn->IsEnabled = true;
 					}
 					else
 						resultBlock->Text += WSAGetLastError().ToString();

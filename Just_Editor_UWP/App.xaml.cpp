@@ -19,8 +19,8 @@ using namespace Windows::UI::Xaml::Interop;
 App::App()
 {
     InitializeComponent();
-	AppConfig = ref new AppConfigs::DrnConfig(this->RequestedTheme == ApplicationTheme::Dark);
-	AppConfig->Updated += ref new AppConfigs::AppSettingsUpdatedEventHandler(this, &Just_Editor_UWP::App::OnUpdated);
+	AppConfig = ref new Just_Editor_UWP::DrnConfig(this->RequestedTheme == ApplicationTheme::Dark);
+	AppConfig->Updated += ref new Just_Editor_UWP::AppSettingsUpdatedEventHandler(this, &Just_Editor_UWP::App::OnUpdated);
     Suspending += ref new SuspendingEventHandler(this, &App::OnSuspending);
 }
 
@@ -55,10 +55,10 @@ void App::OnSuspending(Object^ sender, SuspendingEventArgs^ e)
 
 }
 
-void App::OnUpdated(AppConfigs::DrnConfig^ newConfig)
+void App::OnUpdated(bool isDark)
 {
 	auto mainPage = ref new MainPage;
-	mainPage->RequestedTheme = newConfig->IsDark ? ElementTheme::Dark : ElementTheme::Light;
+	mainPage->RequestedTheme = isDark ? ElementTheme::Dark : ElementTheme::Light;
 
 	Window::Current->Content = mainPage;
 }

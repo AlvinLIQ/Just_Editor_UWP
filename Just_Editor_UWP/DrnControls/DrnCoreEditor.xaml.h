@@ -116,6 +116,11 @@ namespace Just_Editor_UWP
 			coreWindow->PointerCursor = ref new Windows::UI::Core::CoreCursor(Windows::UI::Core::CoreCursorType::Arrow, 0);
 		}
 
+		unsigned int GetCurrentLine()
+		{
+			return currentLine;
+		}
+
 		property bool isActivated;
 
 		property DrnKeyboard^ insideKeyboard;
@@ -137,7 +142,7 @@ namespace Just_Editor_UWP
 		unsigned long long int pointTimeStamp;
 
 		float leftMargin = 0, topMargin = 0;
-		unsigned int currentLine = 0, cursor = 0, currentLength = 0, virtualKeyCode = -1;
+		unsigned int currentLine = 0, cursor = 0, currentLength = 0, virtualKeyCode = -1, lastCol = 0, lastLn = 0;
 		double cursorX = 0;
 
 		std::wstring identifiersMap[5] = { L"const", L"int", L"internal", L"char", L"wchar_t" };

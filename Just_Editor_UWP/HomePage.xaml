@@ -5,10 +5,10 @@
     xmlns:local="using:Just_Editor_UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" FontFamily="Fonts/SourceCodeVariable-Roman.ttf#Source Code Variable" FontSize="18" Loaded="ContentPresenter_Loaded"
+    mc:Ignorable="d" FontFamily="Fonts/SourceCodeVariable-Roman.ttf#Source Code Variable" FontSize="18"
     Unloaded="ContentPresenter_Unloaded">
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+        <ScrollViewer VerticalScrollBarVisibility="Hidden" Loaded="ContentPresenter_Loaded">
             <Grid HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -20,7 +20,7 @@
                             <RotateTransform Angle="-10"/>
                         </FontIcon.RenderTransform>
                     </FontIcon>
-                    <ContentPresenter Content="Ver.0.1.4-Beta" FontSize="13" HorizontalAlignment="Right"/>
+                    <ContentPresenter Content="Ver.0.1.5-Beta" FontSize="13" HorizontalAlignment="Right"/>
                     <ContentPresenter Content="Just Editor" FontSize="50"/>
                     <ContentPresenter Content="New" FontSize="30"/>
                     <StackPanel>
@@ -69,13 +69,14 @@
             </Grid>
         </ScrollViewer>
         <local:DrnMenu HorizontalAlignment="Right" VerticalAlignment="Bottom" IsCustom="True" IsTabStop="False"
-                       MenuSelected="DrnMenu_MenuSelected">
+                       MenuSelected="DrnMenu_MenuSelected" Width="30" Height="30" Padding="2"
+                       HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
             <local:DrnMenu.menuItems>
                 <ListViewItem>
-                    You don't want to see that.
+                    Theme Switch
                 </ListViewItem>
             </local:DrnMenu.menuItems>
-            Settings
+            <FontIcon FontFamily="Fonts/Just_Editor_Icons.ttf#Just_Editor_Icons" Glyph="&#xE616;" FontSize="13"/>
         </local:DrnMenu>
     </Grid>
 </ContentPresenter>

@@ -8,6 +8,7 @@
 #include "DrnControls/DrnFileDialog.g.h"
 #include "DrnHeaders/Drn_UWP.h"
 
+
 namespace Just_Editor_UWP
 {
 	public delegate void InfoChangedHandler(DrnFileDialog^ sender);
@@ -19,9 +20,9 @@ namespace Just_Editor_UWP
 
 		event InfoChangedHandler^ InfoChanged;
 
-		property AppConfigs::DrnConfig^ AppConfig
+		property Just_Editor_UWP::DrnConfig^ AppConfig
 		{
-			AppConfigs::DrnConfig^ get()
+			Just_Editor_UWP::DrnConfig^ get()
 			{
 				return ((App^)App::Current)->AppConfig;
 			}

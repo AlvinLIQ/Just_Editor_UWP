@@ -7,6 +7,7 @@
 
 #include "DrnControls/DrnContentDialog.g.h"
 
+
 namespace Just_Editor_UWP
 {
 	[Windows::Foundation::Metadata::WebHostHidden]
@@ -14,9 +15,9 @@ namespace Just_Editor_UWP
 	{
 	public:
 		DrnContentDialog(Platform::String^ content, Platform::String^ Fst, Platform::String^ Sec, Platform::String^ Cls);
-		property AppConfigs::DrnConfig^ AppConfig
+		property Just_Editor_UWP::DrnConfig^ AppConfig
 		{
-			AppConfigs::DrnConfig^ get()
+			Just_Editor_UWP::DrnConfig^ get()
 			{
 				return ((App^)App::Current)->AppConfig;
 			}

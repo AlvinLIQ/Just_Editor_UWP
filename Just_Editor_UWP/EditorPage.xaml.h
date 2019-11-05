@@ -9,6 +9,7 @@
 #include "DrnControls/DrnTab.xaml.h"
 #include "DrnControls/DrnCodeEditor.xaml.h"
 
+
 namespace Just_Editor_UWP
 {
 	/// <summary>
@@ -20,9 +21,9 @@ namespace Just_Editor_UWP
 	public:
 		EditorPage(Windows::Storage::StorageFile^ tFile);
 
-		property AppConfigs::DrnConfig^ AppConfig
+		property Just_Editor_UWP::DrnConfig^ AppConfig
 		{
-			AppConfigs::DrnConfig^ get()
+			Just_Editor_UWP::DrnConfig^ get()
 			{
 				return ((App^)App::Current)->AppConfig;
 			}
@@ -42,5 +43,7 @@ namespace Just_Editor_UWP
 		void searchBox_KeyUp(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e);
 		void findLastBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void findNextBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void UndoBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void RedoBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }

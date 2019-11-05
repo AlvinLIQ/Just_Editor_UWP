@@ -33,3 +33,9 @@ MainPage::MainPage()
 	mainGrid->SetRowSpan(tabPanel, 2);*/
 }
 
+
+
+void Just_Editor_UWP::MainPage::BitmapImage_ImageFailed(Platform::Object^ sender, Windows::UI::Xaml::ExceptionRoutedEventArgs^ e)
+{
+	this->Background = ref new SolidColorBrush(this->RequestedTheme == ElementTheme::Dark ? Windows::UI::Colors::Black : Windows::UI::Colors::White);
+}

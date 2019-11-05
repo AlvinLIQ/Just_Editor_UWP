@@ -8,6 +8,7 @@
 #include "MainPage.g.h"
 #include "DrnControls/DrnTabPanel.xaml.h"
 
+
 namespace Just_Editor_UWP
 {
 	/// <summary>
@@ -18,9 +19,9 @@ namespace Just_Editor_UWP
 	public:
 		MainPage();
 
-		property AppConfigs::DrnConfig^ AppConfig
+		property Just_Editor_UWP::DrnConfig^ AppConfig
 		{
-			AppConfigs::DrnConfig^ get()
+			Just_Editor_UWP::DrnConfig^ get()
 			{
 				return ((App^)App::Current)->AppConfig;
 			}
@@ -33,5 +34,6 @@ namespace Just_Editor_UWP
 		}
 	private:
 		DrnTabPanel^ tabPanel;
+		void BitmapImage_ImageFailed(Platform::Object^ sender, Windows::UI::Xaml::ExceptionRoutedEventArgs^ e);
 	};
 }

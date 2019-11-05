@@ -10,7 +10,7 @@
     <Page.Background>
         <ImageBrush>
             <ImageBrush.ImageSource>
-                <BitmapImage UriSource="ms-appx:///Assets/bgi"/>
+                <BitmapImage UriSource="ms-appx:///Assets/bgi" ImageFailed="BitmapImage_ImageFailed"/>
             </ImageBrush.ImageSource>
         </ImageBrush>
     </Page.Background>

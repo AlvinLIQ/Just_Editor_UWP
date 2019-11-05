@@ -8,7 +8,7 @@
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
     <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformMinVersion>10.0.15063.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
@@ -276,10 +276,6 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\CodeIcon.png" />
-    <Image Include="Assets\CryptIcon.png" />
-    <Image Include="Assets\FileIcon.png" />
-    <Image Include="Assets\ImageIcon.png" />
     <Image Include="Assets\JustEditor_Logo.png" />
     <Image Include="Assets\LargeTile.scale-100.png" />
     <Image Include="Assets\LargeTile.scale-125.png" />
@@ -335,7 +331,6 @@
     <Image Include="Assets\Wide310x150Logo.scale-150.png" />
     <Image Include="Assets\Wide310x150Logo.scale-200.png" />
     <Image Include="Assets\Wide310x150Logo.scale-400.png" />
-    <Image Include="CodeIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.xaml.cpp">
@@ -402,6 +397,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Package.StoreAssociation.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="Microsoft.UniversalCRT.Debug, Version=10.0.15063.0" />
+    <SDKReference Include="Microsoft.VCLibs.Desktop, Version=14.0" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

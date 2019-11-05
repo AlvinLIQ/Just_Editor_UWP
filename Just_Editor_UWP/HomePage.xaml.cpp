@@ -45,10 +45,11 @@ HomePage::HomePage(Windows::UI::Xaml::Controls::Page^ mPage, DrnMenu^ mBtn)
 
 void Just_Editor_UWP::HomePage::ContentPresenter_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	this->Opacity = 0;
+	auto senderElement = (UIElement^)sender;
+	senderElement->Opacity = 0;
 	menuBtn->Width = 0;
 	menuBtn->IsEnabled = false;
-	Drn_UWP::DrnAnimeY(Hosting::ElementCompositionPreview::GetElementVisual(this), 30, 0, 30, this);
+	Drn_UWP::DrnAnimeY(Hosting::ElementCompositionPreview::GetElementVisual(senderElement), 30, 0, 30, senderElement);
 }
 
 void Just_Editor_UWP::HomePage::ContentPresenter_Unloaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
