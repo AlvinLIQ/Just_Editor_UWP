@@ -73,7 +73,7 @@
                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
             <local:DrnMenu.menuItems>
                 <ListViewItem>
-                    Theme Switch
+                    Theme Switch(won't be saved)
                 </ListViewItem>
             </local:DrnMenu.menuItems>
             <FontIcon FontFamily="Fonts/Just_Editor_Icons.ttf#Just_Editor_Icons" Glyph="&#xE616;" FontSize="13"/>

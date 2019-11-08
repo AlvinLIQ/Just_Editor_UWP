@@ -1,4 +1,4 @@
-﻿<Page
+﻿<ContentPresenter
     x:Class="Just_Editor_UWP.CryptPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -21,4 +21,4 @@
         </StackPanel>
         <TextBox x:Name="enBox" Grid.Row="2"/>
     </Grid>
-</Page>
+</ContentPresenter>

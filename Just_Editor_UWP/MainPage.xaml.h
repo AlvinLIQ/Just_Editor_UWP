@@ -29,11 +29,10 @@ namespace Just_Editor_UWP
 
 		void ReadToEditor(Windows::Storage::StorageFile^ thisFile)
 		{
-			if (thisFile != nullptr)
+			if (tabPanel != nullptr && thisFile != nullptr)
 				tabPanel->HomePage_NewTabRequested(thisFile->Name, thisFile);
 		}
 	private:
-		DrnTabPanel^ tabPanel;
 		void BitmapImage_ImageFailed(Platform::Object^ sender, Windows::UI::Xaml::ExceptionRoutedEventArgs^ e);
 	};
 }

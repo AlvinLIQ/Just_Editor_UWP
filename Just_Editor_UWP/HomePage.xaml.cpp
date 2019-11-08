@@ -16,12 +16,10 @@ using namespace Windows::UI::Xaml::Controls;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-Page^ mainPage;
 
-HomePage::HomePage(Windows::UI::Xaml::Controls::Page^ mPage, DrnMenu^ mBtn)
+HomePage::HomePage(DrnMenu^ mBtn)
 {
 	InitializeComponent();
-	mainPage = mPage;
 	menuBtn = mBtn;
 	menuBtn->MenuSelected 
 		+= ref new SelectionChangedEventHandler([this](Object^ sender, SelectionChangedEventArgs^ e)
@@ -89,6 +87,7 @@ void Just_Editor_UWP::HomePage::openImage_Click(Platform::Object^ sender, Window
 					}).then([newFile](Windows::Storage::StorageFolder^ oldFolder)
 					{
 						newFile->CopyAsync(oldFolder, L"bgi", Windows::Storage::NameCollisionOption::ReplaceExisting);
+						auto mainPage = (ContentPresenter^)Window::Current->Content;
 						if (mainPage != nullptr)
 							Drn_UWP::LoadBackgroundImage(mainPage, newFile);
 					});
@@ -106,7 +105,10 @@ void Just_Editor_UWP::HomePage::newCrypt_Click(Platform::Object^ sender, Windows
 void Just_Editor_UWP::HomePage::DrnMenu_MenuSelected(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e)
 {
 //	mainPage->RequestedTheme = mainPage->RequestedTheme == ElementTheme::Dark ? ElementTheme::Light : ElementTheme::Dark;
+	if (sender == nullptr)
+		return;
+
 	auto appConfig = ((App^)App::Current)->AppConfig;
-	appConfig->IsDark = mainPage->RequestedTheme == ElementTheme::Light;
+	appConfig->IsDark = !appConfig->IsDark;
 	appConfig->UpdateConfig();
 }

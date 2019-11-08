@@ -25,6 +25,18 @@ DrnTab::DrnTab()
 {
 	InitializeComponent();
 	BorderThickness = 0;
+	Window::Current->CoreWindow->Activated 
+		+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Core::CoreWindow^, Windows::UI::Core::WindowActivatedEventArgs^>
+		([FileDialog = this->FileDialog](Windows::UI::Core::CoreWindow^ coreWindow, Windows::UI::Core::WindowActivatedEventArgs^ args)
+			{
+				if (FileDialog == nullptr || FileDialog->DialogFile == nullptr)
+					return;
+				
+				if (FileDialog->DialogFile->DateCreated.UniversalTime != FileDialog->FileModifiedTime)
+				{
+					//File modified, do some reload here
+				}
+			});
 }
 
 

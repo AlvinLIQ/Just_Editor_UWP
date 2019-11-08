@@ -19,7 +19,7 @@ namespace Just_Editor_UWP
 	public ref class HomePage sealed
 	{
 	public:
-		HomePage(Windows::UI::Xaml::Controls::Page^ mPage, DrnMenu^ mBtn);
+		HomePage(DrnMenu^ mBtn);
 		event NewTabRequestEventHandler^ NewTabRequested;
 	private:
 		DrnMenu^ menuBtn;

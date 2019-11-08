@@ -19,8 +19,11 @@ using namespace Windows::UI::Xaml::Interop;
 App::App()
 {
     InitializeComponent();
-	AppConfig = ref new Just_Editor_UWP::DrnConfig(this->RequestedTheme == ApplicationTheme::Dark);
-	AppConfig->Updated += ref new Just_Editor_UWP::AppSettingsUpdatedEventHandler(this, &Just_Editor_UWP::App::OnUpdated);
+	if (AppConfig == nullptr)
+	{
+		AppConfig = ref new Just_Editor_UWP::DrnConfig(this->RequestedTheme == ApplicationTheme::Dark);
+		AppConfig->Updated += ref new Just_Editor_UWP::AppSettingsUpdatedEventHandler(this, &Just_Editor_UWP::App::OnUpdated);
+	}
     Suspending += ref new SuspendingEventHandler(this, &App::OnSuspending);
 }
 
@@ -33,17 +36,16 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 	if (mainPage == nullptr)
     {
 		mainPage = ref new MainPage;
-        if (args->PreviousExecutionState == ApplicationExecutionState::Terminated)
-        {
-            // TODO: Restore the saved session state only when appropriate, scheduling the
-            // final launch steps after the restore is complete
 
-        }
 		mainPage->RequestedTheme = this->AppConfig->IsDark ? ElementTheme::Dark : ElementTheme::Light;
-		Window::Current->Content = mainPage;
-    }
 
-	if (args->PrelaunchActivated == false)
+		if (args->PrelaunchActivated == false)
+		{
+			Window::Current->Content = mainPage;
+			Window::Current->Activate();
+		}
+    }
+	else if (args->PrelaunchActivated == false)
 	{
 		Window::Current->Activate();
 	}
@@ -65,16 +67,28 @@ void App::OnUpdated(bool isDark)
 
 void App::OnFileActivated(Windows::ApplicationModel::Activation::FileActivatedEventArgs^ args)
 {
+	if (AppConfig == nullptr)
+	{
+		AppConfig = ref new Just_Editor_UWP::DrnConfig(this->RequestedTheme == ApplicationTheme::Dark);
+		AppConfig->Updated += ref new Just_Editor_UWP::AppSettingsUpdatedEventHandler(this, &Just_Editor_UWP::App::OnUpdated);
+	}
+
 	auto mainPage = dynamic_cast<MainPage^>(Window::Current->Content);
 
 	if (mainPage == nullptr)
 	{
 		mainPage = ref new MainPage;
+		mainPage->RequestedTheme = this->AppConfig->IsDark ? ElementTheme::Dark : ElementTheme::Light;
 		Window::Current->Content = mainPage;
 		Window::Current->Activate();
 	}
 
 	int filesNum = (int)args->Files->Size;
+	Windows::Storage::IStorageItem^ tItem;
 	while (--filesNum >= 0)
-		mainPage->ReadToEditor((Windows::Storage::StorageFile^)args->Files->GetAt(filesNum));
+	{
+		tItem = args->Files->GetAt(filesNum);
+		if(tItem->IsOfType(Windows::Storage::StorageItemTypes::File))
+			mainPage->ReadToEditor((Windows::Storage::StorageFile^)tItem);
+	}
 }

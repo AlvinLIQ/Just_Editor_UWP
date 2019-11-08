@@ -108,6 +108,9 @@ namespace Just_Editor_UWP
 
 		void UnloadEditor()
 		{
+			if (coreWindow == nullptr)
+				return;
+
 			coreWindow->KeyDown -= coreEventToken[0];
 			coreWindow->KeyUp -= coreEventToken[1];
 			coreWindow->PointerPressed -= coreEventToken[2];

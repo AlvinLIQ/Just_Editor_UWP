@@ -17,9 +17,10 @@ Just_Editor_UWP::DrnFileDialog::DrnFileDialog(Platform::String^ dialogTitle, Pla
 {
 	InitializeComponent();
 	IsClosed = true;
+	this->RequestedTheme = AppConfig->IsDark ? Windows::UI::Xaml::ElementTheme::Dark : Windows::UI::Xaml::ElementTheme::Light;
 	TitleBlock->Text = dialogTitle;
 	FileNameBox->Text = fileName;
-	dialogFile = dFile;
+	DialogFile = dFile;
 	FilePathBlock->Text = dFile == nullptr ? L"(None)" : dFile->Path;
 }
 
@@ -51,10 +52,10 @@ void Just_Editor_UWP::DrnFileDialog::SaveBtn_Click(Platform::Object^ sender, Win
 			{
 				if (newFile == nullptr)
 					return;
-				if (dialogFile != nullptr)
-					dialogFile->CopyAndReplaceAsync(newFile);
+				if (DialogFile != nullptr)
+					DialogFile->CopyAndReplaceAsync(newFile);
 
-				dialogFile = newFile;
+				DialogFile = newFile;
 				InfoChanged(this);
 			});
 	}
@@ -87,4 +88,24 @@ void Just_Editor_UWP::DrnFileDialog::ContentDialog_Closed(Windows::UI::Xaml::Con
 void Just_Editor_UWP::DrnFileDialog::ContentDialog_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 	IsClosed = false;
+}
+
+
+void Just_Editor_UWP::DrnFileDialog::FileNameBox_TextChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::TextChangedEventArgs^ e)
+{
+	std::wstring wStr = FileNameBox->Text->Data();
+	for (int i = (int)wStr.length(), j; --i >= 0;)
+	{
+		for (j = 0; j < 9; j++)
+		{
+			if (wStr[i] == UnabledWords[j])
+			{
+				ChangePathBtn->IsEnabled = false;
+				SaveBtn->IsEnabled = false;
+				return;
+			}
+		}
+	}
+	ChangePathBtn->IsEnabled = true;
+	SaveBtn->IsEnabled = true;
 }

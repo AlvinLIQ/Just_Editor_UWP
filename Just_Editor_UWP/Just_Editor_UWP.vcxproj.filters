@@ -268,5 +268,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Package.StoreAssociation.xml" />
+    <None Include="Just_Editor_UWP_TemporaryKey.pfx" />
   </ItemGroup>
 </Project>

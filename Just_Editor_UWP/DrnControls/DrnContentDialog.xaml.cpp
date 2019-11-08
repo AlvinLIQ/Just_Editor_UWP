@@ -14,6 +14,7 @@ Just_Editor_UWP::DrnContentDialog::DrnContentDialog(Platform::String^ content, P
 {
 	InitializeComponent();
 	this->IsClosed = true;
+	this->RequestedTheme = AppConfig->IsDark ? Windows::UI::Xaml::ElementTheme::Dark : Windows::UI::Xaml::ElementTheme::Light;
 	this->Content = content;
 	this->PrimaryButtonText = Fst;
 	this->SecondaryButtonText = Sec;

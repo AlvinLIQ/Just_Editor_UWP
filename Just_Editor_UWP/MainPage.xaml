@@ -1,4 +1,4 @@
-﻿<Page
+﻿<ContentPresenter
     x:Class="Just_Editor_UWP.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,19 +7,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     >
-    <Page.Background>
+    <ContentPresenter.Background>
         <ImageBrush>
             <ImageBrush.ImageSource>
                 <BitmapImage UriSource="ms-appx:///Assets/bgi" ImageFailed="BitmapImage_ImageFailed"/>
             </ImageBrush.ImageSource>
         </ImageBrush>
-    </Page.Background>
+    </ContentPresenter.Background>
     <Grid x:Name="mainGrid" Background="{x:Bind AppConfig.BackBrush}">
         <Grid.RowDefinitions>
             <RowDefinition MaxHeight="34"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Rectangle x:Name="titleRect" Fill="{x:Bind AppConfig.CoverBrush}"/>
-        <local:DrnTabPanel Grid.RowSpan="2"/>
+        <local:DrnTabPanel x:Name="tabPanel" Grid.RowSpan="2"/>
     </Grid>
-</Page>
+</ContentPresenter>

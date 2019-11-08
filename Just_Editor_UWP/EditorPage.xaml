@@ -1,4 +1,4 @@
-﻿<Page
+﻿<ContentPresenter
     x:Class="Just_Editor_UWP.EditorPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -42,4 +42,4 @@
         <local:DrnCodeEditor x:Name="drnCodeEditor" Grid.Row="1" Background="{x:Bind AppConfig.SubBackBrush}" LineNumBackground="{x:Bind AppConfig.SelectedBrush}"
                              EditorTextChanged="drnCodeEditor_EditorTextChanged" EditorSavedRequested="drnCodeEditor_EditorSavedRequested"/>
     </Grid>
-</Page>
+</ContentPresenter>

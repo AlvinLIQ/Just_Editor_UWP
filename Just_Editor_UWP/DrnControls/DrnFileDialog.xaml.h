@@ -31,9 +31,25 @@ namespace Just_Editor_UWP
 		{
 			Platform::String^ get() { return FileNameBox->Text; }
 		};
-		property Windows::Storage::StorageFile^ dialogFile;
+		property long long FileModifiedTime;
+		property Windows::Storage::StorageFile^ DialogFile
+		{
+			Windows::Storage::StorageFile^ get()
+			{
+				return dialogFile;
+			}
+			void set(Windows::Storage::StorageFile^ newFile)
+			{
+				if (newFile != nullptr)
+				{
+					dialogFile = newFile;
+					FileModifiedTime = newFile->DateCreated.UniversalTime;
+				}
+			}
+		};
 		property bool IsClosed;
 	private:
+		Windows::Storage::StorageFile^ dialogFile = nullptr;
 		Windows::Storage::StorageFolder^ newFolder = nullptr;
 
 		void DialogClsBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
@@ -41,5 +57,6 @@ namespace Just_Editor_UWP
 		void SaveBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void ContentDialog_Closed(Windows::UI::Xaml::Controls::ContentDialog^ sender, Windows::UI::Xaml::Controls::ContentDialogClosedEventArgs^ args);
 		void ContentDialog_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void FileNameBox_TextChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::TextChangedEventArgs^ e);
 	};
 }

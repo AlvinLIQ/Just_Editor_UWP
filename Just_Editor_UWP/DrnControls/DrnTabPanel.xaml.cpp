@@ -23,6 +23,13 @@ unsigned int selectedIndex;
 DrnTabPanel::DrnTabPanel()
 {
 	InitializeComponent();
+	homePage = ref new HomePage(this->justEditorBtn);
+	homePage->NewTabRequested
+		+= ref new Just_Editor_UWP::NewTabRequestEventHandler(this, &DrnTabPanel::HomePage_NewTabRequested);
+	if (pagePanel->Content == nullptr)
+		pagePanel->Content = homePage;
+
+	//forTab
 	auto leaveEvent = ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>([](CoreWindow^ coreWindow, Windows::UI::Core::PointerEventArgs^ e)
 		{
 			SetOldIndex(-1);
@@ -134,7 +141,7 @@ void DrnTabPanel::HomePage_NewTabRequested(Platform::String^ tabName, Windows::S
 		editorPage->thisTab->FileDialog = ref new DrnFileDialog(L"File Info", tabName, tabFile);
 		editorPage->thisTab->FileDialog->InfoChanged += ref new InfoChangedHandler([editorPage](DrnFileDialog^ FileDialog)
 			{
-				editorPage->thisFile = FileDialog->dialogFile;
+				editorPage->thisFile = FileDialog->DialogFile;
 				editorPage->thisTab->Title = FileDialog->dialogTitle;
 			});
 		editorPage->thisTab->MakeSureDialog = ref new DrnContentDialog(L"Before closing", L"Close&Save", L"Close without saving", L"Cancel");
@@ -175,12 +182,4 @@ void Just_Editor_UWP::DrnTabPanel::tabPanel_SizeChanged(Platform::Object^ sender
 {
 	tabScrollViewer->MaxWidth = newWidth;
 	tabScrollViewer->ChangeView(tabScrollViewer->ScrollableWidth, tabScrollViewer->VerticalOffset, tabScrollViewer->ZoomFactor);
-}
-
-
-void Just_Editor_UWP::DrnTabPanel::Grid_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
-{
-	pagePanel->Content = (homePage = ref new HomePage((Page^)((Panel^)this->Parent)->Parent, this->justEditorBtn));
-	homePage->NewTabRequested
-		+= ref new Just_Editor_UWP::NewTabRequestEventHandler(this, &DrnTabPanel::HomePage_NewTabRequested);
 }

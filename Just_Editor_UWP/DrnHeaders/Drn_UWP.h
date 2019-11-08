@@ -147,7 +147,7 @@ public:
 		tBox->ShowAsync();
 	}
 
-	static void LoadBackgroundImage(Windows::UI::Xaml::Controls::Page^ page, Windows::Storage::StorageFile^ imageFile)
+	static void LoadBackgroundImage(Windows::UI::Xaml::Controls::ContentPresenter^ page, Windows::Storage::StorageFile^ imageFile)
 	{
 		concurrency::create_task(imageFile->OpenReadAsync()).then([page](Windows::Storage::Streams::IRandomAccessStreamWithContentType^ result)
 			{
@@ -159,7 +159,7 @@ public:
 				page->Background = bBrush;
 			});
 	}
-	static void LoadBackgroundImageFromFileName(Windows::UI::Xaml::Controls::Page^ page, Platform::String^ fileName)
+	static void LoadBackgroundImageFromFileName(Windows::UI::Xaml::Controls::ContentPresenter^ page, Platform::String^ fileName)
 	{
 		concurrency::create_task(Windows::Storage::StorageFile::GetFileFromApplicationUriAsync(ref new Windows::Foundation::Uri(fileName))).then([](concurrency::task<Windows::Storage::StorageFile^> bImage)
 			{

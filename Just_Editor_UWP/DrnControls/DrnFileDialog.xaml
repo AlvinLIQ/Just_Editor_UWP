@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" HorizontalContentAlignment="Center" 
     VerticalContentAlignment="Center" Closed="ContentDialog_Closed" Loaded="ContentDialog_Loaded"
-    mc:Ignorable="d" Background="{x:Bind AppConfig.SubBackBrush}" FontFamily="Fonts/SourceCodeVariable-Roman.ttf#Source Code Variable" >
+    mc:Ignorable="d" Background="{x:Bind AppConfig.CoverBrush}" FontFamily="Fonts/SourceCodeVariable-Roman.ttf#Source Code Variable" >
 
     <Grid>
         <Grid.RowDefinitions>
@@ -24,7 +24,7 @@
         <Button x:Name="DialogClsBtn" Content="x" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center"
                 Margin="10" Click="DialogClsBtn_Click"/>
         <TextBlock Grid.Row="1" Text="File Name" VerticalAlignment="Center"/>
-        <TextBox x:Name="FileNameBox" Grid.Row="1" Grid.Column="1" Margin="10"/>
+        <TextBox x:Name="FileNameBox" Grid.Row="1" Grid.Column="1" Margin="10" TextChanged="FileNameBox_TextChanged"/>
         <TextBlock Grid.Row="2" Text="Save Path" VerticalAlignment="Center"/>
         <TextBlock x:Name="FilePathBlock" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"/>
         <Button x:Name="ChangePathBtn" Background="#1FFF" Content="Change" Grid.Row="2" Grid.Column="2" VerticalAlignment="Stretch"
