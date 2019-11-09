@@ -6,9 +6,9 @@
 #pragma once
 
 #include "DrnControls/DrnTab.g.h"
+#include "DrnControls/DrnFileDialog.xaml.h"
 #include "DrnHeaders/Drn_UWP.h"
 #include "DrnContentDialog.xaml.h"
-#include "DrnFileDialog.xaml.h"
 #include "DrnTabPanel.xaml.h"
 
 #define ParentChildren ((Windows::UI::Xaml::Controls::Panel^)this->Parent)->Children
@@ -39,6 +39,11 @@ namespace Just_Editor_UWP
 
 		void CloseTab()
 		{
+			if (isClosing)
+				return;
+
+			isClosing = true;
+
 			auto tVisual = Windows::UI::Xaml::Hosting::ElementCompositionPreview::GetElementVisual(this);
 
 			concurrency::create_task(Drn_UWP::DrnAnimeY(tVisual, tVisual->Offset.y, tVisual->Offset.y - (float)this->ActualHeight, 11, this)).then([this]()
@@ -51,6 +56,7 @@ namespace Just_Editor_UWP
 			statusBlock->Text = statusStr;
 		}
 	private:
+		bool isClosing = false;
 		void StackPanel_PointerEntered(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);
 		void StackPanel_PointerExited(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);
 		void clsBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);

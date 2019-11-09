@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="250"
-    d:DesignWidth="400">
+    d:DesignWidth="400" Loaded="tabPanel_Loaded">
     <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition/>
@@ -35,7 +35,7 @@
         <ScrollViewer x:Name="tabScrollViewer" Grid.Column="1" SizeChanged="tabScrollViewer_SizeChanged"
                         VerticalScrollBarVisibility="Hidden" VerticalScrollMode="Disabled"
                       HorizontalScrollBarVisibility="Hidden" HorizontalScrollMode="Enabled" Padding="0">
-            <StackPanel x:Name="tabPanel" AreScrollSnapPointsRegular="True" Orientation="Horizontal" SizeChanged="tabPanel_SizeChanged"/>
+            <StackPanel x:Name="tabPanel" Orientation="Horizontal" SizeChanged="tabPanel_SizeChanged"/>
         </ScrollViewer>
         <Button x:Name="drnBtn" Grid.Column="2" Content="+" Click="drnBtn_Click" VerticalAlignment="Stretch"/>
     </Grid>

@@ -53,7 +53,7 @@ namespace Just_Editor_UWP
 
 		void HomePage_NewTabRequested(Platform::String^ tabName, Windows::Storage::StorageFile^ tabFile);
 
-		void AddNewTab(Platform::String^ title, Windows::UI::Xaml::UIElement^ content, Windows::Storage::StorageFile^ tabFile);
+		void AddNewTab(Platform::String^ title, Windows::UI::Xaml::UIElement^ content);
 		void SelectAt(unsigned int page_n);
 		void RemoveAt(unsigned int page_n);
 
@@ -67,5 +67,6 @@ namespace Just_Editor_UWP
 		void topPanel_SizeChanged(Platform::Object^ sender, Windows::UI::Xaml::SizeChangedEventArgs^ e);
 		void tabScrollViewer_SizeChanged(Platform::Object^ sender, Windows::UI::Xaml::SizeChangedEventArgs^ e);
 		void tabPanel_SizeChanged(Platform::Object^ sender, Windows::UI::Xaml::SizeChangedEventArgs^ e);
+		void tabPanel_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }

@@ -39,7 +39,7 @@ DrnTabPanel::DrnTabPanel()
 	coreWindow->PointerReleased += leaveEvent;
 }
 
-void DrnTabPanel::AddNewTab(Platform::String^ title, Windows::UI::Xaml::UIElement^ content, Windows::Storage::StorageFile^ tabFile)
+void DrnTabPanel::AddNewTab(Platform::String^ title, Windows::UI::Xaml::UIElement^ content)
 {
 	auto tTab = ref new DrnTab;
 	tTab->Width = TabWidth;
@@ -127,34 +127,33 @@ void DrnTabPanel::HomePage_NewTabRequested(Platform::String^ tabName, Windows::S
 		switch (wTabName[1])
 		{
 		case L'S':
-			AddNewTab(ref new String(tabName->Data() + 1), ref new MsgPage, nullptr);
+			AddNewTab(ref new String(tabName->Data() + 1), ref new MsgPage);
 			break;
 		case L'C':
-			AddNewTab(ref new String(tabName->Data() + 1), ref new CryptPage, nullptr);
+			AddNewTab(ref new String(tabName->Data() + 1), ref new CryptPage);
 			break;
 		}
 		break;
 	default:
 		EditorPage^ editorPage;
-		AddNewTab(tabName, editorPage = ref new EditorPage(tabFile), tabFile);
-		editorPage->thisTab = SelectedItem;
-		editorPage->thisTab->FileDialog = ref new DrnFileDialog(L"File Info", tabName, tabFile);
-		editorPage->thisTab->FileDialog->InfoChanged += ref new InfoChangedHandler([editorPage](DrnFileDialog^ FileDialog)
+		AddNewTab(tabName, editorPage = ref new EditorPage);
+		SelectedItem->FileDialog = ref new DrnFileDialog(L"File Info", tabName, tabFile);
+		editorPage->ThisTab = SelectedItem;
+		editorPage->ThisTab->FileDialog->InfoChanged += ref new InfoChangedHandler([editorPage](DrnFileDialog^ FileDialog)
 			{
-				editorPage->thisFile = FileDialog->DialogFile;
-				editorPage->thisTab->Title = FileDialog->dialogTitle;
+				editorPage->ThisTab->Title = FileDialog->dialogTitle;
 			});
-		editorPage->thisTab->MakeSureDialog = ref new DrnContentDialog(L"Before closing", L"Close&Save", L"Close without saving", L"Cancel");
-		editorPage->thisTab->MakeSureDialog->PrimaryButtonClick += 
+		editorPage->ThisTab->MakeSureDialog = ref new DrnContentDialog(L"Before closing", L"Close&Save", L"Close without saving", L"Cancel");
+		editorPage->ThisTab->MakeSureDialog->PrimaryButtonClick += 
 			ref new Windows::Foundation::TypedEventHandler<Windows::UI::Xaml::Controls::ContentDialog^, Windows::UI::Xaml::Controls::ContentDialogButtonClickEventArgs^>([editorPage](Windows::UI::Xaml::Controls::ContentDialog^ sender, Windows::UI::Xaml::Controls::ContentDialogButtonClickEventArgs^ e)
 				{
 					editorPage->drnCodeEditor_EditorSavedRequested();
-					editorPage->thisTab->CloseTab();
+					editorPage->ThisTab->CloseTab();
 				});
-		editorPage->thisTab->MakeSureDialog->SecondaryButtonClick +=
+		editorPage->ThisTab->MakeSureDialog->SecondaryButtonClick +=
 			ref new Windows::Foundation::TypedEventHandler<Windows::UI::Xaml::Controls::ContentDialog^, Windows::UI::Xaml::Controls::ContentDialogButtonClickEventArgs^>([editorPage](Windows::UI::Xaml::Controls::ContentDialog^ sender, Windows::UI::Xaml::Controls::ContentDialogButtonClickEventArgs^ e)
 				{
-					editorPage->thisTab->CloseTab();
+					editorPage->ThisTab->CloseTab();
 				});
 
 	}
@@ -174,7 +173,7 @@ void Just_Editor_UWP::DrnTabPanel::tabScrollViewer_SizeChanged(Platform::Object^
 	if (e == nullptr || newHOffset < tabScrollViewer->HorizontalOffset)
 		tabScrollViewer->ChangeView(newHOffset, tabScrollViewer->VerticalOffset, tabScrollViewer->ZoomFactor);
 	else if (newHOffset + TabWidth > tabScrollViewer->HorizontalOffset + tabScrollViewer->ViewportWidth)
-		tabScrollViewer->ChangeView(tabScrollViewer->HorizontalOffset + tabScrollViewer->ViewportWidth , tabScrollViewer->VerticalOffset, tabScrollViewer->ZoomFactor);
+		tabScrollViewer->ChangeView(tabScrollViewer->HorizontalOffset + tabScrollViewer->ViewportWidth, tabScrollViewer->VerticalOffset, tabScrollViewer->ZoomFactor);
 }
 
 
@@ -182,4 +181,10 @@ void Just_Editor_UWP::DrnTabPanel::tabPanel_SizeChanged(Platform::Object^ sender
 {
 	tabScrollViewer->MaxWidth = newWidth;
 	tabScrollViewer->ChangeView(tabScrollViewer->ScrollableWidth, tabScrollViewer->VerticalOffset, tabScrollViewer->ZoomFactor);
+}
+
+
+void Just_Editor_UWP::DrnTabPanel::tabPanel_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+
 }

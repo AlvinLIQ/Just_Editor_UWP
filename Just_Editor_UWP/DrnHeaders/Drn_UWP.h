@@ -67,9 +67,9 @@ public:
 		return concurrency::create_task(tPicker->PickSingleFolderAsync());
 	}
 
-	static Windows::Foundation::IAsyncOperation<Platform::String^>^ ReadTextStorageFile(Windows::Storage::StorageFile^ tFile)
+	static Windows::Foundation::IAsyncOperation<Platform::String^>^ ReadTextStorageFile(Windows::Storage::StorageFile^ tFile, Windows::Storage::Streams::UnicodeEncoding encodeMode = Windows::Storage::Streams::UnicodeEncoding::Utf8)
 	{
-		return Windows::Storage::FileIO::ReadTextAsync(tFile);
+		return Windows::Storage::FileIO::ReadTextAsync(tFile, encodeMode);
 	}
 
 	static Windows::Foundation::IAsyncAction^ WriteTextStorageFile(Windows::Storage::StorageFile^ tFile, Platform::String^ tStr)

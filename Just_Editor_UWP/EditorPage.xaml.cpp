@@ -12,31 +12,34 @@ using namespace Platform;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-EditorPage::EditorPage(Windows::Storage::StorageFile^ tFile)
+EditorPage::EditorPage()
 {
 	InitializeComponent();
-	thisFile = tFile;
-	if (thisFile != nullptr)
+
+	drnCodeEditor->coreEditor->searchFlyout = searchFlyout;
+}
+
+void Just_Editor_UWP::EditorPage::UpdateEditor()
+{
+	if (thisTab != nullptr && thisTab->FileDialog != nullptr && thisTab->FileDialog->DialogFile != nullptr)
 	{
-		concurrency::create_task(Drn_UWP::ReadTextStorageFile(thisFile)).then([this](String^ fileStr)
+		concurrency::create_task(Drn_UWP::ReadTextStorageFile(thisTab->FileDialog->DialogFile)).then([this](Platform::String^ fileStr)
 			{
 				drnCodeEditor->AppendStr(fileStr);
-				if (thisTab != nullptr)
-					thisTab->SetExtraStatus(L"");
+				thisTab->SetExtraStatus(L"");
 
 			});
 	}
-	drnCodeEditor->coreEditor->searchFlyout = searchFlyout;
 }
 
 
 void Just_Editor_UWP::EditorPage::saveBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	if (thisTab == nullptr || !saveBtn->IsEnabled)
+	if (thisTab == nullptr || thisTab->FileDialog == nullptr || !saveBtn->IsEnabled)
 		return;
 	saveBtn->IsEnabled = false;
 
-	if (thisFile == nullptr)
+	if (thisTab->FileDialog->DialogFile == nullptr)
 	{
 		concurrency::create_task(Drn_UWP::PickAFolder()).then([this](Windows::Storage::StorageFolder^ saveFolder)
 			{
@@ -49,20 +52,21 @@ void Just_Editor_UWP::EditorPage::saveBtn_Click(Platform::Object^ sender, Window
 					return saveFolder->CreateFileAsync(thisTab->Title, Windows::Storage::CreationCollisionOption::ReplaceExisting);
 			}).then([this](Windows::Storage::StorageFile^ saveFile)
 				{
-					thisFile = saveFile;
-					if (thisFile == nullptr)
+					thisTab->FileDialog->DialogFile = saveFile;
+					if (thisTab->FileDialog->DialogFile == nullptr)
 						return;
-					Drn_UWP::WriteTextStorageFile(thisFile, drnCodeEditor->GetStr());
+					Drn_UWP::WriteTextStorageFile(thisTab->FileDialog->DialogFile, drnCodeEditor->GetStr());
 					thisTab->SetExtraStatus(L"");
-					thisTab->Title = thisFile->Name;
+					thisTab->Title = thisTab->FileDialog->DialogFile->Name;
 					saveBtn->IsEnabled = true;
 				}, concurrency::task_continuation_context::use_current());
 	}
 	else
 	{
-		concurrency::create_task(Drn_UWP::WriteTextStorageFile(thisFile, drnCodeEditor->GetStr())).then([this]()
+		concurrency::create_task(Drn_UWP::WriteTextStorageFile(thisTab->FileDialog->DialogFile, drnCodeEditor->GetStr())).then([this]()
 			{
 				thisTab->SetExtraStatus(L"");
+				thisTab->FileDialog->FileModifiedTime = thisTab->FileDialog->DialogFile->DateCreated.UniversalTime;
 				saveBtn->IsEnabled = true;
 			});
 	}

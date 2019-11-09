@@ -65,6 +65,9 @@ void DrnTab::StackPanel_PointerExited(Platform::Object^ sender, Windows::UI::Xam
 
 void DrnTab::clsBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
+	if (isClosing)
+		return;
+
 	if (statusBlock->Text == L"*" && MakeSureDialog != nullptr && MakeSureDialog->IsClosed)
 		MakeSureDialog->ShowAsync();
 	else

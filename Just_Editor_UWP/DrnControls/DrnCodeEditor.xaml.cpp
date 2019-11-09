@@ -24,6 +24,7 @@ DrnCodeEditor::DrnCodeEditor()
 	mainGrid->SetRow(drnCoreEditor->insideKeyboard, 1);
 	mainGrid->SetColumnSpan(drnCoreEditor->insideKeyboard, 2);
 	returnMenu->SelectedIndex = 0;
+	encodeMenu->SelectedIndex = 0;
 	highlightMenu->SelectedIndex = 0;
 }
 
@@ -48,4 +49,21 @@ void Just_Editor_UWP::DrnCodeEditor::drnCoreEditor_EditorViewChanging(default::f
 void Just_Editor_UWP::DrnCodeEditor::drnLineNum_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 	lineNumVisual = Hosting::ElementCompositionPreview::GetElementVisual(drnLineNum);
+}
+
+
+void Just_Editor_UWP::DrnCodeEditor::encodeMenu_MenuSelected(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e)
+{
+	switch (encodeMenu->SelectedIndex)
+	{
+	case 0:
+		//UTF-8
+		break;
+	case 1:
+		//UTF-16LE
+		break;
+	case 2:
+		//UTF-16BE
+		break;
+	}
 }

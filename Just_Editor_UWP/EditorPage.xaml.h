@@ -19,7 +19,7 @@ namespace Just_Editor_UWP
 	public ref class EditorPage sealed
 	{
 	public:
-		EditorPage(Windows::Storage::StorageFile^ tFile);
+		EditorPage();
 
 		property Just_Editor_UWP::DrnConfig^ AppConfig
 		{
@@ -29,15 +29,28 @@ namespace Just_Editor_UWP
 			}
 		};
 
-		property Windows::Storage::StorageFile^ thisFile;
-		property DrnTab^ thisTab;
+		property DrnTab^ ThisTab
+		{
+			DrnTab^ get()
+			{
+				return this->thisTab;
+			}
+			void set(DrnTab^ newTab)
+			{
+				this->thisTab = newTab;	
+
+				UpdateEditor();
+			}
+		}
 		property DrnCodeEditor^ codeEditor
 		{
 			DrnCodeEditor^ get() { return drnCodeEditor; }
 		};
 
+		void UpdateEditor();
 		void drnCodeEditor_EditorSavedRequested();
 	private:
+		DrnTab^ thisTab = nullptr;
 		void saveBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void drnCodeEditor_EditorTextChanged();
 		void searchBox_KeyUp(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e);

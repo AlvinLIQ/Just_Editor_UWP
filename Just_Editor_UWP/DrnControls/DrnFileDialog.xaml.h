@@ -40,9 +40,9 @@ namespace Just_Editor_UWP
 			}
 			void set(Windows::Storage::StorageFile^ newFile)
 			{
+				dialogFile = newFile;
 				if (newFile != nullptr)
 				{
-					dialogFile = newFile;
 					FileModifiedTime = newFile->DateCreated.UniversalTime;
 				}
 			}

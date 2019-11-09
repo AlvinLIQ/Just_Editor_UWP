@@ -46,6 +46,12 @@ namespace Just_Editor_UWP
 		{ 
 			drnCoreEditor->AppendUserStr(newStr); 
 		}
+		void Clear()
+		{
+			drnLineNum->Children->Clear();
+			drnCoreEditor->Clear();
+			SetLineNum(1);
+		}
 		Platform::String^ GetStr()
 		{
 			Platform::String^ result = L"";
@@ -76,5 +82,6 @@ namespace Just_Editor_UWP
 		void drnCoreEditor_CursorChanged(default::uint32 col, default::uint32 ln, default::uint32 lineNum);
 		void drnCoreEditor_EditorViewChanging(default::float64 verticalOffset);
 		void drnLineNum_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void encodeMenu_MenuSelected(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e);
 	};
 }

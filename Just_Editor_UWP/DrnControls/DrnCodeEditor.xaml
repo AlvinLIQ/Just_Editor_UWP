@@ -32,7 +32,7 @@
         <Grid Grid.Row="2" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition MaxWidth="150"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto" MinWidth="40"/>
                 <ColumnDefinition Width="Auto"/>
@@ -43,6 +43,14 @@
                                FontSize="{x:Bind FontSize, Mode=OneWay}">
                     <local:DrnMenu.menuItems>
                         <x:String>Text</x:String>
+                    </local:DrnMenu.menuItems>
+                </local:DrnMenu>
+                <local:DrnMenu x:Name="encodeMenu" Padding="10,0" FontFamily="{x:Bind FontFamily, Mode=OneWay}" 
+                               FontSize="{x:Bind FontSize, Mode=OneWay}" MenuSelected="encodeMenu_MenuSelected">
+                    <local:DrnMenu.menuItems>
+                        <x:String>UTF-8</x:String>
+                        <x:String>UTF-16LE</x:String>
+                        <x:String>UTF-16BE</x:String>
                     </local:DrnMenu.menuItems>
                 </local:DrnMenu>
                 <local:DrnMenu x:Name="returnMenu" Padding="10,0" FontFamily="{x:Bind FontFamily, Mode=OneWay}" 

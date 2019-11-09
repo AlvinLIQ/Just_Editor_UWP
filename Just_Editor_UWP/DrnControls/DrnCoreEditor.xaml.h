@@ -119,6 +119,17 @@ namespace Just_Editor_UWP
 			coreWindow->PointerCursor = ref new Windows::UI::Core::CoreCursor(Windows::UI::Core::CoreCursorType::Arrow, 0);
 		}
 
+		void Clear()
+		{
+			textChildren->Items->Clear();
+			currentLength = 0;
+			currentLine = 0;
+			cursor = 0;
+			cursorX = 0;
+
+			UpdateCursor();
+		}
+
 		unsigned int GetCurrentLine()
 		{
 			return currentLine;
