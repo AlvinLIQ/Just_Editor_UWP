@@ -39,11 +39,6 @@ namespace Just_Editor_UWP
 			Windows::Foundation::EventRegistrationToken add(EditorTextChangedEventHandler^ changedHandler) { return (drnCoreEditor->EditorSaveRequested += changedHandler); }
 			void remove(Windows::Foundation::EventRegistrationToken token) { drnCoreEditor->EditorSaveRequested -= token; }
 		};
-
-		void UnloadEditor()
-		{
-			drnCoreEditor->UnloadEditor();
-		}
 		
 		void AppendStr(Platform::String^ newStr) 
 		{ 

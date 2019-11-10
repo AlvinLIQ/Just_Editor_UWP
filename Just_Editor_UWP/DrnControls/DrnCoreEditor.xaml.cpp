@@ -12,11 +12,15 @@ using namespace Just_Editor_UWP;
 using namespace Platform;
 using namespace Windows::Foundation;
 using namespace Windows::System;
+using namespace Windows::UI::Text::Core;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::UI::Xaml::Media;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
+
+bool isRequested;
+
 
 DrnCoreEditor::DrnCoreEditor()
 {
@@ -38,9 +42,7 @@ void DrnCoreEditor::CoreEditor_PointerPressed(Windows::UI::Core::CoreWindow^ sen
 			return;
 		else
 		{
-			isActivated = false;
-			drnCursor->Opacity = 0;
-			insideKeyboard->Hide();
+			RemoveFocus();
 		}
 	}
 	else
@@ -91,26 +93,25 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 	if (!isActivated)
 		return;
 
-	if (e != nullptr)
-	{
-		virtualKeyCode = e->KeyStatus.ScanCode;
-		insideKeyboard->Hide();
-	}
+	
+	MsgTest->Text = e->KeyStatus.IsExtendedKey.ToString() + L"  " + ((unsigned int)e->VirtualKey).ToString() + L"  " + e->VirtualKey.ToString();
+	wchar_t virtualWChar;
+
 	if (coreWindow->GetKeyState(Windows::System::VirtualKey::NumberKeyLock) == Windows::UI::Core::CoreVirtualKeyStates::Locked
-		&& e->VirtualKey >= VirtualKey::NumberPad0 && e->VirtualKey <= VirtualKey::NumberPad9)
-	{
-		virtualKeyCode = e->VirtualKey.ToString()->Data()[9] + 73;
-	}
+		&& e->VirtualKey >= VirtualKey::NumberPad0 && e->VirtualKey <= VirtualKey::Number9)
+		virtualWChar = (wchar_t)e->VirtualKey - 48;
+	else
+		virtualWChar = (wchar_t)e->VirtualKey;
+
 
 	if (isCtrlHeld)
 	{
-		switch (keyMap[virtualKeyCode])
+		switch (virtualWChar)
 		{
 		case L'F':
 			if (searchFlyout != nullptr)
 			{
-				isActivated = false;
-				drnCursor->Opacity = 0;
+				RemoveFocus();
 
 				searchFlyout->ShowAt(this);
 			}
@@ -139,135 +140,136 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 	else
 	{
 		std::wstring wStr;
-
-		switch (virtualKeyCode)
+		virtualWChar %= 128;
+		if (virtualWChar != 13 && (e->KeyStatus.IsExtendedKey || virtualWChar < 32))
 		{
-		case 42:
-		case 54:
-			isShiftHeld = true;
-
-			break;
-		case 29:
-			isCtrlHeld = true;
-
-			break;
-		case 14://Backspace
-			if (IsTextSelected())
-				ClearSelection();
-			else if (cursor)
+			switch (virtualWChar)
 			{
-				wStr = currentBlock->Content->ToString()->Data();
+			case 16:
+				isShiftHeld = true;
+				
+				break;
+			case 17:
+				isCtrlHeld = true;
 
-				currentBlock->Content = ref new String((wStr.substr(0, cursor - 1) + wStr.substr(cursor, currentLength - cursor)).c_str());
-				cursor--;
-				currentLength--;
-				cursorX -= wStr[cursor] < 128 ? fWidth : fBWidth;
-				UpdateCursor();
-			}
-			else if (currentLine)
-			{
-				currentBlock = (TXTBLOCK^)textChildren->Items->GetAt(currentLine - 1);
-				wStr = currentBlock->Content->ToString()->Data();
-				cursor = (unsigned int)wStr.length();
-				currentLength += cursor;
-				cursorX = GetCursorXFromWStr(wStr, cursor);
-				RemoveLine(currentLine--);
-				CursorChanged(cursor, currentLine, textChildren->Items->Size);
-			}
-			break;
-		case 75://Left
-			if (isShiftHeld)
-			{
-				if (cursor)
+				break;
+			case 8://Backspace
+				if (IsTextSelected())
+					ClearSelection();
+				else if (cursor)
 				{
 					wStr = currentBlock->Content->ToString()->Data();
-					cursorX = GetCursorXFromWStr(wStr, --cursor);
-					Select(cursor, currentLine);
+
+					currentBlock->Content = ref new String((wStr.substr(0, cursor - 1) + wStr.substr(cursor, currentLength - cursor)).c_str());
+					cursor--;
+					currentLength--;
+					cursorX -= wStr[cursor] < 128 ? fWidth : fBWidth;
+					UpdateCursor();
 				}
 				else if (currentLine)
 				{
-					currentBlock = (TXTBLOCK^)textChildren->Items->GetAt(--currentLine);
+					currentBlock = (TXTBLOCK^)textChildren->Items->GetAt(currentLine - 1);
 					wStr = currentBlock->Content->ToString()->Data();
-					cursorX = GetCursorXFromWStr(wStr, cursor = (currentLength = (unsigned int)wStr.length()));
-					Select(cursor, currentLine);
+					cursor = (unsigned int)wStr.length();
+					currentLength += cursor;
+					cursorX = GetCursorXFromWStr(wStr, cursor);
+					RemoveLine(currentLine--);
+					CursorChanged(cursor, currentLine, textChildren->Items->Size);
 				}
-				UpdateCursor();
-			}
-			else
-				MoveLeft();
-
-			break;
-		case 77://Right
-			if (isShiftHeld)
-			{
-				if (cursor < currentLength)
-				{
-					wStr = currentBlock->Content->ToString()->Data();
-					cursorX = GetCursorXFromWStr(wStr, ++cursor);
-					Select(cursor, currentLine);
-					UpdateCursor();
-				}
-				else if (currentLine + 1 < textChildren->Items->Size)
-				{
-					currentBlock = (TXTBLOCK^)textChildren->Items->GetAt(++currentLine);
-					currentLength = currentBlock->Content->ToString()->Length();
-					cursorX = 0;
-					Select(cursor = 0, currentLine);
-
-					UpdateCursor();
-				}
-			}
-			else
-				MoveRight();
-
-			break;
-		case 72://Up
-			if (currentLine)
-			{
-				MoveTo(cursor, currentLine - 1);
+				break;
+			case 37://Left
 				if (isShiftHeld)
-					Select(cursor, currentLine);
+				{
+					if (cursor)
+					{
+						wStr = currentBlock->Content->ToString()->Data();
+						cursorX = GetCursorXFromWStr(wStr, --cursor);
+						Select(cursor, currentLine);
+					}
+					else if (currentLine)
+					{
+						currentBlock = (TXTBLOCK^)textChildren->Items->GetAt(--currentLine);
+						wStr = currentBlock->Content->ToString()->Data();
+						cursorX = GetCursorXFromWStr(wStr, cursor = (currentLength = (unsigned int)wStr.length()));
+						Select(cursor, currentLine);
+					}
+					UpdateCursor();
+				}
 				else
+					MoveLeft();
+
+				break;
+			case 39://Right
+				if (isShiftHeld)
+				{
+					if (cursor < currentLength)
+					{
+						wStr = currentBlock->Content->ToString()->Data();
+						cursorX = GetCursorXFromWStr(wStr, ++cursor);
+						Select(cursor, currentLine);
+						UpdateCursor();
+					}
+					else if (currentLine + 1 < textChildren->Items->Size)
+					{
+						currentBlock = (TXTBLOCK^)textChildren->Items->GetAt(++currentLine);
+						currentLength = currentBlock->Content->ToString()->Length();
+						cursorX = 0;
+						Select(cursor = 0, currentLine);
+
+						UpdateCursor();
+					}
+				}
+				else
+					MoveRight();
+
+				break;
+			case 38://Up
+				if (currentLine)
+				{
+					MoveTo(cursor, currentLine - 1);
+					if (isShiftHeld)
+						Select(cursor, currentLine);
+					else
+					{
+						if (IsTextSelected())
+							ClearSelection();
+						selPosition.X = (float)cursorX;
+						selPosition.Y = (float)(currentLine * fHeight);
+					}
+				}
+
+				break;
+			case 40://Down
+				if (currentLine + 1 < textChildren->Items->Size)
+				{
+					MoveTo(cursor, currentLine + 1);
+					if (isShiftHeld)
+						Select(cursor, currentLine);
+					else
+					{
+						if (IsTextSelected())
+							ClearSelection();
+						selPosition.X = (float)cursorX;
+						selPosition.Y = (float)(currentLine * fHeight);
+					}
+				}
+
+				break;
+			case 76://Home
+				MoveTo(0, currentLine);
+
+				break;
+			case 71://End
+				MoveTo(-1, currentLine);
+
+				break;
+			case 79://Delete
+				if (e->VirtualKey != VirtualKey::Decimal)
 				{
 					if (IsTextSelected())
 						ClearSelection();
-					selPosition.X = (float)cursorX;
-					selPosition.Y = (float)(currentLine * fHeight);
-				}
-			}
-
-			break;
-		case 80://Down
-			if (currentLine + 1 < textChildren->Items->Size)
-			{
-				MoveTo(cursor, currentLine + 1);
-				if (isShiftHeld)
-					Select(cursor, currentLine);
-				else
-				{
-					if (IsTextSelected())
-						ClearSelection();
-					selPosition.X = (float)cursorX;
-					selPosition.Y = (float)(currentLine * fHeight);
-				}
-			}
-
-			break;
-		case 71://Home
-			MoveTo(0, currentLine);
-
-			break;
-		case 79://End
-			MoveTo(-1, currentLine);
-
-			break;
-		case 83://Delete
-			if (e->VirtualKey != VirtualKey::Decimal)
-			{
-				if (IsTextSelected())
-					ClearSelection();
-				else if (cursor < currentLength)
-				{
+					else if (cursor < currentLength)
+					{
 
 						wStr = currentBlock->Content->ToString()->Data();
 						if (cursor + 1 == currentLength)
@@ -275,26 +277,19 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 						else
 							currentBlock->Content = ref new String((wStr.substr(0, cursor) + wStr.substr(cursor + 1, currentLength - cursor - 1)).c_str());
 
-					currentLength--;
-					CursorChanged(cursor, currentLine, textChildren->Items->Size);
+						currentLength--;
+						CursorChanged(cursor, currentLine, textChildren->Items->Size);
+					}
+					else if (currentLine + 1 < textChildren->Items->Size)
+					{
+						currentLength += GetLineStrLength(currentLine + 1);
+						currentBlock->Content = GetLineStr(currentLine + 1);
+						RemoveLine(currentLine + 1);
+						CursorChanged(cursor, currentLine, textChildren->Items->Size);
+					}
+					break;
 				}
-				else if (currentLine + 1 < textChildren->Items->Size)
-				{
-					currentLength += GetLineStrLength(currentLine + 1);
-					currentBlock->Content = GetLineStr(currentLine + 1);
-					RemoveLine(currentLine + 1);
-					CursorChanged(cursor, currentLine, textChildren->Items->Size);
-				}
-				break;
 			}
-		default:
-			if (keyMap[virtualKeyCode] == L'_')
-				break;
-			if (IsTextSelected())
-				ClearSelection();
-
-			wchar_t tWChar = (wchar_t) * (char*)((isShiftHeld ? shiftKeyMap : keyMap) + virtualKeyCode);
-			AppendWCharAtCursor(tWChar);
 		}
 	}
 }
@@ -711,9 +706,8 @@ void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr)
 
 void DrnCoreEditor::EditorContent_PointerPressed(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
 {
-	isActivated = true;
 	isTapped = true;
-	drnCursor->Opacity = 1;
+	SetFocus();
 	auto curPoint = e->GetCurrentPoint((UIElement^)textChildren);
 	if (IsTextSelected())
 	{
@@ -746,7 +740,8 @@ void DrnCoreEditor::EditorContent_PointerPressed(Platform::Object^ sender, Windo
 	}
 	pointTimeStamp = curPoint->Timestamp;
 	if (e->Pointer->PointerDeviceType != Windows::Devices::Input::PointerDeviceType::Mouse)
-		insideKeyboard->Show();
+		Windows::UI::ViewManagement::InputPane::GetForCurrentView()->TryShow();
+//		insideKeyboard->Show();
 }
 
 void DrnCoreEditor::EditorContent_PointerEntered(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
@@ -789,9 +784,67 @@ void DrnCoreEditor::CoreEditor_Loaded(Platform::Object^ sender, Windows::UI::Xam
 		= coreWindow->PointerReleased
 		+= ref new TypedEventHandler<Windows::UI::Core::CoreWindow^, Windows::UI::Core::PointerEventArgs^>(this, &DrnCoreEditor::CoreEditor_PointerReleased);
 
-	coreEventToken[5] 
-		= this->Unloaded
-		+= ref new RoutedEventHandler(this, &DrnCoreEditor::CoreEditor_Unloaded);
+	if (coreTextContext == nullptr)
+	{
+		coreTextContext = CoreTextServicesManager::GetForCurrentView()->CreateEditContext();
+		coreTextContext->InputPaneDisplayPolicy = CoreTextInputPaneDisplayPolicy::Manual;
+		coreTextContext->InputScope = CoreTextInputScope::Text;
+		coreTextContext->TextRequested 
+			+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextTextRequestedEventArgs^>
+			(this, &Just_Editor_UWP::DrnCoreEditor::CoreEditContext_TextRequested);
+		coreTextContext->SelectionRequested 
+			+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextSelectionRequestedEventArgs^>
+			([](Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextSelectionRequestedEventArgs^ args)
+				{
+					
+				});
+		coreTextContext->CompositionStarted 
+			+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextCompositionStartedEventArgs^>
+			([](Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextCompositionStartedEventArgs^ args)
+				{
+				});
+		coreTextContext->CompositionCompleted
+			+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextCompositionCompletedEventArgs^>
+			([](Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextCompositionCompletedEventArgs^ args)
+				{
+				});
+	}
+	coreEventToken[5]
+		= coreTextContext->TextUpdating
+		+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextTextUpdatingEventArgs^>(this, &Just_Editor_UWP::DrnCoreEditor::CoreEditContext_TextUpdating);
+
+}
+
+void DrnCoreEditor::CoreEditContext_TextRequested(Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextTextRequestedEventArgs^ args)
+{
+
+}
+
+void DrnCoreEditor::CoreEditContext_TextUpdating(Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextTextUpdatingEventArgs^ args)
+{
+	if (IsTextSelected())
+		ClearSelection();
+
+	if (args->Range.EndCaretPosition - args->Range.StartCaretPosition > 1)
+		AppendStrAtCursor(args->Text->ToString()->Data());
+	else
+		AppendWCharAtCursor(args->Text->ToString()->Data()[0]);
+//	AppendWCharAtCursor(virtualWChar);
+}
+
+void DrnCoreEditor::UnloadEditor()
+{
+	if (coreWindow == nullptr)
+		return;
+
+	coreWindow->KeyDown -= coreEventToken[0];
+	coreWindow->KeyUp -= coreEventToken[1];
+	coreWindow->PointerPressed -= coreEventToken[2];
+	coreWindow->PointerMoved -= coreEventToken[3];
+	coreWindow->PointerReleased -= coreEventToken[4];
+	coreWindow->PointerCursor = ref new Windows::UI::Core::CoreCursor(Windows::UI::Core::CoreCursorType::Arrow, 0);
+
+	coreTextContext->TextUpdating -= coreEventToken[5];
 }
 
 
@@ -829,4 +882,5 @@ void Just_Editor_UWP::DrnCoreEditor::menuItem_Click(Platform::Object^ sender, Wi
 		break;
 	}
 }
+
 

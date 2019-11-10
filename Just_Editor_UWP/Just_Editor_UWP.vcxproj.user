@@ -4,9 +4,9 @@
     <DebuggerFlavor>WindowsDeviceDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <UapAppxPackageBuildMode>StoreOnly</UapAppxPackageBuildMode>
+    <UapAppxPackageBuildMode>SideloadOnly</UapAppxPackageBuildMode>
     <AppxShowAllApps>True</AppxShowAllApps>
-    <AppxBuildConfigurationSelection>x86|x64|arm</AppxBuildConfigurationSelection>
+    <AppxBuildConfigurationSelection>arm</AppxBuildConfigurationSelection>
     <PackageOptionalProjectsInIdeBuilds>False</PackageOptionalProjectsInIdeBuilds>
     <Source>F:\UWP\Just_Editor_UWP\Just_Editor_UWP\Assets\JustEditor_Logo.png</Source>
     <SmallTileSource>F:\UWP\Just_Editor_UWP\Just_Editor_UWP\Assets\JustEditor_Logo.png</SmallTileSource>

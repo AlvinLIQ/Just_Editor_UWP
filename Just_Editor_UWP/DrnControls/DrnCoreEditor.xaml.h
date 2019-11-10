@@ -106,19 +106,6 @@ namespace Just_Editor_UWP
 //			drnCursor->Opacity = 1;
 		}
 
-		void UnloadEditor()
-		{
-			if (coreWindow == nullptr)
-				return;
-
-			coreWindow->KeyDown -= coreEventToken[0];
-			coreWindow->KeyUp -= coreEventToken[1];
-			coreWindow->PointerPressed -= coreEventToken[2];
-			coreWindow->PointerMoved -= coreEventToken[3];
-			coreWindow->PointerReleased -= coreEventToken[4];
-			coreWindow->PointerCursor = ref new Windows::UI::Core::CoreCursor(Windows::UI::Core::CoreCursorType::Arrow, 0);
-		}
-
 		void Clear()
 		{
 			textChildren->Items->Clear();
@@ -130,12 +117,25 @@ namespace Just_Editor_UWP
 			UpdateCursor();
 		}
 
+		void SetFocus()
+		{
+			isActivated = true;
+			drnCursor->Opacity = 1;
+			coreTextContext->NotifyFocusEnter();
+			Focus(Windows::UI::Xaml::FocusState::Programmatic);
+		}
+		void RemoveFocus()
+		{
+			isActivated = false;
+			drnCursor->Opacity = 0;
+			coreTextContext->NotifyFocusLeave();
+//			Focus(Windows::UI::Xaml::FocusState::Unfocused);
+		}
+
 		unsigned int GetCurrentLine()
 		{
 			return currentLine;
 		}
-
-		property bool isActivated;
 
 		property DrnKeyboard^ insideKeyboard;
 		property Windows::UI::Xaml::Controls::Flyout^ searchFlyout;
@@ -145,13 +145,17 @@ namespace Just_Editor_UWP
 		TXTBLOCK^ currentBlock = nullptr;
 
 		Platform::Agile<Windows::UI::Core::CoreWindow^> coreWindow;
-		Windows::Foundation::EventRegistrationToken coreEventToken[5];
+		Windows::UI::Text::Core::CoreTextEditContext^ coreTextContext = nullptr;
+
+		Windows::Foundation::EventRegistrationToken coreEventToken[6];
+		
 		Windows::Foundation::Point selPosition;
 
 		bool isTapped = false;
 		bool isShiftHeld = false;
 		bool isCtrlHeld = false;
 		bool isWord = false;
+		bool isActivated = false;
 
 		unsigned long long int pointTimeStamp;
 
@@ -201,6 +205,9 @@ namespace Just_Editor_UWP
 		void CoreEditor_PointerPressed(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::PointerEventArgs^ e);
 		void CoreEditor_PointerReleased(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::PointerEventArgs^ e);
 		void CoreEditor_PointerMoved(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::PointerEventArgs^ e);
+		void CoreEditContext_TextRequested(Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextTextRequestedEventArgs^ args);
+		void CoreEditContext_TextUpdating(Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextTextUpdatingEventArgs^ args);
+		void UnloadEditor();
 		void SetCursor(double x, double y)
 		{
 			cursorTrans->X = x;
