@@ -39,7 +39,7 @@ namespace Just_Editor_UWP
 			{
 				this->thisTab = newTab;	
 
-				UpdateEditor();
+				UpdateEditor(Windows::Storage::Streams::UnicodeEncoding::Utf8);
 			}
 		}
 		property DrnCodeEditor^ codeEditor
@@ -47,7 +47,7 @@ namespace Just_Editor_UWP
 			DrnCodeEditor^ get() { return drnCodeEditor; }
 		};
 
-		void UpdateEditor();
+		void UpdateEditor(Windows::Storage::Streams::UnicodeEncoding encodeMode);
 		void drnCodeEditor_EditorSavedRequested();
 	private:
 		DrnTab^ thisTab = nullptr;
@@ -58,5 +58,6 @@ namespace Just_Editor_UWP
 		void findNextBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void UndoBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void RedoBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void drnCodeEditor_EditorReloadRequested(Windows::Storage::Streams::UnicodeEncoding encodeMode);
 	};
 }

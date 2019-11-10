@@ -13,6 +13,7 @@ const wchar_t returnMap[][3] = {L"\r\n", L"\n", L"\r"};
 
 namespace Just_Editor_UWP
 {
+	public delegate void EncodeChangedEventHandler(Windows::Storage::Streams::UnicodeEncoding encodeMode);
 	[Windows::Foundation::Metadata::WebHostHidden]
 	public ref class DrnCodeEditor sealed
 	{
@@ -25,6 +26,8 @@ namespace Just_Editor_UWP
 		{
 			DrnCoreEditor^ get() { return drnCoreEditor; }
 		};
+
+		event EncodeChangedEventHandler^ EditorReloadRequested;
 
 		event EditorTextChangedEventHandler^ EditorTextChanged 
 		{

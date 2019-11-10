@@ -58,12 +58,15 @@ void Just_Editor_UWP::DrnCodeEditor::encodeMenu_MenuSelected(Platform::Object^ s
 	{
 	case 0:
 		//UTF-8
+		EditorReloadRequested(Windows::Storage::Streams::UnicodeEncoding::Utf8);
 		break;
 	case 1:
 		//UTF-16LE
+		EditorReloadRequested(Windows::Storage::Streams::UnicodeEncoding::Utf16LE);
 		break;
 	case 2:
 		//UTF-16BE
+		EditorReloadRequested(Windows::Storage::Streams::UnicodeEncoding::Utf16BE);
 		break;
 	}
 }

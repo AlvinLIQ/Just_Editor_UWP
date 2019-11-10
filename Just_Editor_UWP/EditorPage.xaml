@@ -40,6 +40,7 @@
             </Button>
         </StackPanel>
         <local:DrnCodeEditor x:Name="drnCodeEditor" Grid.Row="1" Background="{x:Bind AppConfig.SubBackBrush}" LineNumBackground="{x:Bind AppConfig.SelectedBrush}"
-                             EditorTextChanged="drnCodeEditor_EditorTextChanged" EditorSavedRequested="drnCodeEditor_EditorSavedRequested"/>
+                             EditorTextChanged="drnCodeEditor_EditorTextChanged" EditorSavedRequested="drnCodeEditor_EditorSavedRequested"
+                             EditorReloadRequested="drnCodeEditor_EditorReloadRequested"/>
     </Grid>
 </ContentPresenter>

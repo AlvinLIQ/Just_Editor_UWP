@@ -19,11 +19,11 @@ EditorPage::EditorPage()
 	drnCodeEditor->coreEditor->searchFlyout = searchFlyout;
 }
 
-void Just_Editor_UWP::EditorPage::UpdateEditor()
+void Just_Editor_UWP::EditorPage::UpdateEditor(Windows::Storage::Streams::UnicodeEncoding encodeMode)
 {
 	if (thisTab != nullptr && thisTab->FileDialog != nullptr && thisTab->FileDialog->DialogFile != nullptr)
 	{
-		concurrency::create_task(Drn_UWP::ReadTextStorageFile(thisTab->FileDialog->DialogFile)).then([this](Platform::String^ fileStr)
+		concurrency::create_task(Drn_UWP::ReadTextStorageFile(thisTab->FileDialog->DialogFile, encodeMode)).then([this](Platform::String^ fileStr)
 			{
 				drnCodeEditor->AppendStr(fileStr);
 				thisTab->SetExtraStatus(L"");
@@ -124,4 +124,14 @@ void Just_Editor_UWP::EditorPage::UndoBtn_Click(Platform::Object^ sender, Window
 void Just_Editor_UWP::EditorPage::RedoBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 
+}
+
+
+void Just_Editor_UWP::EditorPage::drnCodeEditor_EditorReloadRequested(Windows::Storage::Streams::UnicodeEncoding encodeMode)
+{
+	if (thisTab == nullptr || thisTab->FileDialog == nullptr || thisTab->FileDialog->DialogFile == nullptr)
+		return;
+
+	drnCodeEditor->Clear();
+	UpdateEditor(encodeMode);
 }
