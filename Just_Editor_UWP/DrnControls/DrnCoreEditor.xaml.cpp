@@ -19,7 +19,7 @@ using namespace Windows::UI::Xaml::Media;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-bool isRequested;
+bool isRequested = false;
 
 
 DrnCoreEditor::DrnCoreEditor()
@@ -94,14 +94,7 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 		return;
 
 	
-	MsgTest->Text = e->KeyStatus.IsExtendedKey.ToString() + L"  " + ((unsigned int)e->VirtualKey).ToString() + L"  " + e->VirtualKey.ToString();
-	wchar_t virtualWChar;
-
-	if (coreWindow->GetKeyState(Windows::System::VirtualKey::NumberKeyLock) == Windows::UI::Core::CoreVirtualKeyStates::Locked
-		&& e->VirtualKey >= VirtualKey::NumberPad0 && e->VirtualKey <= VirtualKey::Number9)
-		virtualWChar = (wchar_t)e->VirtualKey - 48;
-	else
-		virtualWChar = (wchar_t)e->VirtualKey;
+	wchar_t	virtualWChar = (wchar_t)e->VirtualKey;
 
 
 	if (isCtrlHeld)
@@ -287,10 +280,13 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 						RemoveLine(currentLine + 1);
 						CursorChanged(cursor, currentLine, textChildren->Items->Size);
 					}
-					break;
 				}
+				break;
 			}
 		}
+		else if (virtualWChar == 13)
+		AppendWCharAtCursor((wchar_t)13);
+
 	}
 }
 
@@ -792,6 +788,12 @@ void DrnCoreEditor::CoreEditor_Loaded(Platform::Object^ sender, Windows::UI::Xam
 		coreTextContext->TextRequested 
 			+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextTextRequestedEventArgs^>
 			(this, &Just_Editor_UWP::DrnCoreEditor::CoreEditContext_TextRequested);
+		coreTextContext->LayoutRequested 
+			+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextLayoutRequestedEventArgs^>
+			([](Windows::UI::Text::Core::CoreTextEditContext ^ sender, Windows::UI::Text::Core::CoreTextLayoutRequestedEventArgs ^ args) 
+		{
+					
+		});
 		coreTextContext->SelectionRequested 
 			+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextSelectionRequestedEventArgs^>
 			([](Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextSelectionRequestedEventArgs^ args)
@@ -825,10 +827,20 @@ void DrnCoreEditor::CoreEditContext_TextUpdating(Windows::UI::Text::Core::CoreTe
 	if (IsTextSelected())
 		ClearSelection();
 
+
 	if (args->Range.EndCaretPosition - args->Range.StartCaretPosition > 1)
+	{
+		//	MsgTrans->X = cursorTrans->X;
+		//	MsgTrans->Y = cursorTrans->Y;
+		//	MsgTest->Text = args->Text;
 		AppendStrAtCursor(args->Text->ToString()->Data());
+	}
 	else
+	{
+		MsgTest->Text = L"";
 		AppendWCharAtCursor(args->Text->ToString()->Data()[0]);
+	}
+//	isRequested = false;
 //	AppendWCharAtCursor(virtualWChar);
 }
 

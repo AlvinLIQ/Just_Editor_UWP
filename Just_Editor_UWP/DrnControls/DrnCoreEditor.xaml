@@ -49,7 +49,11 @@
                 </Rectangle>
                 <ItemsControl x:Name="textChildren" VerticalAlignment="Top" xml:space="preserve" AutomationProperties.AccessibilityView="Raw">
                     </ItemsControl>
-                <TextBlock x:Name="MsgTest" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBlock x:Name="MsgTest" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <TextBlock.RenderTransform>
+                        <TranslateTransform x:Name="MsgTrans"/>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
                 <TextBlock x:Name="ChrBlock" Text="a" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity="0"/>
                 <TextBlock x:Name="WChrBlock" Text="哈" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity="0"/>
             </Grid>
