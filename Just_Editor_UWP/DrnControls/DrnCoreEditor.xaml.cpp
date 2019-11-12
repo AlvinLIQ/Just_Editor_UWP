@@ -25,10 +25,6 @@ bool isRequested = false;
 DrnCoreEditor::DrnCoreEditor()
 {
 	InitializeComponent();
-	insideKeyboard = ref new DrnKeyboard;
-	insideKeyboard->Height = 0;
-	insideKeyboard->drnKeyDown += ref new Just_Editor_UWP::drnKeyEventHandler(this, &DrnCoreEditor::DrnKeyboard_drnKeyDown);
-	insideKeyboard->drnKeyUp += ref new Just_Editor_UWP::drnKeyEventHandler(this, &DrnCoreEditor::DrnKeyboard_drnKeyUp);
 
 	AppendBlockAtEnd();
 }
@@ -595,64 +591,7 @@ void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr)
 		afterCursor = afterCursor.substr(cursor, tLen = currentLength - cursor);
 		currentLength = cursor;
 	}
-	/*
-	double fwidth = fWidth, fbwidth = fBWidth;
-	concurrency::create_task([newWStr = wStr, col = cursor, x = cursorX, fwidth, fbwidth]()
-		{
-			TXTBLOCK^ currentBlock;
-			Platform::String^ tLineStr = L"";
-			unsigned int cursor = col, currentLength = col;
-			double cursorX = x;
-			Platform::Array<TXTBLOCK^>^ newBlocksContainer;
-			newBlocksContainer->set(newBlocksContainer->Length, newTextBlock);
-			for (unsigned int sIndex = 0; newWStr[sIndex]; sIndex++)
-			{
-				if (newWStr[sIndex] == L'\r' && newWStr[sIndex + 1] == L'\n')
-				{
-					sIndex++;
-				}
-				if (newWStr[sIndex] == L'\n' || newWStr[sIndex] == L'\r')
-				{
-					currentBlock->Content = tLineStr;
-					tLineStr = L"";
-					newBlocksContainer->set(newBlocksContainer->Length, currentBlock = newTextBlock);
-					cursorX = 0;
-					currentLength = 0;
-					cursor = 0;
-				}
-				else
-				{
-					if (newWStr[sIndex] == L'\t')
-					{
-						String^ sTab = L"";
-						for (unsigned int i = 4 - cursor % 4; i-- > 0; cursor++, currentLength++, cursorX += fwidth)
-						{
-							sTab += L" ";
-						}
-						tLineStr = tLineStr + sTab;
-					}
-					else
-					{
-						tLineStr = tLineStr + newWStr[sIndex];
-						cursor++;
-						currentLength++;
-						cursorX += newWStr[sIndex] < 128 ? fwidth : fbwidth;
-					}
-				}
-			}
-			currentBlock->Content = tLineStr;
-		//	return newBlocksContainer;
-		}).then([this, afterCursor, tLen]() 
-			{
-				if (afterCursor[0])
-				{
-					currentBlock->Content += ref new String(afterCursor.c_str());
-					currentLength += tLen;
-				}
 
-				NotifyEditorUpdate();
-			}, concurrency::task_continuation_context::use_current());
-		*/
 	for (unsigned int sIndex = 0; newWStr[sIndex]; sIndex++)
 	{
 		if (newWStr[sIndex] == L'\r' && newWStr[sIndex + 1] == L'\n')
@@ -735,8 +674,7 @@ void DrnCoreEditor::EditorContent_PointerPressed(Platform::Object^ sender, Windo
 		selPosition.Y = (float)currentLine * fHeight;
 	}
 	pointTimeStamp = curPoint->Timestamp;
-	if (e->Pointer->PointerDeviceType != Windows::Devices::Input::PointerDeviceType::Mouse)
-		Windows::UI::ViewManagement::InputPane::GetForCurrentView()->TryShow();
+
 //		insideKeyboard->Show();
 }
 
@@ -790,10 +728,17 @@ void DrnCoreEditor::CoreEditor_Loaded(Platform::Object^ sender, Windows::UI::Xam
 			(this, &Just_Editor_UWP::DrnCoreEditor::CoreEditContext_TextRequested);
 		coreTextContext->LayoutRequested 
 			+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextLayoutRequestedEventArgs^>
-			([](Windows::UI::Text::Core::CoreTextEditContext ^ sender, Windows::UI::Text::Core::CoreTextLayoutRequestedEventArgs ^ args) 
-		{
-					
-		});
+			([this](Windows::UI::Text::Core::CoreTextEditContext ^ sender, Windows::UI::Text::Core::CoreTextLayoutRequestedEventArgs ^ args) 
+				{
+					float scaleFactor = (float)Windows::Graphics::Display::DisplayInformation::GetForCurrentView()->RawPixelsPerViewPixel;
+					Rect controlRect = Rect((coreWindow->Bounds.X + (float)(cursorTrans->X - editorScrollViewer->HorizontalOffset)) * scaleFactor, 
+						(coreWindow->Bounds.Y + (float)(cursorTrans->Y - editorScrollViewer->VerticalOffset) + 75) * scaleFactor,
+						textChildren->RenderSize.Width, fHeight);
+
+					auto request = args->Request;
+					request->LayoutBounds->ControlBounds = controlRect;
+					request->LayoutBounds->TextBounds = controlRect;
+				});
 		coreTextContext->SelectionRequested 
 			+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextSelectionRequestedEventArgs^>
 			([](Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextSelectionRequestedEventArgs^ args)
@@ -819,29 +764,30 @@ void DrnCoreEditor::CoreEditor_Loaded(Platform::Object^ sender, Windows::UI::Xam
 
 void DrnCoreEditor::CoreEditContext_TextRequested(Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextTextRequestedEventArgs^ args)
 {
-
 }
 
 void DrnCoreEditor::CoreEditContext_TextUpdating(Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextTextUpdatingEventArgs^ args)
 {
 	if (IsTextSelected())
 		ClearSelection();
-
-
-	if (args->Range.EndCaretPosition - args->Range.StartCaretPosition > 1)
+	wchar_t fChar = *args->Text->Data();
+	if (!fChar)
+		return;
+//	MsgTest->Text = args->InputLanguage->LanguageTag;
+	if (fChar != L' ' && args->InputLanguage->LanguageTag == L"zh-Hans-CN")
 	{
-		//	MsgTrans->X = cursorTrans->X;
-		//	MsgTrans->Y = cursorTrans->Y;
-		//	MsgTest->Text = args->Text;
-		AppendStrAtCursor(args->Text->ToString()->Data());
+		if (fChar >= 128 && args->Range.EndCaretPosition - args->Range.StartCaretPosition)
+			AppendStrAtCursor(args->Text->Data());
+//		lastCol = args->Range.EndCaretPosition;
 	}
 	else
 	{
-		MsgTest->Text = L"";
-		AppendWCharAtCursor(args->Text->ToString()->Data()[0]);
+		if (args->Range.EndCaretPosition - args->Range.StartCaretPosition > 1)
+			AppendStrAtCursor(args->Text->Data());
+		else
+			AppendWCharAtCursor(fChar);
 	}
-//	isRequested = false;
-//	AppendWCharAtCursor(virtualWChar);
+
 }
 
 void DrnCoreEditor::UnloadEditor()

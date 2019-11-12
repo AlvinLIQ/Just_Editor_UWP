@@ -7,7 +7,7 @@
 
 #include "DrnControls/DrnCoreEditor.g.h"
 #include "DrnCoreEditorSelectionBlock.xaml.h"
-#include "DrnKeyboard.xaml.h"
+#include "DrnHeaders/Drn_UWP.h"
 
 #define fHeight 23
 #define fWidth ChrBlock->ActualWidth
@@ -122,6 +122,7 @@ namespace Just_Editor_UWP
 			isActivated = true;
 			drnCursor->Opacity = 1;
 			coreTextContext->NotifyFocusEnter();
+			Windows::UI::ViewManagement::InputPane::GetForCurrentView()->TryShow();
 			Focus(Windows::UI::Xaml::FocusState::Programmatic);
 		}
 		void RemoveFocus()
@@ -129,6 +130,7 @@ namespace Just_Editor_UWP
 			isActivated = false;
 			drnCursor->Opacity = 0;
 			coreTextContext->NotifyFocusLeave();
+			Windows::UI::ViewManagement::InputPane::GetForCurrentView()->TryHide();
 //			Focus(Windows::UI::Xaml::FocusState::Unfocused);
 		}
 
@@ -137,7 +139,6 @@ namespace Just_Editor_UWP
 			return currentLine;
 		}
 
-		property DrnKeyboard^ insideKeyboard;
 		property Windows::UI::Xaml::Controls::Flyout^ searchFlyout;
 	private:
 		Windows::UI::Xaml::Media::SolidColorBrush^ IdentifiersHighlightColor = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Colors::DeepSkyBlue);
@@ -160,8 +161,8 @@ namespace Just_Editor_UWP
 		unsigned long long int pointTimeStamp;
 
 		float leftMargin = 0, topMargin = 0;
-		unsigned int currentLine = 0, cursor = 0, currentLength = 0, virtualKeyCode = -1, lastCol = 0, lastLn = 0;
-		double cursorX = 0;
+		unsigned int currentLine = 0, cursor = 0, currentLength = 0, virtualKeyCode = -1, lastCol = 0, lastWordLen = 0;
+		double cursorX = 0, thisWordX = 0;
 
 		std::wstring identifiersMap[5] = { L"const", L"int", L"internal", L"char", L"wchar_t" };
 

@@ -20,9 +20,6 @@ using namespace Windows::UI::Xaml::Media;
 DrnCodeEditor::DrnCodeEditor()
 {
 	InitializeComponent();
-	mainGrid->Children->Append(drnCoreEditor->insideKeyboard);
-	mainGrid->SetRow(drnCoreEditor->insideKeyboard, 1);
-	mainGrid->SetColumnSpan(drnCoreEditor->insideKeyboard, 2);
 	returnMenu->SelectedIndex = 0;
 	encodeMenu->SelectedIndex = 0;
 	highlightMenu->SelectedIndex = 0;

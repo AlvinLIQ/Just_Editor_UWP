@@ -20,7 +20,7 @@
                             <RotateTransform Angle="-10"/>
                         </FontIcon.RenderTransform>
                     </FontIcon>
-                    <ContentPresenter Content="Ver.0.1.5-Beta" FontSize="13" HorizontalAlignment="Right"/>
+                    <ContentPresenter Content="Ver.0.1.6-Beta" FontSize="13" HorizontalAlignment="Right"/>
                     <ContentPresenter Content="Just Editor" FontSize="50"/>
                     <ContentPresenter Content="New" FontSize="30"/>
                     <StackPanel>

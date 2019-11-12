@@ -232,9 +232,6 @@
     <Page Include="DrnControls\DrnFileDialog.xaml">
       <Filter>DrnControls</Filter>
     </Page>
-    <Page Include="DrnControls\DrnKeyboard.xaml">
-      <Filter>DrnControls</Filter>
-    </Page>
     <Page Include="DrnControls\DrnMenu.xaml">
       <Filter>DrnControls</Filter>
     </Page>

@@ -128,7 +128,7 @@
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundle>Always</AppxBundle>
-    <AppxBundlePlatforms>arm</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <PackageCertificateThumbprint>C097EA9CC89BD3F47AB084AC987AC1A083C60A74</PackageCertificateThumbprint>
   </PropertyGroup>
@@ -209,9 +209,6 @@
     <ClInclude Include="DrnControls\DrnFileDialog.xaml.h">
       <DependentUpon>DrnControls\DrnFileDialog.xaml</DependentUpon>
     </ClInclude>
-    <ClInclude Include="DrnControls\DrnKeyboard.xaml.h">
-      <DependentUpon>DrnControls\DrnKeyboard.xaml</DependentUpon>
-    </ClInclude>
     <ClInclude Include="DrnControls\DrnMenu.xaml.h">
       <DependentUpon>DrnControls\DrnMenu.xaml</DependentUpon>
     </ClInclude>
@@ -254,7 +251,6 @@
     <Page Include="DrnControls\DrnCoreEditor.xaml" />
     <Page Include="DrnControls\DrnCoreEditorSelectionBlock.xaml" />
     <Page Include="DrnControls\DrnFileDialog.xaml" />
-    <Page Include="DrnControls\DrnKeyboard.xaml" />
     <Page Include="DrnControls\DrnMenu.xaml" />
     <Page Include="DrnControls\DrnTab.xaml" />
     <Page Include="DrnControls\DrnTabPanel.xaml" />
@@ -355,9 +351,6 @@
     </ClCompile>
     <ClCompile Include="DrnControls\DrnFileDialog.xaml.cpp">
       <DependentUpon>DrnControls\DrnFileDialog.xaml</DependentUpon>
-    </ClCompile>
-    <ClCompile Include="DrnControls\DrnKeyboard.xaml.cpp">
-      <DependentUpon>DrnControls\DrnKeyboard.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="DrnControls\DrnMenu.xaml.cpp">
       <DependentUpon>DrnControls\DrnMenu.xaml</DependentUpon>
