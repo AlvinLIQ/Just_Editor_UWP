@@ -54,6 +54,7 @@
                         <TranslateTransform x:Name="MsgTrans"/>
                     </ContentPresenter.RenderTransform>
                 </ContentPresenter>
+                <!--TextBlock x:Name="testBlock" HorizontalAlignment="Right" VerticalAlignment="Top"/-->
                 <TextBlock x:Name="ChrBlock" Text="a" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity="0"/>
                 <TextBlock x:Name="WChrBlock" Text="哈" HorizontalAlignment="Right" VerticalAlignment="Top" Opacity="0"/>
             </Grid>

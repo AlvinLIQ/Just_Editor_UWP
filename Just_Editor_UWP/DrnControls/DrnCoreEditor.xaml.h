@@ -152,6 +152,8 @@ namespace Just_Editor_UWP
 		
 		Windows::Foundation::Point selPosition;
 
+		Windows::UI::Text::Core::CoreTextRange lastRange;
+
 		bool isTapped = false;
 		bool isShiftHeld = false;
 		bool isCtrlHeld = false;
@@ -161,7 +163,7 @@ namespace Just_Editor_UWP
 		unsigned long long int pointTimeStamp;
 
 		float leftMargin = 0, topMargin = 0;
-		unsigned int currentLine = 0, cursor = 0, currentLength = 0, virtualKeyCode = -1, lastCol = 0, lastWordLen = 0;
+		unsigned int currentLine = 0, cursor = 0, currentLength = 0, virtualKeyCode = -1, lastWordLen = 0;
 		double cursorX = 0, thisWordX = 0;
 
 		std::wstring identifiersMap[5] = { L"const", L"int", L"internal", L"char", L"wchar_t" };

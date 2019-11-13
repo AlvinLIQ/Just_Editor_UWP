@@ -19,7 +19,7 @@ using namespace Windows::UI::Xaml::Media;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-bool isIME = false;
+bool isIME = false, isIMEStopped = true;
 
 
 DrnCoreEditor::DrnCoreEditor()
@@ -747,15 +747,26 @@ void DrnCoreEditor::CoreEditor_Loaded(Platform::Object^ sender, Windows::UI::Xam
 				});
 		coreTextContext->CompositionStarted 
 			+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextCompositionStartedEventArgs^>
-			([](Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextCompositionStartedEventArgs^ args)
+			([this](Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextCompositionStartedEventArgs^ args)
 				{
 					isIME = true;
+					isIMEStopped = false;
+					lastRange.StartCaretPosition = 0;
+					lastRange.EndCaretPosition = 0;
 				});
 		coreTextContext->CompositionCompleted
 			+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextCompositionCompletedEventArgs^>
 			([this](Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextCompositionCompletedEventArgs^ args)
 				{
 					isIME = false;
+					CoreTextRange tRange, nRange;
+					tRange.StartCaretPosition = 0;
+					tRange.EndCaretPosition = lastRange.EndCaretPosition;
+					nRange.StartCaretPosition = 0;
+					nRange.EndCaretPosition = 0;
+					sender->NotifyTextChanged(tRange, 0, nRange);
+					if (isIMEStopped)
+						AppendStrAtCursor(MsgTest->Content->ToString()->Data());
 					MsgTest->Content = L"";
 				});
 	}
@@ -779,15 +790,28 @@ void DrnCoreEditor::CoreEditContext_TextUpdating(Windows::UI::Text::Core::CoreTe
 //	MsgTest->Text = args->InputLanguage->LanguageTag;
 	if (isIME)
 	{
-		if (fChar >= 128 && args->Range.EndCaretPosition - args->Range.StartCaretPosition)
-			AppendStrAtCursor(args->Text->Data());
+		MsgTrans->X = cursorTrans->X;
+		MsgTrans->Y = cursorTrans->Y;
+
+		bool isAscii = args->Text->Data()[0] < 128;
+		if (isAscii && args->Range.EndCaretPosition == args->Range.StartCaretPosition)
+		{
+			MsgTest->Content += args->Text;
+			isIMEStopped = false;
+		}
+		else if (isAscii && args->NewSelection.EndCaretPosition < lastRange.EndCaretPosition)
+		{
+			std::wstring imeStr = MsgTest->Content->ToString()->Data();
+			MsgTest->Content = ref new Platform::String(imeStr.substr(0, imeStr.length() - (args->Range.EndCaretPosition - args->Range.StartCaretPosition)).c_str());
+			if (lastRange.EndCaretPosition > 1)
+				MsgTest->Content += args->Text;
+			isIMEStopped = false;
+		}
 		else
 		{
-			MsgTrans->X = cursorTrans->X;
-			MsgTrans->Y = cursorTrans->Y;
 			MsgTest->Content = args->Text;
+			isIMEStopped = true;
 		}
-//		lastCol = args->Range.EndCaretPosition;
 	}
 	else
 	{
@@ -795,8 +819,14 @@ void DrnCoreEditor::CoreEditContext_TextUpdating(Windows::UI::Text::Core::CoreTe
 			AppendStrAtCursor(args->Text->Data());
 		else
 			AppendWCharAtCursor(fChar);
+		CoreTextRange tRange, nRange;
+		tRange.StartCaretPosition = 0;
+		tRange.EndCaretPosition = args->NewSelection.EndCaretPosition;
+		nRange.StartCaretPosition = 0;
+		nRange.EndCaretPosition = 0;
+		sender->NotifyTextChanged(tRange, 0, nRange);
 	}
-
+	lastRange.EndCaretPosition = args->NewSelection.EndCaretPosition;
 }
 
 void DrnCoreEditor::UnloadEditor()
