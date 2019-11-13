@@ -19,7 +19,7 @@ using namespace Windows::UI::Xaml::Media;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-bool isRequested = false;
+bool isIME = false;
 
 
 DrnCoreEditor::DrnCoreEditor()
@@ -749,11 +749,14 @@ void DrnCoreEditor::CoreEditor_Loaded(Platform::Object^ sender, Windows::UI::Xam
 			+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextCompositionStartedEventArgs^>
 			([](Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextCompositionStartedEventArgs^ args)
 				{
+					isIME = true;
 				});
 		coreTextContext->CompositionCompleted
 			+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextCompositionCompletedEventArgs^>
-			([](Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextCompositionCompletedEventArgs^ args)
+			([this](Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextCompositionCompletedEventArgs^ args)
 				{
+					isIME = false;
+					MsgTest->Content = L"";
 				});
 	}
 	coreEventToken[5]
@@ -774,10 +777,16 @@ void DrnCoreEditor::CoreEditContext_TextUpdating(Windows::UI::Text::Core::CoreTe
 	if (!fChar)
 		return;
 //	MsgTest->Text = args->InputLanguage->LanguageTag;
-	if (fChar != L' ' && args->InputLanguage->LanguageTag == L"zh-Hans-CN")
+	if (isIME)
 	{
 		if (fChar >= 128 && args->Range.EndCaretPosition - args->Range.StartCaretPosition)
 			AppendStrAtCursor(args->Text->Data());
+		else
+		{
+			MsgTrans->X = cursorTrans->X;
+			MsgTrans->Y = cursorTrans->Y;
+			MsgTest->Content = args->Text;
+		}
 //		lastCol = args->Range.EndCaretPosition;
 	}
 	else

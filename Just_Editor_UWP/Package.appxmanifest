@@ -9,7 +9,7 @@
   <Identity
     Name="10688Duronsoft.JustEditor"
     Publisher="CN=45CC454F-71BD-4227-BA24-168CAF6CC92E"
-    Version="0.1.6.0" />
+    Version="0.1.7.0" />
 
   <mp:PhoneIdentity PhoneProductId="efa895ad-01a2-47d8-824e-f61d904b19e6" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
