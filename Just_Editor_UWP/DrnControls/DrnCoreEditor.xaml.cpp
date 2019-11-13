@@ -767,6 +767,8 @@ void DrnCoreEditor::CoreEditor_Loaded(Platform::Object^ sender, Windows::UI::Xam
 					sender->NotifyTextChanged(tRange, 0, nRange);
 					if (isIMEStopped)
 						AppendStrAtCursor(MsgTest->Content->ToString()->Data());
+					else
+						isIMEStopped = true;
 					MsgTest->Content = L"";
 				});
 	}
@@ -793,7 +795,7 @@ void DrnCoreEditor::CoreEditContext_TextUpdating(Windows::UI::Text::Core::CoreTe
 		MsgTrans->X = cursorTrans->X;
 		MsgTrans->Y = cursorTrans->Y;
 
-		bool isAscii = args->Text->Data()[0] < 128;
+		bool isAscii = *args->Text->Data() < 128;
 		if (isAscii && args->Range.EndCaretPosition == args->Range.StartCaretPosition)
 		{
 			MsgTest->Content += args->Text;
@@ -803,9 +805,9 @@ void DrnCoreEditor::CoreEditContext_TextUpdating(Windows::UI::Text::Core::CoreTe
 		{
 			std::wstring imeStr = MsgTest->Content->ToString()->Data();
 			MsgTest->Content = ref new Platform::String(imeStr.substr(0, imeStr.length() - (args->Range.EndCaretPosition - args->Range.StartCaretPosition)).c_str());
+			isIMEStopped = MsgTest->Content == L"";
 			if (lastRange.EndCaretPosition > 1)
 				MsgTest->Content += args->Text;
-			isIMEStopped = false;
 		}
 		else
 		{
