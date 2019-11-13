@@ -152,7 +152,7 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 					currentBlock->Content = ref new String((wStr.substr(0, cursor - 1) + wStr.substr(cursor, currentLength - cursor)).c_str());
 					cursor--;
 					currentLength--;
-					cursorX -= wStr[cursor] < 128 ? fWidth : fBWidth;
+					cursorX -= GetWCharWidth(wStr[cursor]);
 					UpdateCursor();
 				}
 				else if (currentLine)
@@ -407,7 +407,7 @@ void DrnCoreEditor::MoveLeft()
 	else if (cursor)
 	{
 		cursor--;
-		cursorX -= currentBlock->Content->ToString()->Data()[cursor] < 128 ? fWidth : fBWidth;
+		cursorX -= GetWCharWidth(currentBlock->Content->ToString()->Data()[cursor]);
 		UpdateCursor();
 	}
 	else if (currentLine)
@@ -437,7 +437,7 @@ void DrnCoreEditor::MoveRight()
 	}
 	else if (cursor < currentLength)
 	{
-		cursorX += currentBlock->Content->ToString()->Data()[cursor] < 128 ? fWidth : fBWidth;
+		cursorX += GetWCharWidth(currentBlock->Content->ToString()->Data()[cursor]);
 		cursor++;
 		UpdateCursor();
 	}
@@ -546,7 +546,7 @@ void DrnCoreEditor::AppendWCharAtCursor(wchar_t newWChar)
 
 		currentLength++;
 		cursor++;
-		cursorX += newWChar < 128 ? fWidth : fBWidth;;
+		cursorX += GetWCharWidth(newWChar);
 	}
 
 	NotifyEditorUpdate();
@@ -623,7 +623,7 @@ void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr)
 				tLineStr = tLineStr + newWStr[sIndex];
 				cursor++;
 				currentLength++;
-				cursorX += newWStr[sIndex] < 128 ? fWidth : fBWidth;
+				cursorX += GetWCharWidth(newWStr[sIndex]);
 			}
 		}
 	}

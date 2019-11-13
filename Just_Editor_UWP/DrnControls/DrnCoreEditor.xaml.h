@@ -11,7 +11,6 @@
 
 #define fHeight 23
 #define fWidth ChrBlock->ActualWidth
-#define fBWidth WChrBlock->ActualWidth
 //#define fWidth 10.799999237060547
 #define UpdateCursor() SetCursor(cursorX, currentLine * fHeight)
 
@@ -268,7 +267,7 @@ namespace Just_Editor_UWP
 			unsigned int sIndex = 0, result = 0;
 			while (wStr[sIndex])
 			{
-				curX += wStr[sIndex++] < 128 ? fWidth : fBWidth;
+				curX += GetWCharWidth(wStr[sIndex++]);
 				if (curX > x)
 					break;
 
@@ -282,9 +281,15 @@ namespace Just_Editor_UWP
 			double curX = 0;
 			unsigned int curOffset = 0;
 			while (sLen > curOffset)
-				curX += wStr[--sLen] < 128 ? fWidth : fBWidth;
+				curX += GetWCharWidth(wStr[--sLen]);
 
 			return curX;
+		}
+		double GetWCharWidth(wchar_t tWChar)
+		{
+			WChrBlock->Text = tWChar.ToString();
+			WChrBlock->Measure(Windows::Foundation::Size(500, 500));
+			return (double)WChrBlock->DesiredSize.Width;
 		}
 
 		void UpdateCursorX(std::wstring wStr, double x)
@@ -295,7 +300,7 @@ namespace Just_Editor_UWP
 			cursorX = 0;
 			while (wStr[sIndex])
 			{
-				curX += wStr[sIndex++] < 128 ? fWidth : fBWidth;
+				curX += GetWCharWidth(wStr[sIndex++]);
 				if (curX > x)
 					break;
 
