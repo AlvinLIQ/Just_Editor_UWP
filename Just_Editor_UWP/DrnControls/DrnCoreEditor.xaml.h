@@ -287,7 +287,7 @@ namespace Just_Editor_UWP
 		}
 		double GetWCharWidth(wchar_t tWChar)
 		{
-			WChrBlock->Text = tWChar.ToString();
+			WChrBlock->Text = tWChar.ToString() + L"\ufeff";
 			WChrBlock->Measure(Windows::Foundation::Size(500, 500));
 			return (double)WChrBlock->DesiredSize.Width;
 		}

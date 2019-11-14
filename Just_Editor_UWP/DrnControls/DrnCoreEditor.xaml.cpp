@@ -790,12 +790,12 @@ void DrnCoreEditor::CoreEditContext_TextUpdating(Windows::UI::Text::Core::CoreTe
 	if (!fChar)
 		return;
 //	MsgTest->Text = args->InputLanguage->LanguageTag;
-	if (isIME)
+	if (isIME && (fChar >= 65 || fChar == '\''))
 	{
 		MsgTrans->X = cursorTrans->X;
 		MsgTrans->Y = cursorTrans->Y;
 
-		bool isAscii = *args->Text->Data() < 128;
+		bool isAscii = fChar < 128;
 		if (isAscii && args->Range.EndCaretPosition == args->Range.StartCaretPosition)
 		{
 			MsgTest->Content += args->Text;
