@@ -121,7 +121,7 @@ namespace Just_Editor_UWP
 			isActivated = true;
 			drnCursor->Opacity = 1;
 			coreTextContext->NotifyFocusEnter();
-			Windows::UI::ViewManagement::InputPane::GetForCurrentView()->TryShow();
+			inputPane->TryShow();
 			Focus(Windows::UI::Xaml::FocusState::Programmatic);
 		}
 		void RemoveFocus()
@@ -129,7 +129,7 @@ namespace Just_Editor_UWP
 			isActivated = false;
 			drnCursor->Opacity = 0;
 			coreTextContext->NotifyFocusLeave();
-			Windows::UI::ViewManagement::InputPane::GetForCurrentView()->TryHide();
+			inputPane->TryHide();
 //			Focus(Windows::UI::Xaml::FocusState::Unfocused);
 		}
 
@@ -146,6 +146,8 @@ namespace Just_Editor_UWP
 
 		Platform::Agile<Windows::UI::Core::CoreWindow^> coreWindow;
 		Windows::UI::Text::Core::CoreTextEditContext^ coreTextContext = nullptr;
+
+		Platform::Agile<Windows::UI::ViewManagement::InputPane^> inputPane;
 
 		Windows::Foundation::EventRegistrationToken coreEventToken[6];
 		

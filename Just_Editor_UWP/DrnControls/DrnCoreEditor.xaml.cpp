@@ -252,7 +252,7 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 				MoveTo(-1, currentLine);
 
 				break;
-			case 79://Delete
+			case 46://Delete
 				if (e->VirtualKey != VirtualKey::Decimal)
 				{
 					if (IsTextSelected())
@@ -720,6 +720,8 @@ void DrnCoreEditor::CoreEditor_Loaded(Platform::Object^ sender, Windows::UI::Xam
 
 	if (coreTextContext == nullptr)
 	{
+		inputPane = Windows::UI::ViewManagement::InputPane::GetForCurrentView();
+
 		coreTextContext = CoreTextServicesManager::GetForCurrentView()->CreateEditContext();
 		coreTextContext->InputPaneDisplayPolicy = CoreTextInputPaneDisplayPolicy::Manual;
 		coreTextContext->InputScope = CoreTextInputScope::Text;
@@ -790,7 +792,11 @@ void DrnCoreEditor::CoreEditContext_TextUpdating(Windows::UI::Text::Core::CoreTe
 	if (!fChar)
 		return;
 //	MsgTest->Text = args->InputLanguage->LanguageTag;
-	if (isIME && (fChar >= 65 || fChar == '\''))
+	if (inputPane->Visible)
+	{
+		AppendStrAtCursor(&fChar);
+	}
+	else if (isIME && (fChar >= 65 || fChar == '\''))
 	{
 		MsgTrans->X = cursorTrans->X;
 		MsgTrans->Y = cursorTrans->Y;
@@ -817,10 +823,7 @@ void DrnCoreEditor::CoreEditContext_TextUpdating(Windows::UI::Text::Core::CoreTe
 	}
 	else
 	{
-		if (args->Range.EndCaretPosition - args->Range.StartCaretPosition > 1)
-			AppendStrAtCursor(args->Text->Data());
-		else
-			AppendWCharAtCursor(fChar);
+		AppendWCharAtCursor(fChar);
 		CoreTextRange tRange, nRange;
 		tRange.StartCaretPosition = 0;
 		tRange.EndCaretPosition = args->NewSelection.EndCaretPosition;
