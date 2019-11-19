@@ -289,9 +289,11 @@ namespace Just_Editor_UWP
 		}
 		double GetWCharWidth(wchar_t tWChar)
 		{
-			WChrBlock->Text = tWChar.ToString() + L"\ufeff";
+			if (tWChar == 32)
+				return fWidth;
+			WChrBlock->Text = tWChar.ToString();
 			WChrBlock->Measure(Windows::Foundation::Size(500, 500));
-			return (double)WChrBlock->DesiredSize.Width;
+			return (double)WChrBlock->ActualWidth;
 		}
 
 		void UpdateCursorX(std::wstring wStr, double x)
