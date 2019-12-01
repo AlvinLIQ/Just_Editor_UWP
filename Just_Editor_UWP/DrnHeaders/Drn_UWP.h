@@ -147,16 +147,27 @@ public:
 		tBox->ShowAsync();
 	}
 
+	static void LoadBackgroundStream(Windows::UI::Xaml::Controls::ContentPresenter^ page, Windows::Storage::Streams::IRandomAccessStreamWithContentType^ bStream)
+	{
+		auto bImg = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage();
+		bImg->SetSource(bStream);
+
+		Windows::UI::Xaml::Media::ImageBrush^ bBrush;
+		if (page->Background != nullptr && page->Background->GetType() == Windows::UI::Xaml::Media::ImageBrush::typeid)
+			bBrush = (Windows::UI::Xaml::Media::ImageBrush^)page->Background;
+		else
+		{
+			bBrush = ref new Windows::UI::Xaml::Media::ImageBrush;
+			bBrush->Stretch = Windows::UI::Xaml::Media::Stretch::UniformToFill;
+			page->Background = bBrush;
+		}
+		bBrush->ImageSource = bImg;
+	}
 	static void LoadBackgroundImage(Windows::UI::Xaml::Controls::ContentPresenter^ page, Windows::Storage::StorageFile^ imageFile)
 	{
 		concurrency::create_task(imageFile->OpenReadAsync()).then([page](Windows::Storage::Streams::IRandomAccessStreamWithContentType^ result)
 			{
-				auto bImg = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage();
-				bImg->SetSource(result);
-
-				auto bBrush = ref new Windows::UI::Xaml::Media::ImageBrush;
-				bBrush->ImageSource = bImg;
-				page->Background = bBrush;
+				LoadBackgroundStream(page, result);
 			});
 	}
 	static void LoadBackgroundImageFromFileName(Windows::UI::Xaml::Controls::ContentPresenter^ page, Platform::String^ fileName)
@@ -174,12 +185,7 @@ public:
 				}
 			}, concurrency::task_continuation_context::use_current()).then([page](Windows::Storage::Streams::IRandomAccessStreamWithContentType^ result)
 				{
-					auto bImg = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage();
-					bImg->SetSource(result);
-
-					auto bBrush = ref new Windows::UI::Xaml::Media::ImageBrush;
-					bBrush->ImageSource = bImg;
-					page->Background = bBrush;
+					LoadBackgroundStream(page, result);
 				});
 	}
 };

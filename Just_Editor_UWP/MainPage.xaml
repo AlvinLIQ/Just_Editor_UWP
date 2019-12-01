@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     >
     <ContentPresenter.Background>
-        <ImageBrush>
+        <ImageBrush Stretch="UniformToFill">
             <ImageBrush.ImageSource>
                 <BitmapImage UriSource="ms-appx:///Assets/bgi" ImageFailed="BitmapImage_ImageFailed"/>
             </ImageBrush.ImageSource>

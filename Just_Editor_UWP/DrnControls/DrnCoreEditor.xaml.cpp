@@ -281,23 +281,24 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 			}
 		}
 		else if (virtualWChar == 13)
-		AppendWCharAtCursor((wchar_t)13);
+		{
+			if (IsTextSelected())
+				ClearSelection();
+			AppendWCharAtCursor((wchar_t)13);
+		}
 
 	}
 }
 
 void DrnCoreEditor::CoreEditor_KeyUp(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::KeyEventArgs^ e)
 {
-	if (e != nullptr)
-		virtualKeyCode = e->KeyStatus.ScanCode;
-
-	switch (virtualKeyCode)
+	switch (e->VirtualKey)
 	{
-	case 42:
+	case VirtualKey::Shift:
 		isShiftHeld = false;
 
 		break;
-	case 29:
+	case VirtualKey::Control:
 		isCtrlHeld = false;
 
 		break;
@@ -680,12 +681,14 @@ void DrnCoreEditor::EditorContent_PointerPressed(Platform::Object^ sender, Windo
 
 void DrnCoreEditor::EditorContent_PointerEntered(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
 {
-	Window::Current->CoreWindow->PointerCursor = ref new Windows::UI::Core::CoreCursor(Windows::UI::Core::CoreCursorType::IBeam, 0);
+	if (coreWindow != nullptr)
+		coreWindow->PointerCursor = ref new Windows::UI::Core::CoreCursor(Windows::UI::Core::CoreCursorType::IBeam, 0);
 }
 
 void DrnCoreEditor::EditorContent_PointerExited(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
 {
-	Window::Current->CoreWindow->PointerCursor = ref new Windows::UI::Core::CoreCursor(Windows::UI::Core::CoreCursorType::Arrow, 0);
+	if (coreWindow != nullptr)
+		coreWindow->PointerCursor = ref new Windows::UI::Core::CoreCursor(Windows::UI::Core::CoreCursorType::Arrow, 0);
 }
 
 

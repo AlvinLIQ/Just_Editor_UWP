@@ -18,6 +18,7 @@
 #define newTextBlock NewTextBlock()
 
 #define curWidth 3
+#define CurrentLineWStr std::wstring(currentBlock->Content->ToString()->Data())
 #define GetCurrentBlockLength() (unsigned int)currentBlock->Content->ToString()->Length()
 #define GetNextBlock() ((TXTBLOCK^)textChildren->Items->GetAt(currentLine + 1))
 #define IsTextSelected() selectionPanel->Children->Size
