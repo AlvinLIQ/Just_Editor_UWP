@@ -6,13 +6,24 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    >
+    MaxHeight="120" Height="120">
+    <Grid.Resources>
+        <ResourceDictionary Source="../ThemeResources/ColorResources.xaml"/>
+    </Grid.Resources>
     <Grid.ColumnDefinitions>
         <ColumnDefinition/>
-        <ColumnDefinition Width="18"/>
+        <ColumnDefinition Width="20"/>
     </Grid.ColumnDefinitions>
     <Rectangle Grid.Column="1" Width="20" Fill="{ThemeResource ButtonPointerOverBackgroundThemeBrush}" HorizontalAlignment="Right"/>
-    <ScrollViewer Background="{ThemeResource AppBarToggleButtonPointerOverBackgroundThemeBrush}" Grid.ColumnSpan="2" Style="{ThemeResource EditorScrollViewer}" MaxHeight="200" Padding="0,0,20,0">
-        <ItemsControl x:Name="codeListPanel"/>
+    <ScrollViewer Grid.ColumnSpan="2" Style="{ThemeResource EditorScrollViewer}" Padding="0,0,20,0">
+        <Grid Background="{ThemeResource CoverBrush}">
+            <Rectangle x:Name="codeSelectedHighlight" Stroke="{ThemeResource ButtonPointerOverBackgroundThemeBrush}"
+                       StrokeThickness="1" Fill="Transparent" Height="23" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <TranslateTransform x:Name="selectedTrans"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <StackPanel Background="#0000" x:Name="codeListPanel" PointerPressed="codeListPanel_PointerPressed"/>
+        </Grid>
     </ScrollViewer>
 </Grid>

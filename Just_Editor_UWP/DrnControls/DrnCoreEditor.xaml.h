@@ -419,7 +419,7 @@ namespace Just_Editor_UWP
 		{
 			WordsTrans->X = cursorX;
 			WordsTrans->Y = cursorTrans->Y + fHeight;
-			IdentifiersList->GetWordFromPosition(currentBlock->Content->ToString(), currentLength, cursor);
+			IdentifiersList->GetWordFromPosition(currentBlock->Content->ToString(), currentLength, cursor, currentLine);
 			IdentifiersList->IdentifiersDetect();
 		}
 		void NotifyEditorUpdate()
@@ -432,5 +432,6 @@ namespace Just_Editor_UWP
 
 			AutoDetect();
 		}
+		void IdentifiersList_WordRequested(Platform::String^ str, default::uint32 x, default::uint32 y);
 };
 }

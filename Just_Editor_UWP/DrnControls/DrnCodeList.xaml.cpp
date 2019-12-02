@@ -17,3 +17,19 @@ DrnCodeList::DrnCodeList()
 {
 	InitializeComponent();
 }
+
+
+void Just_Editor_UWP::DrnCodeList::codeListPanel_PointerPressed(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
+{
+	e->Handled = true;
+	auto curPoint = e->GetCurrentPoint(codeListPanel);
+	if (e->Pointer->PointerDeviceType != Windows::Devices::Input::PointerDeviceType::Mouse || curPoint->Timestamp - lastTimeStamp < 200000)
+	{
+		NotifyWordUpdate();
+	}
+	else
+	{
+		lastTimeStamp = curPoint->Timestamp;
+		SelectAt((unsigned int)curPoint->Position.Y / 23);
+	}
+}

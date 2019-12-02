@@ -51,7 +51,7 @@
                 <ItemsControl x:Name="textChildren" VerticalAlignment="Top" xml:space="preserve" AutomationProperties.AccessibilityView="Raw">
                     </ItemsControl>
                 <local:DrnCodeList x:Name="IdentifiersList" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                   Width="0">
+                                   Width="0" WordRequested="IdentifiersList_WordRequested">
                     <local:DrnCodeList.RenderTransform>
                         <TranslateTransform x:Name="WordsTrans"/>
                     </local:DrnCodeList.RenderTransform>

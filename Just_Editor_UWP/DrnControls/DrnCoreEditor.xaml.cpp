@@ -221,7 +221,11 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 
 				break;
 			case 38://Up
-				if (currentLine)
+				if (IdentifiersList->Width)
+				{
+					IdentifiersList->SelectPre();
+				}
+				else if (currentLine)
 				{
 					MoveTo(cursor, currentLine - 1);
 					if (isShiftHeld)
@@ -237,7 +241,11 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 
 				break;
 			case 40://Down
-				if (currentLine + 1 < textChildren->Items->Size)
+				if (IdentifiersList->Width)
+				{
+					IdentifiersList->SelectNxt();
+				}
+				else if (currentLine + 1 < textChildren->Items->Size)
 				{
 					MoveTo(cursor, currentLine + 1);
 					if (isShiftHeld)
@@ -518,6 +526,11 @@ void DrnCoreEditor::AppendWCharAtCursor(wchar_t newWChar)
 
 	if (newWChar == L'\n')
 	{
+		if (IdentifiersList->Width && IdentifiersList->IsSelected)
+		{
+			IdentifiersList->NotifyWordUpdate();
+			return;
+		}
 		auto tItem = currentBlock;
 		currentLine++;
 		textChildren->Items->InsertAt(currentLine, currentBlock = newTextBlock);
@@ -901,3 +914,12 @@ void Just_Editor_UWP::DrnCoreEditor::menuItem_Click(Platform::Object^ sender, Wi
 }
 
 
+
+
+void Just_Editor_UWP::DrnCoreEditor::IdentifiersList_WordRequested(Platform::String^ str, default::uint32 x, default::uint32 y)
+{
+	if (x != cursor || y != currentLine)
+		MoveTo(x, y);
+	
+	AppendStrAtCursor(str->Data());
+}
