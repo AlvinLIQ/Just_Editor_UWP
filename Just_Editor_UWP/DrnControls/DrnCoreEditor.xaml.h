@@ -6,8 +6,8 @@
 #pragma once
 
 #include "DrnControls/DrnCoreEditor.g.h"
+#include "DrnCodeList.xaml.h"
 #include "DrnCoreEditorSelectionBlock.xaml.h"
-#include "DrnHeaders/Drn_UWP.h"
 
 #define fHeight 23
 #define fWidth ChrBlock->ActualWidth
@@ -168,41 +168,6 @@ namespace Just_Editor_UWP
 		unsigned int currentLine = 0, cursor = 0, currentLength = 0, virtualKeyCode = -1, lastWordLen = 0;
 		double cursorX = 0, thisWordX = 0;
 
-		std::wstring identifiersMap[5] = { L"const", L"int", L"internal", L"char", L"wchar_t" };
-
-		class DrnWord
-		{
-		public:
-			std::wstring currentWord = L"";
-			unsigned int length = 0;
-			void AppendWcharAt(wchar_t newWChar, unsigned int sIndex)
-			{
-				if (sIndex < length)
-					currentWord = currentWord.substr(0, sIndex) + newWChar + currentWord.substr(sIndex, length - sIndex);
-				else
-					currentWord += newWChar;
-
-				length++;
-			}
-			void RemoveWcharAt(wchar_t newWChar, unsigned int sIndex)
-			{
-				if (!length)
-					return;
-
-				if (sIndex < length)
-				{
-					if (sIndex)
-						currentWord = currentWord.substr(0, sIndex - 1) + currentWord.substr(sIndex, length - sIndex);
-					else
-						currentWord = currentWord.substr(1, length - 1);
-				}
-				else
-					currentWord = currentWord.substr(0, length - 1);
-
-				length--;
-			}
-		};
-
 		void CoreEditor_Unloaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void CoreEditor_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::KeyEventArgs^ e);
@@ -251,15 +216,7 @@ namespace Just_Editor_UWP
 		void AppendBlockAtEnd();
 		void AppendWCharAtCursor(wchar_t newWChar);
 		void AppendStrAtCursor(const wchar_t* newWStr);
-		bool GetWordType(wchar_t tWord)
-		{
-			for (char i = 0; i < 26; i++)
-			{
-				if (tWord == edgeMap[i])
-					return false;
-			}
-			return true;
-		}
+
 		bool GetHighlihgtStatus(TXTBLOCK^ block)
 		{
 			return block->Foreground == (Windows::UI::Xaml::Media::Brush^)IdentifiersHighlightColor;
@@ -458,6 +415,13 @@ namespace Just_Editor_UWP
 		void editorScrollViewer_ViewChanging(Platform::Object^ sender, Windows::UI::Xaml::Controls::ScrollViewerViewChangingEventArgs^ e);
 		void editorScrollViewer_ViewChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::ScrollViewerViewChangedEventArgs^ e);
 		void menuItem_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void AutoDetect()
+		{
+			WordsTrans->X = cursorX;
+			WordsTrans->Y = cursorTrans->Y + fHeight;
+			IdentifiersList->GetWordFromPosition(currentBlock->Content->ToString(), currentLength, cursor);
+			IdentifiersList->IdentifiersDetect();
+		}
 		void NotifyEditorUpdate()
 		{
 			EditorTextChanged();
@@ -465,6 +429,8 @@ namespace Just_Editor_UWP
 			selPosition.X = (float)cursorX;
 			selPosition.Y = (float)(currentLine * fHeight);
 			UpdateCursor();
+
+			AutoDetect();
 		}
 };
 }

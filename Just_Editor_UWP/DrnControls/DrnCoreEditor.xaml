@@ -41,6 +41,7 @@
                         <TranslateTransform x:Name="cursorTrans"/>
                     </Line.RenderTransform>
                 </Line>
+                <ListView x:Name="wordsList"/>
                 <Grid x:Name="selectionPanel" AutomationProperties.AccessibilityView="Raw"/>
                 <Rectangle x:Name="drnHighlihgtLine" Stroke="#3777" StrokeThickness="2" Height="23" VerticalAlignment="Top">
                     <Rectangle.RenderTransform>
@@ -49,6 +50,12 @@
                 </Rectangle>
                 <ItemsControl x:Name="textChildren" VerticalAlignment="Top" xml:space="preserve" AutomationProperties.AccessibilityView="Raw">
                     </ItemsControl>
+                <local:DrnCodeList x:Name="IdentifiersList" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                   Width="0">
+                    <local:DrnCodeList.RenderTransform>
+                        <TranslateTransform x:Name="WordsTrans"/>
+                    </local:DrnCodeList.RenderTransform>
+                </local:DrnCodeList>
                 <ContentPresenter x:Name="MsgTest" Background="#777" HorizontalAlignment="Left" VerticalAlignment="Top">
                     <ContentPresenter.RenderTransform>
                         <TranslateTransform x:Name="MsgTrans"/>

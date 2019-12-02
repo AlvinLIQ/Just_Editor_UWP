@@ -142,6 +142,10 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 				isCtrlHeld = true;
 
 				break;
+			case 27://Escape
+				if (IdentifiersList->Width)
+					IdentifiersList->Hide();
+				break;
 			case 8://Backspace
 				if (IsTextSelected())
 					ClearSelection();
@@ -153,7 +157,9 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 					cursor--;
 					currentLength--;
 					cursorX -= GetWCharWidth(wStr[cursor]);
+					EditorTextChanged();
 					UpdateCursor();
+					AutoDetect();
 				}
 				else if (currentLine)
 				{
@@ -164,6 +170,8 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 					cursorX = GetCursorXFromWStr(wStr, cursor);
 					RemoveLine(currentLine--);
 					CursorChanged(cursor, currentLine, textChildren->Items->Size);
+					EditorTextChanged();
+					AutoDetect();
 				}
 				break;
 			case 37://Left
@@ -268,6 +276,8 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 
 						currentLength--;
 						CursorChanged(cursor, currentLine, textChildren->Items->Size);
+						EditorTextChanged();
+						AutoDetect();
 					}
 					else if (currentLine + 1 < textChildren->Items->Size)
 					{
@@ -275,6 +285,8 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 						currentBlock->Content = GetLineStr(currentLine + 1);
 						RemoveLine(currentLine + 1);
 						CursorChanged(cursor, currentLine, textChildren->Items->Size);
+						EditorTextChanged();
+						AutoDetect();
 					}
 				}
 				break;

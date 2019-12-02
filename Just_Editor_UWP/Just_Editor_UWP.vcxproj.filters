@@ -254,6 +254,9 @@
     <Page Include="ThemeResources\ColorResources.xaml">
       <Filter>ThemeResources</Filter>
     </Page>
+    <Page Include="DrnControls\DrnCodeList.xaml">
+      <Filter>DrnControls\DrnEditor</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\SourceCodeVariable-Roman.ttf">

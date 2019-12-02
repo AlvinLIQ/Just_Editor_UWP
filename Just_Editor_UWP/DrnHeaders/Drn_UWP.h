@@ -1,6 +1,8 @@
 #pragma once
 #include <windowsnumerics.h>
 
+#define IsSplit(chr) (chr != L'_' && chr != L'#' && (chr < '0' || (chr > '9' && chr < 'A') || (chr > 'Z' && chr < 'a') || chr > 'z'))
+
 const char keyMap[] = " \t1234567890-=__QWERTYUIOP[]\n_ASDFGHJKL;'`_\\ZXCVBNM,./_*_ ________________-___+____._____________________________________0123456789";
 const char shiftKeyMap[] = " \t!@#$%^&*()_+__QWERTYUIOP{}\n_ASDFGHJKL:\"~_|ZXCVBNM<>?_*_ ________________-___+____._____________________________________0123456789";
 const wchar_t FileTypesStr[][6] = {L".txt", L".h", L".c", L".cpp", L".cs", L".js", L".html"};

@@ -197,6 +197,9 @@
     <ClInclude Include="DrnControls\DrnCodeEditor.xaml.h">
       <DependentUpon>DrnControls\DrnCodeEditor.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="DrnControls\DrnCodeList.xaml.h">
+      <DependentUpon>DrnControls\DrnCodeList.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="DrnControls\DrnContentDialog.xaml.h">
       <DependentUpon>DrnControls\DrnContentDialog.xaml</DependentUpon>
     </ClInclude>
@@ -247,6 +250,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DrnControls\DrnCodeEditor.xaml" />
+    <Page Include="DrnControls\DrnCodeList.xaml" />
     <Page Include="DrnControls\DrnContentDialog.xaml" />
     <Page Include="DrnControls\DrnCoreEditor.xaml" />
     <Page Include="DrnControls\DrnCoreEditorSelectionBlock.xaml" />
@@ -339,6 +343,9 @@
     </ClCompile>
     <ClCompile Include="DrnControls\DrnCodeEditor.xaml.cpp">
       <DependentUpon>DrnControls\DrnCodeEditor.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="DrnControls\DrnCodeList.xaml.cpp">
+      <DependentUpon>DrnControls\DrnCodeList.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="DrnControls\DrnContentDialog.xaml.cpp">
       <DependentUpon>DrnControls\DrnContentDialog.xaml</DependentUpon>
