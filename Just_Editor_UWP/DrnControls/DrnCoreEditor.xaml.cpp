@@ -26,6 +26,7 @@ DrnCoreEditor::DrnCoreEditor()
 {
 	InitializeComponent();
 
+	isSmartDetectEnabled = ((App^)App::Current)->AppConfig->IsSmartDetectEnabled;
 	AppendBlockAtEnd();
 }
 
@@ -159,20 +160,26 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 					cursorX -= GetWCharWidth(wStr[cursor]);
 					EditorTextChanged();
 					UpdateCursor();
-					AutoDetect();
 				}
 				else if (currentLine)
 				{
 					currentBlock = (TXTBLOCK^)textChildren->Items->GetAt(currentLine - 1);
 					wStr = currentBlock->Content->ToString()->Data();
 					cursor = (unsigned int)wStr.length();
+					if (currentLength)
+					{
+						currentBlock->Content += ((TXTBLOCK^)textChildren->Items->GetAt(currentLine))->Content->ToString();
+					}
 					currentLength += cursor;
 					cursorX = GetCursorXFromWStr(wStr, cursor);
 					RemoveLine(currentLine--);
 					CursorChanged(cursor, currentLine, textChildren->Items->Size);
 					EditorTextChanged();
-					AutoDetect();
 				}
+				else
+					break;
+
+				AutoDetect();
 				break;
 			case 37://Left
 				if (isShiftHeld)
@@ -285,17 +292,19 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 						currentLength--;
 						CursorChanged(cursor, currentLine, textChildren->Items->Size);
 						EditorTextChanged();
-						AutoDetect();
 					}
 					else if (currentLine + 1 < textChildren->Items->Size)
 					{
 						currentLength += GetLineStrLength(currentLine + 1);
-						currentBlock->Content = GetLineStr(currentLine + 1);
+						currentBlock->Content += GetLineStr(currentLine + 1);
 						RemoveLine(currentLine + 1);
 						CursorChanged(cursor, currentLine, textChildren->Items->Size);
 						EditorTextChanged();
-						AutoDetect();
 					}
+					else
+						break;
+
+					AutoDetect();
 				}
 				break;
 			}

@@ -20,7 +20,7 @@
                             <RotateTransform Angle="-10"/>
                         </FontIcon.RenderTransform>
                     </FontIcon>
-                    <ContentPresenter Content="Ver.0.1.8-Beta" FontSize="13" HorizontalAlignment="Right"/>
+                    <ContentPresenter Content="Ver.0.2.0-Alpha" FontSize="13" HorizontalAlignment="Right"/>
                     <ContentPresenter Content="Just Editor" FontSize="50"/>
                     <ContentPresenter Content="New" FontSize="30"/>
                     <StackPanel>
@@ -72,9 +72,8 @@
                        MenuSelected="DrnMenu_MenuSelected" Width="30" Height="30" Padding="2"
                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
             <local:DrnMenu.menuItems>
-                <ListViewItem>
-                    Theme Switch(won't be saved)
-                </ListViewItem>
+                <x:String>SmartDetect Switch</x:String>
+                <x:String>Theme Switch(won't be saved)</x:String>
             </local:DrnMenu.menuItems>
             <FontIcon FontFamily="Fonts/Just_Editor_Icons.ttf#Just_Editor_Icons" Glyph="&#xE616;" FontSize="13"/>
         </local:DrnMenu>

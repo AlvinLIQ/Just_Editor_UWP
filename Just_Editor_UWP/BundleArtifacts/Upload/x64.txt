@@ -1,2 +1,2 @@
-MainPackage=G:\UWP\Just_Editor_UWP\x64\Release\Just_Editor_UWP\Upload\Just_Editor_UWP_0.1.8.0_x64.appx
-SymbolPackage=G:\UWP\Just_Editor_UWP\x64\Release\Just_Editor_UWP\Upload\Just_Editor_UWP_0.1.8.0\Just_Editor_UWP_0.1.8.0_x64.appxsym
+MainPackage=G:\UWP\Just_Editor_UWP\x64\Release\Just_Editor_UWP\Upload\Just_Editor_UWP_0.2.0.0_x64.appx
+SymbolPackage=G:\UWP\Just_Editor_UWP\x64\Release\Just_Editor_UWP\Upload\Just_Editor_UWP_0.2.0.0\Just_Editor_UWP_0.2.0.0_x64.appxsym

@@ -8,6 +8,7 @@
 #include "DrnControls/DrnCodeList.g.h"
 #include "DrnHeaders/Drn_UWP.h"
 
+#define IdentifiersSize 41
 
 namespace Just_Editor_UWP
 {
@@ -54,7 +55,7 @@ namespace Just_Editor_UWP
 				return;
 			}
 			size_t cLen = currentWord.length();
-			for (int i = 0; i < 13; i++)
+			for (int i = 0; i < IdentifiersSize; i++)
 			{
 				if (cLen < identifiersMap[i].length() && currentWord == identifiersMap[i].substr(0, cLen))
 				{
@@ -141,7 +142,11 @@ namespace Just_Editor_UWP
 			}
 		};
 	private:
-		std::wstring identifiersMap[13] = { L"const", L"if", L"int", L"internal", L"else", L"extern", L"char", L"wchar_t", L"#include", L"#define", L"using", L"namespace", L"class" };
+		std::wstring identifiersMap[IdentifiersSize] = { L"as", L"bool", L"byte", L"break", L"char", L"class", L"const", L"do", L"double", L"else", L"extern",
+											L"for", L"false", L"float", L"foreach", L"if", L"in", L"int", L"internal", L"long",
+											L"null", L"nullptr", L"namespace", L"out", L"object", L"public", L"private", L"protected",
+											L"true",L"typedef", L"using", L"unsigned", L"virtual", L"while", L"wchar_t"
+											L"#if", L"#ifdef", L"#ifndef", L"#endif", L"#include", L"#define", L"#pragma" };
 		std::wstring currentWord = L"";
 
 		bool isSelected = false;

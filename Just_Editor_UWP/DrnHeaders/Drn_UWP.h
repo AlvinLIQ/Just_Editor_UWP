@@ -190,5 +190,37 @@ public:
 					LoadBackgroundStream(page, result);
 				});
 	}
+
+	static void WriteSetting(Platform::String^ ContainerName, Platform::String^ SettingTypeName, Platform::Object^ SettingInfo)
+	{
+		if (SettingTypeName == nullptr || SettingInfo == nullptr) return;
+		Windows::Storage::ApplicationDataContainer^ localSettings = Windows::Storage::ApplicationData::Current->LocalSettings;
+		Windows::Storage::ApplicationDataContainer^ container =
+			Windows::Storage::ApplicationData::Current->LocalSettings->CreateContainer(ContainerName, Windows::Storage::ApplicationDataCreateDisposition::Always);
+		if (localSettings->Containers->HasKey(ContainerName))
+		{
+			auto values = localSettings->Containers->Lookup(ContainerName)->Values;
+			if (values->HasKey(SettingTypeName))
+				values->Clear();
+
+			values->Insert(SettingTypeName, SettingInfo);
+		}
+	}
+
+	static Platform::Object^ ReadSetting(Platform::String^ ContainerName, Platform::String^ SettingTypeName)
+	{
+		Windows::Storage::ApplicationDataContainer^ localSettings = Windows::Storage::ApplicationData::Current->LocalSettings;
+		Windows::Storage::ApplicationDataContainer^ container =
+			Windows::Storage::ApplicationData::Current->LocalSettings->CreateContainer(ContainerName, Windows::Storage::ApplicationDataCreateDisposition::Always);
+		bool hasContainer = localSettings->Containers->HasKey(ContainerName);
+		bool hasSetting = false;
+		if (hasContainer)
+		{
+			auto values = localSettings->Containers->Lookup(ContainerName)->Values;
+			hasSetting = values->HasKey(SettingTypeName);
+			return hasSetting ? values->Lookup(SettingTypeName) : "";
+		}
+		return nullptr;
+	}
 };
 

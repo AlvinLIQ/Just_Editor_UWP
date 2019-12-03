@@ -161,6 +161,7 @@ namespace Just_Editor_UWP
 		bool isCtrlHeld = false;
 		bool isWord = false;
 		bool isActivated = false;
+		bool isSmartDetectEnabled;
 
 		unsigned long long int pointTimeStamp;
 
@@ -417,10 +418,13 @@ namespace Just_Editor_UWP
 		void menuItem_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void AutoDetect()
 		{
-			WordsTrans->X = cursorX;
-			WordsTrans->Y = cursorTrans->Y + fHeight;
-			IdentifiersList->GetWordFromPosition(currentBlock->Content->ToString(), currentLength, cursor, currentLine);
-			IdentifiersList->IdentifiersDetect();
+			if (isSmartDetectEnabled)
+			{
+				WordsTrans->X = cursorX;
+				WordsTrans->Y = cursorTrans->Y + fHeight;
+				IdentifiersList->GetWordFromPosition(currentBlock->Content->ToString(), currentLength, cursor, currentLine);
+				IdentifiersList->IdentifiersDetect();
+			}
 		}
 		void NotifyEditorUpdate()
 		{

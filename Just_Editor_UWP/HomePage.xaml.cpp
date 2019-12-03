@@ -107,8 +107,15 @@ void Just_Editor_UWP::HomePage::DrnMenu_MenuSelected(Platform::Object^ sender, W
 //	mainPage->RequestedTheme = mainPage->RequestedTheme == ElementTheme::Dark ? ElementTheme::Light : ElementTheme::Dark;
 	if (sender == nullptr)
 		return;
-
 	auto appConfig = ((App^)App::Current)->AppConfig;
-	appConfig->IsDark = !appConfig->IsDark;
-	appConfig->UpdateConfig();
+	switch (sender->ToString()->Data()[0])
+	{
+	case L'S':
+		appConfig->IsSmartDetectEnabled = appConfig->IsSmartDetectEnabled == false;
+		break;
+	case L'T':
+		appConfig->IsDark = !appConfig->IsDark;
+		appConfig->UpdateConfig();
+		break;
+	}
 }

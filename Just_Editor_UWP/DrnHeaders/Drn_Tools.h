@@ -36,7 +36,7 @@ public:
 	}
 
 
-	static struct sockaddr_in initAddr(const wchar_t* ip, int port)
+	static struct sockaddr_in initAddr(const wchar_t* host, int port)
 	{
 		ADDRINFOW hints;
 		PADDRINFOW addr = NULL;
@@ -46,10 +46,10 @@ public:
 		hints.ai_flags = AI_PASSIVE;
 		hints.ai_protocol = IPPROTO_TCP;
 		hints.ai_socktype = SOCK_STREAM;
-		if (GetAddrInfoW(ip, nullptr, &hints, &addr) == -1)
+		if (GetAddrInfoW(host, nullptr, &hints, &addr) == -1)
 			exit(-1);
 
-//		InetPton(AF_INET, ip, &addr_p);
+//		InetPton(AF_INET, host, &addr_p);
 		result = (struct sockaddr_in*)addr->ai_addr;
 		result->sin_port = htons(port);
 		return *result;

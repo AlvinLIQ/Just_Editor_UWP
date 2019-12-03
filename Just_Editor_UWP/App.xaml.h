@@ -6,6 +6,7 @@
 #pragma once
 
 #include "App.g.h"
+#include "DrnHeaders/Drn_UWP.h"
 
 
 namespace Just_Editor_UWP
@@ -23,6 +24,21 @@ namespace Just_Editor_UWP
 		property Windows::UI::Xaml::Media::SolidColorBrush^ SelectedBrush;
 		property Windows::UI::Xaml::Media::SolidColorBrush^ ForeBrush;
 		property bool IsDark;
+		property bool IsSmartDetectEnabled
+		{
+			bool get()
+			{
+				return isSmartDetectEnabled;
+			}
+			void set(bool newState)
+			{
+				if (isSmartDetectEnabled != newState)
+				{
+					isSmartDetectEnabled = newState;
+					Drn_UWP::WriteSetting(L"EditorSettings", L"SmartDetect", newState);
+				}
+			}
+		};
 		property Windows::UI::Xaml::ElementTheme CurrentTheme
 		{
 			Windows::UI::Xaml::ElementTheme get()
@@ -55,8 +71,13 @@ namespace Just_Editor_UWP
 		DrnConfig(bool isDark)
 		{
 			this->IsDark = isDark;
+
+			auto sValue = Drn_UWP::ReadSetting(L"EditorSettings", L"SmartDetect");
+			isSmartDetectEnabled = (sValue != nullptr && (bool)sValue);
 			UpdateConfig();
 		}
+	private:
+		bool isSmartDetectEnabled;
 	};
 	/// <summary>
 	/// Provides application-specific behavior to supplement the default Application class.
