@@ -692,17 +692,27 @@ void DrnCoreEditor::EditorContent_PointerPressed(Platform::Object^ sender, Windo
 	auto curPosition = curPoint->Position;
 
 	leftMargin = curPosition.X;
-	if (curPoint->Timestamp - pointTimeStamp < 200000 && abs(curPosition.X - selPosition.X) < fWidth && (unsigned int)(curPosition.Y / fHeight) == (unsigned int)(selPosition.Y / fHeight))
+	if (!doubleClickLock && curPoint->Timestamp - pointTimeStamp < 200000 && abs(curPosition.X - selPosition.X) < fWidth && (unsigned int)(curPosition.Y / fHeight) == (unsigned int)(selPosition.Y / fHeight))
 	{
-		selPosition.X = 0;
-		cursorX = GetCursorXFromWStr(currentBlock->Content->ToString()->Data(), currentLength);
-		cursor = currentLength;
-		UpdateCursor();
+		doubleClickLock = true;
 
-		Select(cursor, currentLine);
+		auto thisWordRange = Drn_UWP::GetWordPosition(currentBlock->Content->ToString(), currentLength, cursor);
+
+		if (thisWordRange.EndCaretPosition != thisWordRange.StartCaretPosition)
+		{
+			auto wCStr = currentBlock->Content->ToString()->Data();
+			selPosition.X = (float)(cursorX - GetCursorXFromWStr(&wCStr[thisWordRange.StartCaretPosition], cursor - (unsigned int)thisWordRange.StartCaretPosition));
+			cursorX += GetCursorXFromWStr(&wCStr[cursor], (unsigned int)thisWordRange.EndCaretPosition - cursor);
+			cursor += (unsigned int)thisWordRange.EndCaretPosition;
+			UpdateCursor();
+		}
+
+		Select(thisWordRange.StartCaretPosition, currentLine);
 	}
 	else
 	{
+		doubleClickLock = false;
+
 		curPosition.X += (float)(fWidth / 2);
 		MoveToPosition(curPosition);
 		selPosition.X = (float)cursorX;

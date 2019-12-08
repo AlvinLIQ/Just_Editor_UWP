@@ -1,7 +1,7 @@
 #pragma once
 #include <windowsnumerics.h>
 
-#define IsSplit(chr) (chr != L'_' && chr != L'#' && (chr < '0' || (chr > '9' && chr < 'A') || (chr > 'Z' && chr < 'a') || chr > 'z'))
+#define IsSplit(chr) (!chr || (chr != L'_' && chr != L'#' && (chr < '0' || (chr > '9' && chr < 'A') || (chr > 'Z' && chr < 'a') || chr > 'z')))
 
 const char keyMap[] = " \t1234567890-=__QWERTYUIOP[]\n_ASDFGHJKL;'`_\\ZXCVBNM,./_*_ ________________-___+____._____________________________________0123456789";
 const char shiftKeyMap[] = " \t!@#$%^&*()_+__QWERTYUIOP{}\n_ASDFGHJKL:\"~_|ZXCVBNM<>?_*_ ________________-___+____._____________________________________0123456789";
@@ -221,6 +221,35 @@ public:
 			return hasSetting ? values->Lookup(SettingTypeName) : "";
 		}
 		return nullptr;
+	}
+
+	static Windows::UI::Text::Core::CoreTextRange GetWordPosition(Platform::String^ srcStr, unsigned int srcLen, unsigned int col)
+	{
+		std::wstring wStr = srcStr->Data();
+		
+		unsigned int tPos;
+		Windows::UI::Text::Core::CoreTextRange thisRange;
+		thisRange.StartCaretPosition = (int)col;
+		thisRange.EndCaretPosition = (int)col;
+
+		for (tPos = col; tPos;)
+		{
+			wchar_t tChar = wStr[--tPos];
+			if (IsSplit(tChar))
+				break;
+
+			thisRange.StartCaretPosition--;
+		}
+		for (tPos = col; tPos < srcLen;)
+		{
+			wchar_t tChar = wStr[tPos++];
+			if (IsSplit(tChar))
+				break;
+
+			thisRange.EndCaretPosition++;
+		}
+
+		return thisRange;
 	}
 };
 

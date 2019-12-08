@@ -12,7 +12,7 @@
         <ResourceDictionary x:Key="Light">
             <SolidColorBrush x:Key="BackBrush" Color="#60FFFFFF"/>
             <SolidColorBrush x:Key="TextBoxBackBrush" Color="#AEEE"/>
-            <SolidColorBrush x:Key="CoverBrush" Color="#A0A0A0"/>
+            <SolidColorBrush x:Key="CoverBrush" Color="#E0E0E0"/>
             <SolidColorBrush x:Key="SelectedBrush" Color="#CCCBCBCB"/>
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>

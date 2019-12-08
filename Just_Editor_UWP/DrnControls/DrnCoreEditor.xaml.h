@@ -162,6 +162,7 @@ namespace Just_Editor_UWP
 		bool isWord = false;
 		bool isActivated = false;
 		bool isSmartDetectEnabled;
+		bool doubleClickLock;
 
 		unsigned long long int pointTimeStamp;
 

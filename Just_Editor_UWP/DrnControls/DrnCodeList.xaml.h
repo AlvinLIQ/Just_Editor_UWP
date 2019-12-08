@@ -8,7 +8,7 @@
 #include "DrnControls/DrnCodeList.g.h"
 #include "DrnHeaders/Drn_UWP.h"
 
-#define IdentifiersSize 41
+#define IdentifiersSize 43
 
 namespace Just_Editor_UWP
 {
@@ -28,7 +28,7 @@ namespace Just_Editor_UWP
 			currentY = ln;
 			unsigned int tPos;
 			
-			for (tPos = col; tPos > 0;)
+			for (tPos = col; tPos;)
 			{
 				wchar_t tChar = wStr[--tPos];
 				if (IsSplit(tChar))
@@ -145,7 +145,7 @@ namespace Just_Editor_UWP
 		std::wstring identifiersMap[IdentifiersSize] = { L"as", L"bool", L"byte", L"break", L"char", L"class", L"const", L"do", L"double", L"else", L"extern",
 											L"for", L"false", L"float", L"foreach", L"if", L"in", L"int", L"internal", L"long",
 											L"null", L"nullptr", L"namespace", L"out", L"object", L"public", L"private", L"protected",
-											L"true",L"typedef", L"using", L"unsigned", L"virtual", L"while", L"wchar_t"
+											L"return", L"true",L"typedef", L"using", L"unsigned", L"var", L"virtual", L"while", L"wchar_t"
 											L"#if", L"#ifdef", L"#ifndef", L"#endif", L"#include", L"#define", L"#pragma" };
 		std::wstring currentWord = L"";
 

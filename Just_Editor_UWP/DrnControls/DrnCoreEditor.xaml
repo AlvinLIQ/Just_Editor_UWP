@@ -34,7 +34,7 @@
             <Grid Background="{x:Bind Background}" PointerEntered="EditorContent_PointerEntered"
                                PointerExited="EditorContent_PointerExited" Padding="3,0,0,400"
                                TabFocusNavigation="Cycle" >
-                <Line x:Name="drnCursor" Opacity="0" HorizontalAlignment="Left" VerticalAlignment="Top" Stroke="{ThemeResource ButtonPointerOverBackgroundThemeBrush}"
+                <Line x:Name="drnCursor" Opacity="0" HorizontalAlignment="Left" VerticalAlignment="Top" Stroke="{ThemeResource AppBarItemPointerOverBackgroundThemeBrush}"
                   StrokeThickness="3"
                   X1="0" X2="0" Y1="0" Y2="23">
                     <Line.RenderTransform>

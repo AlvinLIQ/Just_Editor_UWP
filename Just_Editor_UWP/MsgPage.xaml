@@ -19,19 +19,24 @@
         <TextBox Name="portBox" Padding="5" Margin="5"/>
         <Button Name="connBtn" Content="Connect" Click="connBtn_Click" Margin="5"/>
         </StackPanel>
-        <ScrollViewer Grid.Row="5" Style="{StaticResource EditorScrollViewer}" Padding="0,0,18,18" HorizontalScrollMode="Auto">
-            <StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition MinHeight="40" Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Result"/>
+            <ScrollViewer Style="{StaticResource EditorScrollViewer}" Margin="5,25,5,5">
+                <TextBlock Name="resultBlock" IsTextSelectionEnabled="True"/>
+            </ScrollViewer>
+            <StackPanel Grid.Row="1">
                 <TextBlock Text="Body"/>
-                <local:DrnCodeEditor x:Name="reqEditor" MinHeight="300" MaxHeight="300" Margin="5"/>
+                <local:DrnCodeEditor x:Name="reqEditor" MinHeight="23" MaxHeight="300" Margin="5"/>
                 <StackPanel Orientation="Horizontal">
                     <Button Name="sendBtn" Content="Send" Click="sendBtn_Click"  Margin="5" IsEnabled="False"/>
                     <Button Name="clearBtn" Content="Clear" Click="clearBtn_Click"  Margin="5"/>
                 </StackPanel>
-                <TextBlock Text="Result"/>
-                <ScrollViewer Margin="5" Style="{StaticResource EditorScrollViewer}" MaxHeight="400">
-                    <TextBlock Name="resultBlock" IsTextSelectionEnabled="True"/>
-                </ScrollViewer>
             </StackPanel>
-        </ScrollViewer>
+        </Grid>
+        
     </Grid>
 </ContentPresenter>
