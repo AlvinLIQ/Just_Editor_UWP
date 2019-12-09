@@ -170,6 +170,36 @@ namespace Just_Editor_UWP
 		unsigned int currentLine = 0, cursor = 0, currentLength = 0, virtualKeyCode = -1, lastWordLen = 0;
 		double cursorX = 0, thisWordX = 0;
 
+		typedef struct
+		{
+			unsigned int StartColumn;
+			unsigned int StartLine;
+			int ActionMode;//0 Append 1 Replace 2 Backspace 3 Delete
+			std::wstring* Text = nullptr;
+		} EditorAction;
+
+#define ActionSize sizeof(EditorAction)
+
+		EditorAction editorActions[100];
+#define ActionsStartAddress &editorActions[0]
+#define ActionsEndAddress &editorActions[99]
+		EditorAction* currentAction = ActionsStartAddress;
+
+		void MoveToPrevAction()
+		{
+			if (currentAction->ActionMode == 1)
+				currentAction = currentAction > ActionsStartAddress ? currentAction - ActionSize : ActionsEndAddress;
+
+			currentAction = currentAction > ActionsStartAddress ? currentAction - ActionSize : ActionsEndAddress;
+		}
+		void MoveToNextAction()
+		{
+			if (currentAction->ActionMode == 1)
+				currentAction = currentAction < ActionsEndAddress ? currentAction - ActionSize : ActionsStartAddress;
+
+			currentAction = currentAction < ActionsEndAddress ? currentAction - ActionSize : ActionsStartAddress;
+		}
+
 		void CoreEditor_Unloaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void CoreEditor_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::KeyEventArgs^ e);
@@ -410,6 +440,14 @@ namespace Just_Editor_UWP
 							AppendStrAtCursor(clipStr->Data());
 						}
 					}, concurrency::task_continuation_context::use_current());
+		}
+		void Undo()
+		{
+
+		}
+		void Redo()
+		{
+
 		}
 		void EditorContent_PointerPressed(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);
 		void EditorContent_PointerEntered(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);

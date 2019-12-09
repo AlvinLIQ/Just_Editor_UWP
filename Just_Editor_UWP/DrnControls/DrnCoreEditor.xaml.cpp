@@ -123,7 +123,13 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 				Copy();
 			break;
 		case L'Z':
-			
+			if (!isShiftHeld)
+			{
+				Undo();
+				break;
+			}
+		case L'Y':
+			Redo();
 			break;
 		}
 	}
