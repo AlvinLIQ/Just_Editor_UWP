@@ -588,6 +588,14 @@ void DrnCoreEditor::AppendWCharAtCursor(wchar_t newWChar)
 		currentLength++;
 		cursor++;
 		cursorX += GetWCharWidth(newWChar);
+		if (cursor != currentAction->Column + 1 || currentLine != currentAction->Line)
+		{
+			MoveToNextAction();
+			currentAction->Text = L"";
+		}
+		currentAction->Column = cursor;
+		currentAction->Line = currentLine;
+		currentAction->Text += newWChar;
 	}
 
 	NotifyEditorUpdate();

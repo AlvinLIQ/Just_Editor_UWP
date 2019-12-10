@@ -172,10 +172,10 @@ namespace Just_Editor_UWP
 
 		typedef struct
 		{
-			unsigned int StartColumn;
-			unsigned int StartLine;
+			unsigned int Column;
+			unsigned int Line;
 			int ActionMode;//0 Append 1 Replace 2 Backspace 3 Delete
-			std::wstring* Text = nullptr;
+			Platform::String^ Text;
 		} EditorAction;
 
 #define ActionSize sizeof(EditorAction)
@@ -183,7 +183,7 @@ namespace Just_Editor_UWP
 		EditorAction editorActions[100];
 #define ActionsStartAddress &editorActions[0]
 #define ActionsEndAddress &editorActions[99]
-		EditorAction* currentAction = ActionsStartAddress;
+		EditorAction* currentAction = ActionsEndAddress;
 
 		void MoveToPrevAction()
 		{
@@ -195,9 +195,9 @@ namespace Just_Editor_UWP
 		void MoveToNextAction()
 		{
 			if (currentAction->ActionMode == 1)
-				currentAction = currentAction < ActionsEndAddress ? currentAction - ActionSize : ActionsStartAddress;
+				currentAction = currentAction < ActionsEndAddress ? currentAction + ActionSize : ActionsStartAddress;
 
-			currentAction = currentAction < ActionsEndAddress ? currentAction - ActionSize : ActionsStartAddress;
+			currentAction = currentAction < ActionsEndAddress ? currentAction + ActionSize : ActionsStartAddress;
 		}
 
 		void CoreEditor_Unloaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
