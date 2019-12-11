@@ -174,23 +174,23 @@ namespace Just_Editor_UWP
 		{
 			unsigned int Column;
 			unsigned int Line;
-			int ActionMode;//0 Append 1 Replace 2 Backspace 3 Delete 5 Enter
+			int ActionMode;//0 Append 1 Replace 2 Backspace 3 Delete 4 Remove Line 5 Append Line
 			Platform::String^ Text;
 		} EditorAction;
 
 #define ActionSize sizeof(EditorAction)
 
-		EditorAction editorActions[100];
-		int currentIndex = 99;
+		EditorAction editorActions[128];
+		int currentIndex = 127;
 #define currentAction editorActions[currentIndex]
 
 		void MoveToPrevAction()
 		{
-			currentIndex = currentIndex > 0 ? currentIndex - 1 : 99;
+			currentIndex = currentIndex ? currentIndex - 1 : 127;
 		}
 		void MoveToNextAction()
 		{
-			currentIndex = currentIndex < 99 ? currentIndex + 1 : 0;
+			currentIndex = (currentIndex + 1) & 127;
 		}
 		void CheckAction(int ActionMode)
 		{
@@ -255,7 +255,64 @@ namespace Just_Editor_UWP
 		}
 		void AppendBlockAtEnd();
 		void AppendWCharAtCursor(wchar_t newWChar);
+		/*
+		void AppendWCharAtCursorWithoutMove(wchar_t newWChar)
+		{
+			if (newWChar == L'\r')
+				newWChar = L'\n';
+
+			if (newWChar == L'\n')
+			{
+				if (IdentifiersList->Width && IdentifiersList->IsSelected)
+				{
+					IdentifiersList->NotifyWordUpdate();
+					return;
+				}
+				auto tItem = newTextBlock;
+				textChildren->Items->InsertAt(currentLine, tItem);
+
+				if (cursor < currentLength)
+				{
+					std::wstring wStr = tItem->Content->ToString()->Data();
+					currentBlock->Content = ref new String(wStr.substr(0, cursor).c_str());
+					tItem->Content = ref new String(wStr.substr(cursor, currentLength - cursor).c_str());
+					currentLength = cursor;
+				}
+
+				MoveToNextAction();
+				currentAction.ActionMode = 5;
+				currentAction.Text = L"\n";
+				currentAction.Line = currentLine;
+			}
+			else
+			{
+				if (newWChar >= 65 && newWChar < 91)
+				{
+					bool isCapLocked = coreWindow->GetKeyState(Windows::System::VirtualKey::CapitalLock) == Windows::UI::Core::CoreVirtualKeyStates::Locked;
+					if (!isCapLocked && !isShiftHeld || (isCapLocked && isShiftHeld))
+						newWChar |= 32;
+				}
+
+
+				if (cursor == currentLength)
+				{
+					currentBlock->Content = currentBlock->Content->ToString() + newWChar;
+				}
+				else
+				{
+					std::wstring wStr = currentBlock->Content->ToString()->Data();
+					currentBlock->Content = ref new String((wStr.substr(0, cursor) + newWChar + wStr.substr(cursor, currentLength - cursor)).c_str());
+				}
+				currentLength++;
+				CheckAction(0);
+				SetAction(currentAction.Text + newWChar);
+			}
+
+			NotifyEditorUpdate();
+		}
+		*/
 		void AppendStrAtCursor(const wchar_t* newWStr);
+		//void AppendStrAtCursorWithoutMove(const wchar_t* newWChar);
 
 		bool GetHighlihgtStatus(TXTBLOCK^ block)
 		{
@@ -363,6 +420,10 @@ namespace Just_Editor_UWP
 			if (!selectionPanel->Children->Size)
 				return;
 
+			MoveToNextAction();
+			currentAction.ActionMode = 1;
+			currentAction.Text = GetSelectionStr() + L'\uFFEF';
+
 			unsigned int tIndex;
 			if (selectionPanel->Children->Size > 1)
 			{
@@ -459,8 +520,13 @@ namespace Just_Editor_UWP
 				{
 				case 0:
 					MoveTo(currentAction.Column - actLen, currentAction.Line);
-
 					currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(actLen + cursor, (currentLength -= actLen) - cursor)).c_str());
+
+					break;
+				case 1:
+					MoveTo(currentAction.Column, currentAction.Line);
+					currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(actLen + cursor, (currentLength -= actLen) - cursor)).c_str());
+					AppendStrAtCursor(currentAction.Text->Data());
 
 					break;
 				case 2:
@@ -470,6 +536,19 @@ namespace Just_Editor_UWP
 						+ ref new Platform::String(wStr.substr(cursor, currentLength - cursor).c_str());
 					currentLength += actLen;
 					MoveTo(cursor + actLen, currentAction.Line);
+
+					break;
+				case 3:
+					MoveTo(currentAction.Column, currentAction.Line);
+					currentBlock->Content = ref new Platform::String(wStr.substr(0, cursor).c_str())
+						+ currentAction.Text
+						+ ref new Platform::String(wStr.substr(cursor, currentLength - cursor).c_str());
+					currentLength += actLen;
+
+					break;
+				case 4:
+					MoveTo(currentAction.Column, currentAction.Line);
+					AppendWCharAtCursor(L'\n');
 
 					break;
 				case 5:

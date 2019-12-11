@@ -166,12 +166,8 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 					cursorX -= GetWCharWidth(wStr[cursor]);
 					EditorTextChanged();
 					UpdateCursor();
-					if (!currentAction.ActionMode)
-					{
-						MoveToNextAction();
-						currentAction.Text = L"";
-					}
-					currentAction.ActionMode = 2;
+
+					CheckAction(2);
 					SetAction(wStr[cursor] + currentAction.Text);
 				}
 				else if (currentLine)
@@ -188,6 +184,10 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 					RemoveLine(currentLine--);
 					CursorChanged(cursor, currentLine, textChildren->Items->Size);
 					EditorTextChanged();
+
+					MoveToNextAction();
+					currentAction.ActionMode = 4;
+					SetAction(L"\r");
 				}
 				else
 					break;
@@ -305,6 +305,9 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 						currentLength--;
 						CursorChanged(cursor, currentLine, textChildren->Items->Size);
 						EditorTextChanged();
+
+						CheckAction(3);
+						SetAction(currentAction.Text + wStr[cursor]);
 					}
 					else if (currentLine + 1 < textChildren->Items->Size)
 					{
@@ -313,6 +316,10 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 						RemoveLine(currentLine + 1);
 						CursorChanged(cursor, currentLine, textChildren->Items->Size);
 						EditorTextChanged();
+
+						MoveToNextAction();
+						currentAction.ActionMode = 4;
+						SetAction(L"\n");
 					}
 					else
 						break;
