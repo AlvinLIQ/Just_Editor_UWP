@@ -174,7 +174,7 @@ namespace Just_Editor_UWP
 		{
 			unsigned int Column;
 			unsigned int Line;
-			int ActionMode;//0 Append 1 Replace 2 Backspace 3 Delete
+			int ActionMode;//0 Append 1 Replace 2 Backspace 3 Delete 5 Enter
 			Platform::String^ Text;
 		} EditorAction;
 
@@ -198,6 +198,21 @@ namespace Just_Editor_UWP
 				currentAction = currentAction < ActionsEndAddress ? currentAction + ActionSize : ActionsStartAddress;
 
 			currentAction = currentAction < ActionsEndAddress ? currentAction + ActionSize : ActionsStartAddress;
+		}
+		void CheckAction(int ActionMode)
+		{
+			if (ActionMode || currentAction->ActionMode != ActionMode || !ActionMode && (cursor != currentAction->Column + 1 || currentLine != currentAction->Line))
+			{
+				MoveToNextAction();
+				currentAction->ActionMode = ActionMode;
+				currentAction->Text = L"";
+			}
+		}
+		void SetAction(Platform::String^ newStr)
+		{
+			currentAction->Text = newStr;
+			currentAction->Column = cursor;
+			currentAction->Line = currentLine;
 		}
 
 		void CoreEditor_Unloaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
@@ -443,7 +458,38 @@ namespace Just_Editor_UWP
 		}
 		void Undo()
 		{
+			if (currentAction->Text != nullptr)
+			{
+				unsigned int actLen = currentAction->Text->Length();
+				std::wstring wStr = currentBlock->Content->ToString()->Data();
+				switch (currentAction->ActionMode)
+				{
+				case 0:
+					MoveTo(currentAction->Column - actLen, currentAction->Line);
 
+					currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(actLen + cursor, (currentLength -= actLen) - cursor)).c_str());
+
+					break;
+				case 2:
+					MoveTo(currentAction->Column, currentAction->Line);
+					currentBlock->Content = ref new Platform::String(wStr.substr(0, cursor).c_str())
+						+ currentAction->Text
+						+ ref new Platform::String(wStr.substr(cursor, currentLength - cursor).c_str());
+					currentLength += actLen;
+					MoveTo(cursor + actLen, currentAction->Line);
+
+					break;
+				case 5:
+					actLen = currentLength;
+					textChildren->Items->RemoveAt(currentLine);
+					MoveTo(-1, currentAction->Line - 1);
+					currentBlock->Content += ref new Platform::String(wStr.c_str());
+					currentLength += actLen;
+					
+					break;
+				}
+				MoveToPrevAction();
+			}
 		}
 		void Redo()
 		{
