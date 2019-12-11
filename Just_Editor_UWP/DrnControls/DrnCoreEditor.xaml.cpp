@@ -166,13 +166,13 @@ void DrnCoreEditor::CoreEditor_KeyDown(Windows::UI::Core::CoreWindow^ sender, Wi
 					cursorX -= GetWCharWidth(wStr[cursor]);
 					EditorTextChanged();
 					UpdateCursor();
-					if (!currentAction->ActionMode)
+					if (!currentAction.ActionMode)
 					{
 						MoveToNextAction();
-						currentAction->Text = L"";
+						currentAction.Text = L"";
 					}
-					currentAction->ActionMode = 2;
-					SetAction(wStr[cursor] + currentAction->Text);
+					currentAction.ActionMode = 2;
+					SetAction(wStr[cursor] + currentAction.Text);
 				}
 				else if (currentLine)
 				{
@@ -572,9 +572,9 @@ void DrnCoreEditor::AppendWCharAtCursor(wchar_t newWChar)
 		cursor = 0;
 		cursorX = 0;
 		MoveToNextAction();
-		currentAction->ActionMode = 5;
-		currentAction->Text = L"\n";
-		currentAction->Line = currentLine;
+		currentAction.ActionMode = 5;
+		currentAction.Text = L"\n";
+		currentAction.Line = currentLine;
 	}
 	else
 	{
@@ -601,7 +601,7 @@ void DrnCoreEditor::AppendWCharAtCursor(wchar_t newWChar)
 		cursorX += GetWCharWidth(newWChar);
 		
 		CheckAction(0);
-		SetAction(currentAction->Text + newWChar);
+		SetAction(currentAction.Text + newWChar);
 	}
 
 	NotifyEditorUpdate();

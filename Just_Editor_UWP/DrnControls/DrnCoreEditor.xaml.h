@@ -181,38 +181,31 @@ namespace Just_Editor_UWP
 #define ActionSize sizeof(EditorAction)
 
 		EditorAction editorActions[100];
-#define ActionsStartAddress &editorActions[0]
-#define ActionsEndAddress &editorActions[99]
-		EditorAction* currentAction = ActionsEndAddress;
+		int currentIndex = 99;
+#define currentAction editorActions[currentIndex]
 
 		void MoveToPrevAction()
 		{
-			if (currentAction->ActionMode == 1)
-				currentAction = currentAction > ActionsStartAddress ? currentAction - ActionSize : ActionsEndAddress;
-
-			currentAction = currentAction > ActionsStartAddress ? currentAction - ActionSize : ActionsEndAddress;
+			currentIndex = currentIndex > 0 ? currentIndex - 1 : 99;
 		}
 		void MoveToNextAction()
 		{
-			if (currentAction->ActionMode == 1)
-				currentAction = currentAction < ActionsEndAddress ? currentAction + ActionSize : ActionsStartAddress;
-
-			currentAction = currentAction < ActionsEndAddress ? currentAction + ActionSize : ActionsStartAddress;
+			currentIndex = currentIndex < 99 ? currentIndex + 1 : 0;
 		}
 		void CheckAction(int ActionMode)
 		{
-			if (ActionMode || currentAction->ActionMode != ActionMode || !ActionMode && (cursor != currentAction->Column + 1 || currentLine != currentAction->Line))
+			if (ActionMode || currentAction.ActionMode != ActionMode || !ActionMode && (cursor != currentAction.Column + 1 || currentLine != currentAction.Line))
 			{
 				MoveToNextAction();
-				currentAction->ActionMode = ActionMode;
-				currentAction->Text = L"";
+				currentAction.ActionMode = ActionMode;
+				currentAction.Text = L"";
 			}
 		}
 		void SetAction(Platform::String^ newStr)
 		{
-			currentAction->Text = newStr;
-			currentAction->Column = cursor;
-			currentAction->Line = currentLine;
+			currentAction.Text = newStr;
+			currentAction.Column = cursor;
+			currentAction.Line = currentLine;
 		}
 
 		void CoreEditor_Unloaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
@@ -458,31 +451,31 @@ namespace Just_Editor_UWP
 		}
 		void Undo()
 		{
-			if (currentAction->Text != nullptr)
+			if (currentAction.Text != nullptr)
 			{
-				unsigned int actLen = currentAction->Text->Length();
+				unsigned int actLen = currentAction.Text->Length();
 				std::wstring wStr = currentBlock->Content->ToString()->Data();
-				switch (currentAction->ActionMode)
+				switch (currentAction.ActionMode)
 				{
 				case 0:
-					MoveTo(currentAction->Column - actLen, currentAction->Line);
+					MoveTo(currentAction.Column - actLen, currentAction.Line);
 
 					currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(actLen + cursor, (currentLength -= actLen) - cursor)).c_str());
 
 					break;
 				case 2:
-					MoveTo(currentAction->Column, currentAction->Line);
+					MoveTo(currentAction.Column, currentAction.Line);
 					currentBlock->Content = ref new Platform::String(wStr.substr(0, cursor).c_str())
-						+ currentAction->Text
+						+ currentAction.Text
 						+ ref new Platform::String(wStr.substr(cursor, currentLength - cursor).c_str());
 					currentLength += actLen;
-					MoveTo(cursor + actLen, currentAction->Line);
+					MoveTo(cursor + actLen, currentAction.Line);
 
 					break;
 				case 5:
 					actLen = currentLength;
 					textChildren->Items->RemoveAt(currentLine);
-					MoveTo(-1, currentAction->Line - 1);
+					MoveTo(-1, currentAction.Line - 1);
 					currentBlock->Content += ref new Platform::String(wStr.c_str());
 					currentLength += actLen;
 					
