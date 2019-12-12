@@ -398,7 +398,7 @@ namespace Just_Editor_UWP
 					curLine = (unsigned int)(lSelection->GetY() / fHeight);
 					wStr = GetLineStr(curLine)->Data();
 					curOffset = GetColFromX(wStr, lSelection->GetX());
-					result += ref new Platform::String(wStr.substr(curOffset, GetColFromX(wStr, lSelection->ActualWidth + lSelection->GetX())).c_str());
+					result += ref new Platform::String(wStr.substr(curOffset, GetColFromX(wStr, lSelection->ActualWidth + lSelection->GetX() - fWidth)).c_str());
 					if (i)
 						result += "\n";
 				}
@@ -409,7 +409,7 @@ namespace Just_Editor_UWP
 					curLine = (unsigned int)(lSelection->GetY() / fHeight);
 					wStr = GetLineStr(curLine)->Data();
 					curOffset = GetColFromX(wStr, lSelection->GetX());
-					result += ref new Platform::String(wStr.substr(curOffset, GetColFromX(wStr, lSelection->ActualWidth + lSelection->GetX())).c_str());
+					result += ref new Platform::String(wStr.substr(curOffset, GetColFromX(wStr, lSelection->ActualWidth + lSelection->GetX() - fWidth)).c_str());
 					if (i + 1 < selectionPanel->Children->Size)
 						result += "\n";
 				}
