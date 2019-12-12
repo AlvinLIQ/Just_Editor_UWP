@@ -422,7 +422,7 @@ namespace Just_Editor_UWP
 
 			MoveToNextAction();
 			currentAction.ActionMode = 1;
-			currentAction.Text = GetSelectionStr() + L'\uFFEF';
+			SetAction(GetSelectionStr());
 
 			unsigned int tIndex;
 			if (selectionPanel->Children->Size > 1)
@@ -480,6 +480,7 @@ namespace Just_Editor_UWP
 				currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(tIndex, currentLength - tIndex)).c_str());
 				currentLength -= tIndex - cursor;
 			}
+			currentAction.Column = cursor;
 			EditorTextChanged();
 			
 			CancelSelection();
@@ -515,22 +516,23 @@ namespace Just_Editor_UWP
 			if (currentAction.Text != nullptr)
 			{
 				unsigned int actLen = currentAction.Text->Length();
-				std::wstring wStr = currentBlock->Content->ToString()->Data();
+				std::wstring wStr;
 				switch (currentAction.ActionMode)
 				{
 				case 0:
 					MoveTo(currentAction.Column - actLen, currentAction.Line);
+					wStr = currentBlock->Content->ToString()->Data();
 					currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(actLen + cursor, (currentLength -= actLen) - cursor)).c_str());
 
 					break;
 				case 1:
 					MoveTo(currentAction.Column, currentAction.Line);
-					currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(actLen + cursor, (currentLength -= actLen) - cursor)).c_str());
 					AppendStrAtCursor(currentAction.Text->Data());
 
 					break;
 				case 2:
 					MoveTo(currentAction.Column, currentAction.Line);
+					wStr = currentBlock->Content->ToString()->Data();
 					currentBlock->Content = ref new Platform::String(wStr.substr(0, cursor).c_str())
 						+ currentAction.Text
 						+ ref new Platform::String(wStr.substr(cursor, currentLength - cursor).c_str());
@@ -540,6 +542,7 @@ namespace Just_Editor_UWP
 					break;
 				case 3:
 					MoveTo(currentAction.Column, currentAction.Line);
+					wStr = currentBlock->Content->ToString()->Data();
 					currentBlock->Content = ref new Platform::String(wStr.substr(0, cursor).c_str())
 						+ currentAction.Text
 						+ ref new Platform::String(wStr.substr(cursor, currentLength - cursor).c_str());
@@ -553,9 +556,10 @@ namespace Just_Editor_UWP
 					break;
 				case 5:
 					actLen = currentLength;
+					auto cStr = currentBlock->Content->ToString();
 					textChildren->Items->RemoveAt(currentLine);
 					MoveTo(-1, currentAction.Line - 1);
-					currentBlock->Content += ref new Platform::String(wStr.c_str());
+					currentBlock->Content += cStr;
 					currentLength += actLen;
 					
 					break;
