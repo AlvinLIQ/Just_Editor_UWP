@@ -548,7 +548,7 @@ void DrnCoreEditor::AppendBlockAtEnd()
 	}
 }
 
-void DrnCoreEditor::AppendWCharAtCursor(wchar_t newWChar)
+void DrnCoreEditor::AppendWCharAtCursor(wchar_t newWChar, bool withAction)
 {
 	if (newWChar == L'\r')
 		newWChar = L'\n';
@@ -578,10 +578,14 @@ void DrnCoreEditor::AppendWCharAtCursor(wchar_t newWChar)
 
 		cursor = 0;
 		cursorX = 0;
-		MoveToNextAction();
-		currentAction.ActionMode = 5;
-		currentAction.Text = L"\n";
-		currentAction.Line = currentLine;
+		if (withAction)
+		{
+			MoveToNextAction();
+
+			currentAction.ActionMode = 5;
+			currentAction.Text = L"\n";
+			currentAction.Line = currentLine;
+		}
 	}
 	else
 	{
@@ -607,8 +611,11 @@ void DrnCoreEditor::AppendWCharAtCursor(wchar_t newWChar)
 		cursor++;
 		cursorX += GetWCharWidth(newWChar);
 		
-		CheckAction(0);
-		SetAction(currentAction.Text + newWChar);
+		if (withAction)
+		{
+			CheckAction(0);
+			SetAction(currentAction.Text + newWChar);
+		}
 	}
 
 	NotifyEditorUpdate();
@@ -623,28 +630,13 @@ void DrnCoreEditor::AppendUserWchar(unsigned int keyCode, bool isDown)
 		DrnCoreEditor::CoreEditor_KeyUp(coreWindow.Get(), nullptr);
 }
 
-void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr)
+void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr, bool withAction)
 {
 //	std::wstring wStr = newWStr;
 	unsigned int tLen;
 	Platform::String^ tLineStr = currentBlock->Content->ToString();
 	std::wstring afterCursor = L"";
-	/*
-	if (wStr.find(L'\n') == -1 && wStr.find(L'\r') == -1)
-	{
-		tLen = (unsigned int)wStr.length();
 
-		afterCursor = currentBlock->Content->ToString()->Data();
-		wStr = afterCursor.substr(0, cursor) + wStr + afterCursor.substr(cursor, currentLength - cursor);
-		currentBlock->Content = ref new String(wStr.c_str());
-
-		currentLength += tLen;
-		cursor += tLen;
-		cursorX = GetCursorXFromWStr(wStr, cursor);
-		NotifyEditorUpdate();
-		return;
-	}
-	else */
 	if (currentLength > cursor)
 	{
 		afterCursor = tLineStr->Data();
@@ -653,9 +645,12 @@ void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr)
 		afterCursor = afterCursor.substr(cursor, tLen = currentLength - cursor);
 		currentLength = cursor;
 	}
-	MoveToNextAction();
-	currentAction.ActionMode = 6;
-	SetAction(L"");
+	if (withAction)
+	{
+		MoveToNextAction();
+		currentAction.ActionMode = 6;
+		SetAction(L"");
+	}
 	for (unsigned int sIndex = 0; newWStr[sIndex]; sIndex++)
 	{
 		if (newWStr[sIndex] == L'\r' && newWStr[sIndex + 1] == L'\n')
@@ -701,7 +696,9 @@ void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr)
 	}
 
 	currentBlock->Content = tLineStr;
-	currentAction.Text += tLineStr;
+
+	if (withAction)
+		currentAction.Text += tLineStr;
 
 	NotifyEditorUpdate();
 }

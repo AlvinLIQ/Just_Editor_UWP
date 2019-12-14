@@ -254,64 +254,8 @@ namespace Just_Editor_UWP
 			return tBlock;
 		}
 		void AppendBlockAtEnd();
-		void AppendWCharAtCursor(wchar_t newWChar);
-		/*
-		void AppendWCharAtCursorWithoutMove(wchar_t newWChar)
-		{
-			if (newWChar == L'\r')
-				newWChar = L'\n';
-
-			if (newWChar == L'\n')
-			{
-				if (IdentifiersList->Width && IdentifiersList->IsSelected)
-				{
-					IdentifiersList->NotifyWordUpdate();
-					return;
-				}
-				auto tItem = newTextBlock;
-				textChildren->Items->InsertAt(currentLine, tItem);
-
-				if (cursor < currentLength)
-				{
-					std::wstring wStr = tItem->Content->ToString()->Data();
-					currentBlock->Content = ref new String(wStr.substr(0, cursor).c_str());
-					tItem->Content = ref new String(wStr.substr(cursor, currentLength - cursor).c_str());
-					currentLength = cursor;
-				}
-
-				MoveToNextAction();
-				currentAction.ActionMode = 5;
-				currentAction.Text = L"\n";
-				currentAction.Line = currentLine;
-			}
-			else
-			{
-				if (newWChar >= 65 && newWChar < 91)
-				{
-					bool isCapLocked = coreWindow->GetKeyState(Windows::System::VirtualKey::CapitalLock) == Windows::UI::Core::CoreVirtualKeyStates::Locked;
-					if (!isCapLocked && !isShiftHeld || (isCapLocked && isShiftHeld))
-						newWChar |= 32;
-				}
-
-
-				if (cursor == currentLength)
-				{
-					currentBlock->Content = currentBlock->Content->ToString() + newWChar;
-				}
-				else
-				{
-					std::wstring wStr = currentBlock->Content->ToString()->Data();
-					currentBlock->Content = ref new String((wStr.substr(0, cursor) + newWChar + wStr.substr(cursor, currentLength - cursor)).c_str());
-				}
-				currentLength++;
-				CheckAction(0);
-				SetAction(currentAction.Text + newWChar);
-			}
-
-			NotifyEditorUpdate();
-		}
-		*/
-		void AppendStrAtCursor(const wchar_t* newWStr);
+		void AppendWCharAtCursor(wchar_t newWChar, bool withAction = true);
+		void AppendStrAtCursor(const wchar_t* newWStr, bool withAction = true);
 		//void AppendStrAtCursorWithoutMove(const wchar_t* newWChar);
 
 		bool GetHighlihgtStatus(TXTBLOCK^ block)
@@ -511,10 +455,6 @@ namespace Just_Editor_UWP
 						}
 					}, concurrency::task_continuation_context::use_current());
 		}
-		void DeleteStr(Platform::String^ dStr)
-		{
-
-		}
 		void Undo()
 		{
 			auto CurrentAction = &currentAction;
@@ -532,7 +472,7 @@ namespace Just_Editor_UWP
 					break;
 				case 1:
 					MoveTo(CurrentAction->Column, CurrentAction->Line);
-					AppendStrAtCursor(CurrentAction->Text->Data());
+					AppendStrAtCursor(CurrentAction->Text->Data(), false);
 
 					break;
 				case 2:
@@ -556,7 +496,7 @@ namespace Just_Editor_UWP
 					break;
 				case 4:
 					MoveTo(CurrentAction->Column, CurrentAction->Line);
-					AppendWCharAtCursor(L'\n');
+					AppendWCharAtCursor(L'\n', false);
 
 					break;
 				case 5:
@@ -597,19 +537,29 @@ namespace Just_Editor_UWP
 				{
 				case 0:
 					MoveTo(CurrentAction->Column - actLen, CurrentAction->Line);
-					AppendStrAtCursor(CurrentAction->Text->Data());
+					AppendStrAtCursor(CurrentAction->Text->Data(), false);
 
 					break;
 				case 1:
 				{
 					MoveTo(CurrentAction->Column, CurrentAction->Line);
-					wStr = currentBlock->ToString()->Data();
-					currentBlock->Content = ref new Platform::String(wStr.substr(0, currentLength = cursor).c_str());
+					wStr = currentBlock->Content->ToString()->Data();
 
-					size_t rIndex = 0;
-					if ((rIndex = wStr.find(L'\n', rIndex)) != std::wstring::npos)
-						textChildren->Items->RemoveAt(currentLine + 1);
+					if (currentLength - cursor >= actLen)
+					{
+						currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(cursor + actLen, (currentLength -= actLen) - cursor)).c_str());
+					}
+					else
+					{
+						size_t rIndex, lIndex = 0;
+						while ((rIndex = wStr.find(L'\n', lIndex)) != std::wstring::npos)
+						{
+							textChildren->Items->RemoveAt(currentLine + 1);
 
+							lIndex = rIndex + 1;
+						}
+						currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(lIndex, (size_t)actLen - lIndex)).c_str());
+					}
 					NotifyEditorUpdate();
 				}
 					break;
@@ -636,11 +586,11 @@ namespace Just_Editor_UWP
 					break;
 				case 5:
 					MoveTo(-1, CurrentAction->Line - 1);
-					AppendWCharAtCursor(L'\n');
+					AppendWCharAtCursor(L'\n', false);
 				break;
 				default:
 					MoveTo(CurrentAction->Column, CurrentAction->Line);
-					AppendStrAtCursor(CurrentAction->Text->Data());
+					AppendStrAtCursor(CurrentAction->Text->Data(), false);
 				}
 			}
 		}
