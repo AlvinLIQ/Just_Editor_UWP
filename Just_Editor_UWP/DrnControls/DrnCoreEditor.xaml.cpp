@@ -653,7 +653,9 @@ void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr)
 		afterCursor = afterCursor.substr(cursor, tLen = currentLength - cursor);
 		currentLength = cursor;
 	}
-
+	MoveToNextAction();
+	currentAction.ActionMode = 6;
+	SetAction(L"");
 	for (unsigned int sIndex = 0; newWStr[sIndex]; sIndex++)
 	{
 		if (newWStr[sIndex] == L'\r' && newWStr[sIndex + 1] == L'\n')
@@ -663,12 +665,15 @@ void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr)
 		if (newWStr[sIndex] == L'\n' || newWStr[sIndex] == L'\r')
 		{
 			currentBlock->Content = tLineStr;
+			currentAction.Text += tLineStr + L"\n";
 			tLineStr = L"";
 			currentLine++;
 			textChildren->Items->InsertAt(currentLine, currentBlock = newTextBlock);
 			cursorX = 0;
 			currentLength = 0;
 			cursor = 0;
+
+			currentAction.ActionMode++;
 		}
 		else
 		{
@@ -696,6 +701,7 @@ void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr)
 	}
 
 	currentBlock->Content = tLineStr;
+	currentAction.Text += tLineStr;
 
 	NotifyEditorUpdate();
 }
