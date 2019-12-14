@@ -660,7 +660,11 @@ void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr, bool withAction)
 		if (newWStr[sIndex] == L'\n' || newWStr[sIndex] == L'\r')
 		{
 			currentBlock->Content = tLineStr;
-			currentAction.Text += tLineStr + L"\n";
+			if (withAction)
+			{
+				currentAction.Text += tLineStr + L"\n";
+				currentAction.ActionMode++;
+			}
 			tLineStr = L"";
 			currentLine++;
 			textChildren->Items->InsertAt(currentLine, currentBlock = newTextBlock);
@@ -668,7 +672,6 @@ void DrnCoreEditor::AppendStrAtCursor(const wchar_t *newWStr, bool withAction)
 			currentLength = 0;
 			cursor = 0;
 
-			currentAction.ActionMode++;
 		}
 		else
 		{
@@ -961,8 +964,6 @@ void Just_Editor_UWP::DrnCoreEditor::menuItem_Click(Platform::Object^ sender, Wi
 		break;
 	}
 }
-
-
 
 
 void Just_Editor_UWP::DrnCoreEditor::IdentifiersList_WordRequested(Platform::String^ str, default::uint32 x, default::uint32 y)

@@ -341,8 +341,8 @@ namespace Just_Editor_UWP
 					auto lSelection = (DrnCoreEditorSelectionBlock^)selectionPanel->Children->GetAt(--i);
 					curLine = (unsigned int)(lSelection->GetY() / fHeight);
 					wStr = GetLineStr(curLine)->Data();
-					curOffset = GetColFromX(wStr, lSelection->GetX());
-					result += ref new Platform::String(wStr.substr(curOffset, GetColFromX(wStr, lSelection->ActualWidth + lSelection->GetX() - fWidth)).c_str());
+					curOffset = GetColFromX(wStr, lSelection->GetX() + fWidth / 2);
+					result += ref new Platform::String(wStr.substr(curOffset, GetColFromX(&wStr[curOffset], lSelection->ActualWidth + fWidth / 4)).c_str());
 					if (i)
 						result += "\n";
 				}
@@ -352,8 +352,8 @@ namespace Just_Editor_UWP
 					auto lSelection = (DrnCoreEditorSelectionBlock^)selectionPanel->Children->GetAt(i);
 					curLine = (unsigned int)(lSelection->GetY() / fHeight);
 					wStr = GetLineStr(curLine)->Data();
-					curOffset = GetColFromX(wStr, lSelection->GetX());
-					result += ref new Platform::String(wStr.substr(curOffset, GetColFromX(wStr, lSelection->ActualWidth + lSelection->GetX() - fWidth)).c_str());
+					curOffset = GetColFromX(wStr, lSelection->GetX() + fWidth / 2);
+					result += ref new Platform::String(wStr.substr(curOffset, GetColFromX(&wStr[curOffset], lSelection->ActualWidth + fWidth / 4)).c_str());
 					if (i + 1 < selectionPanel->Children->Size)
 						result += "\n";
 				}
@@ -512,9 +512,18 @@ namespace Just_Editor_UWP
 				default:
 					MoveTo(CurrentAction->Column, CurrentAction->Line);
 
-					wStr = currentBlock->Content->ToString()->Data();
-					currentBlock->Content = ref new Platform::String(wStr.substr(0, currentLength = cursor).c_str());
+					wStr = CurrentAction->Text->Data();
 					int WrapNum = CurrentAction->ActionMode - 6;
+					if (WrapNum)
+					{
+						std::wstring afrStr = GetLineStr(currentLine + WrapNum)->Data();
+						size_t afrLen = afrStr.length(), afrIndex = (size_t)actLen - wStr.rfind(L'\n', actLen) - 1;
+						currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + afrStr.substr(afrIndex, afrLen - afrIndex)).c_str());
+					}
+					else
+					{
+						currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(actLen + cursor, (currentLength -= actLen) - cursor)).c_str());
+					}
 					while (WrapNum--)
 					{
 						textChildren->Items->RemoveAt(currentLine + 1);
@@ -543,22 +552,27 @@ namespace Just_Editor_UWP
 				case 1:
 				{
 					MoveTo(CurrentAction->Column, CurrentAction->Line);
-					wStr = currentBlock->Content->ToString()->Data();
+					wStr = CurrentAction->Text->ToString()->Data();
+
+					std::wstring cStr = currentBlock->Content->ToString()->Data();
 
 					if (currentLength - cursor >= actLen)
 					{
-						currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(cursor + actLen, (currentLength -= actLen) - cursor)).c_str());
+						currentBlock->Content = ref new Platform::String((cStr.substr(0, cursor) + cStr.substr(cursor + actLen, (currentLength -= actLen) - cursor)).c_str());
 					}
 					else
 					{
 						size_t rIndex, lIndex = 0;
+						Platform::String^ tLineStr;
 						while ((rIndex = wStr.find(L'\n', lIndex)) != std::wstring::npos)
 						{
+							tLineStr = GetLineStr(currentLine + 1);
 							textChildren->Items->RemoveAt(currentLine + 1);
 
 							lIndex = rIndex + 1;
 						}
-						currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(lIndex, (size_t)actLen - lIndex)).c_str());
+						rIndex = (size_t)actLen - lIndex;
+						currentBlock->Content = ref new Platform::String((cStr.substr(0, cursor) + std::wstring(tLineStr->Data()).substr(rIndex, tLineStr->Length() - (unsigned int)rIndex)).c_str());
 					}
 					NotifyEditorUpdate();
 				}
