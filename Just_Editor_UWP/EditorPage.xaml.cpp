@@ -72,6 +72,11 @@ void Just_Editor_UWP::EditorPage::saveBtn_Click(Platform::Object^ sender, Window
 	}
 }
 
+void Just_Editor_UWP::EditorPage::drnCodeEditor_EditorActionChanged()
+{
+	UndoBtn->IsEnabled = drnCodeEditor->coreEditor->CanUndo;
+	RedoBtn->IsEnabled = drnCodeEditor->coreEditor->CanRedo;
+}
 
 void Just_Editor_UWP::EditorPage::drnCodeEditor_EditorTextChanged()
 {
@@ -117,13 +122,19 @@ void Just_Editor_UWP::EditorPage::findNextBtn_Click(Platform::Object^ sender, Wi
 
 void Just_Editor_UWP::EditorPage::UndoBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-
+	if (drnCodeEditor->coreEditor->CanUndo)
+	{
+		drnCodeEditor->coreEditor->Undo();
+	}
 }
 
 
 void Just_Editor_UWP::EditorPage::RedoBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-
+	if (drnCodeEditor->coreEditor->CanRedo)
+	{
+		drnCodeEditor->coreEditor->Redo();
+	}
 }
 
 

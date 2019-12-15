@@ -14,10 +14,10 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Background="{x:Bind AppConfig.SubCoverBrush}">
-            <Button x:Name="UndoBtn" Click="UndoBtn_Click">
+            <Button x:Name="UndoBtn" Click="UndoBtn_Click" IsEnabled="False">
                 &lt;
             </Button>
-            <Button x:Name="RedoBtn" Click="RedoBtn_Click">
+            <Button x:Name="RedoBtn" Click="RedoBtn_Click" IsEnabled="False">
                 &gt;
             </Button>
             <Button x:Name="saveBtn" Click="saveBtn_Click" Padding="10">
@@ -41,6 +41,6 @@
         </StackPanel>
         <local:DrnCodeEditor x:Name="drnCodeEditor" Grid.Row="1" Background="{x:Bind AppConfig.SubBackBrush}" LineNumBackground="{x:Bind AppConfig.SelectedBrush}"
                              EditorTextChanged="drnCodeEditor_EditorTextChanged" EditorSavedRequested="drnCodeEditor_EditorSavedRequested"
-                             EditorReloadRequested="drnCodeEditor_EditorReloadRequested"/>
+                             EditorReloadRequested="drnCodeEditor_EditorReloadRequested" EditorActionChanged="drnCodeEditor_EditorActionChanged"/>
     </Grid>
 </ContentPresenter>

@@ -38,6 +38,7 @@ namespace Just_Editor_UWP
 		DrnCoreEditor();
 		event CursorChangedEventHandler^ CursorChanged;
 		event EditorViewChangeEventHandler^ EditorViewChanging;
+		event EditorTextChangedEventHandler^ EditorActionChanged;
 		event EditorTextChangedEventHandler^ EditorTextChanged;
 		event EditorTextChangedEventHandler^ EditorSaveRequested;
 
@@ -139,6 +140,189 @@ namespace Just_Editor_UWP
 			return currentLine;
 		}
 
+#define currentAction editorActions[currentIndex]
+		property bool CanUndo
+		{
+			bool get()
+			{
+				return ActionPos > UndoNum;
+			}
+		}
+		property bool CanRedo
+		{
+			bool get()
+			{
+				return UndoNum;
+			}
+		}
+		void Undo()
+		{
+			auto CurrentAction = &currentAction;
+			if (CurrentAction->Text != nullptr)
+			{
+				UndoNum++;
+				unsigned int actLen = CurrentAction->Text->Length();
+				std::wstring wStr;
+				switch (CurrentAction->ActionMode)
+				{
+				case 0:
+					MoveTo(CurrentAction->Column - actLen, CurrentAction->Line);
+					wStr = currentBlock->Content->ToString()->Data();
+					currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(actLen + cursor, (currentLength -= actLen) - cursor)).c_str());
+					EditorTextChanged();
+
+					break;
+				case 1:
+					MoveTo(CurrentAction->Column, CurrentAction->Line);
+					AppendStrAtCursor(CurrentAction->Text->Data(), false);
+
+					break;
+				case 2:
+					MoveTo(CurrentAction->Column, CurrentAction->Line);
+					wStr = currentBlock->Content->ToString()->Data();
+					currentBlock->Content = ref new Platform::String(wStr.substr(0, cursor).c_str())
+						+ CurrentAction->Text
+						+ ref new Platform::String(wStr.substr(cursor, currentLength - cursor).c_str());
+					currentLength += actLen;
+					MoveTo(cursor + actLen, CurrentAction->Line);
+					EditorTextChanged();
+
+					break;
+				case 3:
+					MoveTo(CurrentAction->Column, CurrentAction->Line);
+					wStr = currentBlock->Content->ToString()->Data();
+					currentBlock->Content = ref new Platform::String(wStr.substr(0, cursor).c_str())
+						+ CurrentAction->Text
+						+ ref new Platform::String(wStr.substr(cursor, currentLength - cursor).c_str());
+					currentLength += actLen;
+					EditorTextChanged();
+
+					break;
+				case 4:
+					MoveTo(CurrentAction->Column, CurrentAction->Line);
+					AppendWCharAtCursor(L'\n', false);
+
+					break;
+				case 5:
+				{
+					actLen = currentLength;
+					auto cStr = currentBlock->Content->ToString();
+					textChildren->Items->RemoveAt(currentLine);
+					MoveTo(-1, CurrentAction->Line - 1);
+					currentBlock->Content += cStr;
+					currentLength += actLen;
+					NotifyEditorUpdate();
+				}
+				break;
+				default:
+					MoveTo(CurrentAction->Column, CurrentAction->Line);
+
+					std::wstring cStr = currentBlock->Content->ToString()->Data();
+					int WrapNum = CurrentAction->ActionMode - 6;
+					if (WrapNum)
+					{
+						wStr = CurrentAction->Text->Data();
+						std::wstring afrStr = GetLineStr(currentLine + WrapNum)->Data();
+						size_t afrLen = afrStr.length(), afrIndex = (size_t)actLen - wStr.rfind(L'\n', actLen) - 1;
+						currentBlock->Content = ref new Platform::String((cStr.substr(0, cursor) + afrStr.substr(afrIndex, afrLen - afrIndex)).c_str());
+						while (WrapNum--)
+						{
+							textChildren->Items->RemoveAt(currentLine + 1);
+						}
+					}
+					else
+					{
+						currentBlock->Content = ref new Platform::String((cStr.substr(0, cursor) + cStr.substr(actLen + cursor, (currentLength -= actLen) - cursor)).c_str());
+					}
+					
+					CursorChanged(cursor, cursor, textChildren->Items->Size);
+					EditorTextChanged();
+				}
+				MoveToPrevAction();
+			}
+		}
+		void Redo()
+		{
+			MoveToNextAction();
+			auto CurrentAction = &currentAction;
+			if (CurrentAction->Text != nullptr)
+			{
+				UndoNum--;
+				unsigned int actLen = CurrentAction->Text->Length();
+				std::wstring wStr;
+				switch (CurrentAction->ActionMode)
+				{
+				case 0:
+					MoveTo(CurrentAction->Column - actLen, CurrentAction->Line);
+					AppendStrAtCursor(CurrentAction->Text->Data(), false);
+
+					break;
+				case 1:
+				{
+					MoveTo(CurrentAction->Column, CurrentAction->Line);
+					wStr = CurrentAction->Text->ToString()->Data();
+
+					std::wstring cStr = currentBlock->Content->ToString()->Data();
+
+					if (currentLength - cursor >= actLen)
+					{
+						currentBlock->Content = ref new Platform::String((cStr.substr(0, cursor) + cStr.substr(cursor + actLen, (currentLength -= actLen) - cursor)).c_str());
+					}
+					else
+					{
+						size_t rIndex, lIndex = 0;
+						Platform::String^ tLineStr;
+						while ((rIndex = wStr.find(L'\n', lIndex)) != std::wstring::npos)
+						{
+							tLineStr = GetLineStr(currentLine + 1);
+							textChildren->Items->RemoveAt(currentLine + 1);
+
+							lIndex = rIndex + 1;
+						}
+						rIndex = (size_t)actLen - lIndex;
+						currentBlock->Content = ref new Platform::String((cStr.substr(0, cursor) + std::wstring(tLineStr->Data()).substr(rIndex, tLineStr->Length() - (unsigned int)rIndex)).c_str());
+					}
+					CursorChanged(cursor, cursor, textChildren->Items->Size);
+					EditorTextChanged();
+				}
+				break;
+				case 2:
+					MoveTo(CurrentAction->Column, CurrentAction->Line);
+					wStr = currentBlock->Content->ToString()->Data();
+					currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(cursor + actLen, (currentLength -= actLen) - cursor)).c_str());
+					EditorTextChanged();
+
+					break;
+				case 3:
+					MoveTo(CurrentAction->Column, CurrentAction->Line);
+					wStr = currentBlock->Content->ToString()->Data();
+					currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(cursor + actLen, (currentLength -= actLen) - cursor)).c_str());
+					EditorTextChanged();
+
+					break;
+				case 4:
+				{
+					MoveTo(CurrentAction->Column, CurrentAction->Line);
+					auto nxtBlockStr = GetNextBlock()->Content->ToString();
+					currentBlock->Content += nxtBlockStr;
+					currentLength += nxtBlockStr->Length();
+					RemoveLine(currentLine + 1);
+				}
+				break;
+				case 5:
+					MoveTo(-1, CurrentAction->Line - 1);
+					AppendWCharAtCursor(L'\n', false);
+					break;
+				default:
+					MoveTo(CurrentAction->Column, CurrentAction->Line);
+					AppendStrAtCursor(CurrentAction->Text->Data(), false);
+				}
+				EditorActionChanged();
+			}
+			else
+				MoveToPrevAction();
+		}
+
 		property Windows::UI::Xaml::Controls::Flyout^ searchFlyout;
 	private:
 		Windows::UI::Xaml::Media::SolidColorBrush^ IdentifiersHighlightColor = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Colors::DeepSkyBlue);
@@ -172,25 +356,41 @@ namespace Just_Editor_UWP
 
 		typedef struct
 		{
-			unsigned int Column;
+			unsigned int Column = -1;
 			unsigned int Line;
 			int ActionMode;//0 Append 1 Replace 2 Backspace 3 Delete 4 Remove Line 5 Append Line
 			Platform::String^ Text;
 		} EditorAction;
 
-#define ActionSize sizeof(EditorAction)
-
 		EditorAction editorActions[128];
 		int currentIndex = 127;
-#define currentAction editorActions[currentIndex]
+		int ActionPos = 0, UndoNum = 0;
+
 
 		void MoveToPrevAction()
 		{
 			currentIndex = currentIndex ? currentIndex - 1 : 127;
+
+			EditorActionChanged();
 		}
 		void MoveToNextAction()
 		{
 			currentIndex = (currentIndex + 1) & 127;
+			if (ActionPos < 128)
+				ActionPos++;
+
+			EditorActionChanged();
+		}
+		
+		void CheckRedo()
+		{
+			if (CanRedo)
+			{
+				ActionPos -= UndoNum;
+				UndoNum = 0;
+
+				EditorActionChanged();
+			}
 		}
 		void CheckAction(int ActionMode)
 		{
@@ -206,6 +406,8 @@ namespace Just_Editor_UWP
 			currentAction.Text = newStr;
 			currentAction.Column = cursor;
 			currentAction.Line = currentLine;
+
+			CheckRedo();
 		}
 
 		void CoreEditor_Unloaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
@@ -454,159 +656,6 @@ namespace Just_Editor_UWP
 							AppendStrAtCursor(clipStr->Data());
 						}
 					}, concurrency::task_continuation_context::use_current());
-		}
-		void Undo()
-		{
-			auto CurrentAction = &currentAction;
-			if (CurrentAction->Text != nullptr)
-			{
-				unsigned int actLen = CurrentAction->Text->Length();
-				std::wstring wStr;
-				switch (CurrentAction->ActionMode)
-				{
-				case 0:
-					MoveTo(CurrentAction->Column - actLen, CurrentAction->Line);
-					wStr = currentBlock->Content->ToString()->Data();
-					currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(actLen + cursor, (currentLength -= actLen) - cursor)).c_str());
-
-					break;
-				case 1:
-					MoveTo(CurrentAction->Column, CurrentAction->Line);
-					AppendStrAtCursor(CurrentAction->Text->Data(), false);
-
-					break;
-				case 2:
-					MoveTo(CurrentAction->Column, CurrentAction->Line);
-					wStr = currentBlock->Content->ToString()->Data();
-					currentBlock->Content = ref new Platform::String(wStr.substr(0, cursor).c_str())
-						+ CurrentAction->Text
-						+ ref new Platform::String(wStr.substr(cursor, currentLength - cursor).c_str());
-					currentLength += actLen;
-					MoveTo(cursor + actLen, CurrentAction->Line);
-
-					break;
-				case 3:
-					MoveTo(CurrentAction->Column, CurrentAction->Line);
-					wStr = currentBlock->Content->ToString()->Data();
-					currentBlock->Content = ref new Platform::String(wStr.substr(0, cursor).c_str())
-						+ CurrentAction->Text
-						+ ref new Platform::String(wStr.substr(cursor, currentLength - cursor).c_str());
-					currentLength += actLen;
-
-					break;
-				case 4:
-					MoveTo(CurrentAction->Column, CurrentAction->Line);
-					AppendWCharAtCursor(L'\n', false);
-
-					break;
-				case 5:
-				{
-					actLen = currentLength;
-					auto cStr = currentBlock->Content->ToString();
-					textChildren->Items->RemoveAt(currentLine);
-					MoveTo(-1, CurrentAction->Line - 1);
-					currentBlock->Content += cStr;
-					currentLength += actLen;
-				}
-					break;
-				default:
-					MoveTo(CurrentAction->Column, CurrentAction->Line);
-
-					wStr = CurrentAction->Text->Data();
-					int WrapNum = CurrentAction->ActionMode - 6;
-					if (WrapNum)
-					{
-						std::wstring afrStr = GetLineStr(currentLine + WrapNum)->Data();
-						size_t afrLen = afrStr.length(), afrIndex = (size_t)actLen - wStr.rfind(L'\n', actLen) - 1;
-						currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + afrStr.substr(afrIndex, afrLen - afrIndex)).c_str());
-					}
-					else
-					{
-						currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(actLen + cursor, (currentLength -= actLen) - cursor)).c_str());
-					}
-					while (WrapNum--)
-					{
-						textChildren->Items->RemoveAt(currentLine + 1);
-					}
-
-					NotifyEditorUpdate();
-				}
-				MoveToPrevAction();
-			}
-		}
-		void Redo()
-		{
-			MoveToNextAction();
-			auto CurrentAction = &currentAction;
-			if (CurrentAction->Text != nullptr)
-			{
-				unsigned int actLen = CurrentAction->Text->Length();
-				std::wstring wStr;
-				switch (CurrentAction->ActionMode)
-				{
-				case 0:
-					MoveTo(CurrentAction->Column - actLen, CurrentAction->Line);
-					AppendStrAtCursor(CurrentAction->Text->Data(), false);
-
-					break;
-				case 1:
-				{
-					MoveTo(CurrentAction->Column, CurrentAction->Line);
-					wStr = CurrentAction->Text->ToString()->Data();
-
-					std::wstring cStr = currentBlock->Content->ToString()->Data();
-
-					if (currentLength - cursor >= actLen)
-					{
-						currentBlock->Content = ref new Platform::String((cStr.substr(0, cursor) + cStr.substr(cursor + actLen, (currentLength -= actLen) - cursor)).c_str());
-					}
-					else
-					{
-						size_t rIndex, lIndex = 0;
-						Platform::String^ tLineStr;
-						while ((rIndex = wStr.find(L'\n', lIndex)) != std::wstring::npos)
-						{
-							tLineStr = GetLineStr(currentLine + 1);
-							textChildren->Items->RemoveAt(currentLine + 1);
-
-							lIndex = rIndex + 1;
-						}
-						rIndex = (size_t)actLen - lIndex;
-						currentBlock->Content = ref new Platform::String((cStr.substr(0, cursor) + std::wstring(tLineStr->Data()).substr(rIndex, tLineStr->Length() - (unsigned int)rIndex)).c_str());
-					}
-					NotifyEditorUpdate();
-				}
-					break;
-				case 2:
-					MoveTo(CurrentAction->Column, CurrentAction->Line);
-					wStr = currentBlock->Content->ToString()->Data();
-					currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(cursor + actLen, (currentLength -= actLen) - cursor)).c_str());
-
-					break;
-				case 3:
-					MoveTo(CurrentAction->Column, CurrentAction->Line);
-					wStr = currentBlock->Content->ToString()->Data();
-					currentBlock->Content = ref new Platform::String((wStr.substr(0, cursor) + wStr.substr(cursor + actLen, (currentLength -= actLen) - cursor)).c_str());
-
-					break;
-				case 4:
-				{
-					MoveTo(CurrentAction->Column, CurrentAction->Line);
-					auto nxtBlockStr = GetNextBlock()->Content->ToString();
-					currentBlock->Content += nxtBlockStr;
-					currentLength += nxtBlockStr->Length();
-					RemoveLine(currentLine + 1);
-				}
-					break;
-				case 5:
-					MoveTo(-1, CurrentAction->Line - 1);
-					AppendWCharAtCursor(L'\n', false);
-				break;
-				default:
-					MoveTo(CurrentAction->Column, CurrentAction->Line);
-					AppendStrAtCursor(CurrentAction->Text->Data(), false);
-				}
-			}
 		}
 		void EditorContent_PointerPressed(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);
 		void EditorContent_PointerEntered(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);

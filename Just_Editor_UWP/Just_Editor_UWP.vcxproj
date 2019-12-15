@@ -278,6 +278,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\DimoJang.jpg" />
     <Image Include="Assets\JustEditor_Logo.png" />
     <Image Include="Assets\LargeTile.scale-100.png" />
     <Image Include="Assets\LargeTile.scale-125.png" />

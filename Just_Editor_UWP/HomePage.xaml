@@ -20,7 +20,7 @@
                             <RotateTransform Angle="-10"/>
                         </FontIcon.RenderTransform>
                     </FontIcon>
-                    <ContentPresenter Content="Ver.0.2.0-Alpha" FontSize="13" HorizontalAlignment="Right"/>
+                    <ContentPresenter Content="Ver.0.2.1-Dimo" FontSize="13" HorizontalAlignment="Right" />
                     <ContentPresenter Content="Just Editor" FontSize="50"/>
                     <ContentPresenter Content="New" FontSize="30"/>
                     <StackPanel>
@@ -72,6 +72,10 @@
                        MenuSelected="DrnMenu_MenuSelected" Width="30" Height="30" Padding="2"
                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
             <local:DrnMenu.menuItems>
+                <StackPanel Padding="0,8,8,8" Orientation="Horizontal">
+                    <Image Source="Assets/DimoJang.jpg" Width="100"/>
+                    <TextBlock Text=" Dimo Only" VerticalAlignment="Center"/>
+                </StackPanel>
                 <x:String>SmartDetect Switch</x:String>
                 <x:String>Theme Switch(won't be saved)</x:String>
             </local:DrnMenu.menuItems>

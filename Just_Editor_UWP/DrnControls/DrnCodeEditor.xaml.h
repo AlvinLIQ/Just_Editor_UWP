@@ -29,6 +29,11 @@ namespace Just_Editor_UWP
 
 		event EncodeChangedEventHandler^ EditorReloadRequested;
 
+		event EditorTextChangedEventHandler^ EditorActionChanged
+		{
+			Windows::Foundation::EventRegistrationToken add(EditorTextChangedEventHandler^ changedHandler) { return (drnCoreEditor->EditorActionChanged += changedHandler); }
+			void remove(Windows::Foundation::EventRegistrationToken token) { drnCoreEditor->EditorActionChanged -= token; }
+		};
 		event EditorTextChangedEventHandler^ EditorTextChanged 
 		{
 			Windows::Foundation::EventRegistrationToken add(EditorTextChangedEventHandler^ changedHandler) { return (drnCoreEditor->EditorTextChanged += changedHandler); }

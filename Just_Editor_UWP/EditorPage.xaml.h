@@ -52,6 +52,7 @@ namespace Just_Editor_UWP
 	private:
 		DrnTab^ thisTab = nullptr;
 		void saveBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void drnCodeEditor_EditorActionChanged();
 		void drnCodeEditor_EditorTextChanged();
 		void searchBox_KeyUp(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e);
 		void findLastBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
