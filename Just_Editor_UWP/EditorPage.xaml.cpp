@@ -8,7 +8,10 @@
 
 using namespace Just_Editor_UWP;
 
+using namespace concurrency;
+
 using namespace Platform;
+
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -17,6 +20,32 @@ EditorPage::EditorPage()
 	InitializeComponent();
 
 	drnCodeEditor->coreEditor->searchFlyout = searchFlyout;
+
+	Windows::UI::Core::CoreWindow::GetForCurrentThread()->Activated
+		+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Core::CoreWindow^, Windows::UI::Core::WindowActivatedEventArgs^>
+		([this](Windows::UI::Core::CoreWindow^ coreWindow, Windows::UI::Core::WindowActivatedEventArgs^ args)
+	{
+		if (this->thisTab == nullptr || this->thisTab->FileDialog == nullptr || this->thisTab->FileDialog->DialogFile == nullptr)
+			return;
+
+		/*
+		auto dataModifiedProperty = ref new Platform::Collections::Vector<Platform::String^>({ L"System.DateModified" });
+
+		concurrency::create_task(FileDialog->DialogFile->Properties->RetrievePropertiesAsync(dataModifiedProperty)).then([FileDialog](Windows::Foundation::Collections::IMap<String^, Object^>^ extraProperties)
+		{
+
+		});
+		*/
+		create_task(thisTab->FileDialog->DialogFile->GetBasicPropertiesAsync()).then([FileDialog = thisTab->FileDialog, this, codeEditor = codeEditor](Windows::Storage::FileProperties::BasicProperties^ basicProperties)
+			{
+				if (basicProperties->DateModified.UniversalTime != FileDialog->FileModifiedTime)
+				{
+					codeEditor->Clear();
+					UpdateEditor(Windows::Storage::Streams::UnicodeEncoding::Utf8);
+					FileDialog->FileModifiedTime = basicProperties->DateModified.UniversalTime;
+				}
+			});
+	});
 }
 
 void Just_Editor_UWP::EditorPage::UpdateEditor(Windows::Storage::Streams::UnicodeEncoding encodeMode)
@@ -56,6 +85,7 @@ void Just_Editor_UWP::EditorPage::saveBtn_Click(Platform::Object^ sender, Window
 					if (thisTab->FileDialog->DialogFile == nullptr)
 						return;
 					Drn_UWP::WriteTextStorageFile(thisTab->FileDialog->DialogFile, drnCodeEditor->GetStr());
+					thisTab->FileDialog->UpdateFileProperties();
 					thisTab->SetExtraStatus(L"");
 					thisTab->Title = thisTab->FileDialog->DialogFile->Name;
 					saveBtn->IsEnabled = true;
@@ -66,7 +96,7 @@ void Just_Editor_UWP::EditorPage::saveBtn_Click(Platform::Object^ sender, Window
 		concurrency::create_task(Drn_UWP::WriteTextStorageFile(thisTab->FileDialog->DialogFile, drnCodeEditor->GetStr())).then([this]()
 			{
 				thisTab->SetExtraStatus(L"");
-				thisTab->FileDialog->FileModifiedTime = thisTab->FileDialog->DialogFile->DateCreated.UniversalTime;
+				thisTab->FileDialog->UpdateFileProperties();
 				saveBtn->IsEnabled = true;
 			});
 	}

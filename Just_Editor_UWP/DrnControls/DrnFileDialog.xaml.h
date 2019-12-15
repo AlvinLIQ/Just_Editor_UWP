@@ -32,6 +32,13 @@ namespace Just_Editor_UWP
 			Platform::String^ get() { return FileNameBox->Text; }
 		};
 		property long long FileModifiedTime;
+		void UpdateFileProperties()
+		{
+			concurrency::create_task(dialogFile->GetBasicPropertiesAsync()).then([this](Windows::Storage::FileProperties::BasicProperties^ basicProperties)
+				{
+					FileModifiedTime = basicProperties->DateModified.UniversalTime;
+				});
+		}
 		property Windows::Storage::StorageFile^ DialogFile
 		{
 			Windows::Storage::StorageFile^ get()
@@ -43,7 +50,7 @@ namespace Just_Editor_UWP
 				dialogFile = newFile;
 				if (newFile != nullptr)
 				{
-					FileModifiedTime = newFile->DateCreated.UniversalTime;
+					UpdateFileProperties();
 				}
 			}
 		};
