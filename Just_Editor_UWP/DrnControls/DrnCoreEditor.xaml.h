@@ -376,8 +376,6 @@ namespace Just_Editor_UWP
 		void MoveToNextAction()
 		{
 			currentIndex = (currentIndex + 1) & 127;
-			if (ActionPos < 128)
-				ActionPos++;
 
 			EditorActionChanged();
 		}
@@ -397,6 +395,11 @@ namespace Just_Editor_UWP
 			if (ActionMode || currentAction.ActionMode != ActionMode || !ActionMode && (cursor != currentAction.Column + 1 || currentLine != currentAction.Line))
 			{
 				MoveToNextAction();
+				if (ActionPos < 128)
+				{
+					ActionPos++;
+					EditorActionChanged();
+				}
 				currentAction.ActionMode = ActionMode;
 				currentAction.Text = L"";
 			}
@@ -566,8 +569,7 @@ namespace Just_Editor_UWP
 			if (!selectionPanel->Children->Size)
 				return;
 
-			MoveToNextAction();
-			currentAction.ActionMode = 1;
+			CheckAction(1);
 			Platform::String^ selectionStr = GetSelectionStr();
 
 			unsigned int tIndex;

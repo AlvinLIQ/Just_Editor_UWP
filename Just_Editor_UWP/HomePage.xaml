@@ -20,7 +20,7 @@
                             <RotateTransform Angle="-10"/>
                         </FontIcon.RenderTransform>
                     </FontIcon>
-                    <ContentPresenter Content="Ver.0.2.1-Dimo" FontSize="13" HorizontalAlignment="Right" />
+                    <ContentPresenter Content="Ver.0.2.2-Dimo" FontSize="13" HorizontalAlignment="Right" />
                     <ContentPresenter Content="Just Editor" FontSize="50"/>
                     <ContentPresenter Content="New" FontSize="30"/>
                     <StackPanel>
