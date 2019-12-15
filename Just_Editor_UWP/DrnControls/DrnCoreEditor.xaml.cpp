@@ -611,7 +611,11 @@ void DrnCoreEditor::AppendWCharAtCursor(wchar_t newWChar, bool withAction)
 		
 		if (withAction)
 		{
-			CheckAction(0);
+			if (IsSplit(newWChar))
+				SetActionForCurrent(0);
+			else
+				CheckAction(0);
+
 			SetAction(currentAction.Text + newWChar);
 		}
 	}

@@ -44,7 +44,7 @@ namespace Just_Editor_UWP
 
 		void AppendUserStr(Platform::String^ uStr)
 		{
-			AppendStrAtCursor(uStr->Data());
+			AppendStrAtCursor(uStr->Data(), false);
 		}
 		void AppendUserWchar(unsigned int keyCode, bool isDown);
 		Platform::String^ GetLineStr(unsigned int line)
@@ -390,18 +390,22 @@ namespace Just_Editor_UWP
 				EditorActionChanged();
 			}
 		}
+		void SetActionForCurrent(int ActionMode)
+		{
+			MoveToNextAction();
+			if (ActionPos < 128)
+			{
+				ActionPos++;
+				EditorActionChanged();
+			}
+			currentAction.ActionMode = ActionMode;
+			currentAction.Text = L"";
+		}
 		void CheckAction(int ActionMode)
 		{
 			if (ActionMode || currentAction.ActionMode != ActionMode || !ActionMode && (cursor != currentAction.Column + 1 || currentLine != currentAction.Line))
 			{
-				MoveToNextAction();
-				if (ActionPos < 128)
-				{
-					ActionPos++;
-					EditorActionChanged();
-				}
-				currentAction.ActionMode = ActionMode;
-				currentAction.Text = L"";
+				SetActionForCurrent(ActionMode);
 			}
 		}
 		void SetAction(Platform::String^ newStr)
