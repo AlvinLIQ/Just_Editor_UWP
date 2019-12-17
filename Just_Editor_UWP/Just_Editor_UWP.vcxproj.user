@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <DebuggerFlavor>WindowsDeviceDebugger</DebuggerFlavor>
+    <DebuggerFlavor>UWPRemoteDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
     <UapAppxPackageBuildMode>StoreOnly</UapAppxPackageBuildMode>
     <AppxShowAllApps>True</AppxShowAllApps>
     <AppxBuildConfigurationSelection>x86|x64|arm</AppxBuildConfigurationSelection>
-    <PackageOptionalProjectsInIdeBuilds>False</PackageOptionalProjectsInIdeBuilds>
+    <PackageOptionalProjectsInIdeBuilds>True</PackageOptionalProjectsInIdeBuilds>
     <Source>F:\UWP\Just_Editor_UWP\Just_Editor_UWP\Assets\JustEditor_Logo.png</Source>
     <SmallTileSource>F:\UWP\Just_Editor_UWP\Just_Editor_UWP\Assets\JustEditor_Logo.png</SmallTileSource>
     <MediumTileSource>F:\UWP\Just_Editor_UWP\Just_Editor_UWP\Assets\JustEditor_Logo.png</MediumTileSource>

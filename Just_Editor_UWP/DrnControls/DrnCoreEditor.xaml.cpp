@@ -813,14 +813,17 @@ void DrnCoreEditor::CoreEditor_Loaded(Platform::Object^ sender, Windows::UI::Xam
 			+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextLayoutRequestedEventArgs^>
 			([this](Windows::UI::Text::Core::CoreTextEditContext ^ sender, Windows::UI::Text::Core::CoreTextLayoutRequestedEventArgs ^ args) 
 				{
-					float scaleFactor = (float)Windows::Graphics::Display::DisplayInformation::GetForCurrentView()->RawPixelsPerViewPixel;
-					Rect controlRect = Rect((coreWindow->Bounds.X + (float)(cursorTrans->X - editorScrollViewer->HorizontalOffset)) * scaleFactor, 
-						(coreWindow->Bounds.Y + (float)(cursorTrans->Y - editorScrollViewer->VerticalOffset) + 75) * scaleFactor,
-						textChildren->RenderSize.Width, fHeight);
+					if (!inputPane->Visible)
+					{
+						float scaleFactor = (float)Windows::Graphics::Display::DisplayInformation::GetForCurrentView()->RawPixelsPerViewPixel;
+						Rect controlRect = Rect((coreWindow->Bounds.X + (float)(cursorTrans->X - editorScrollViewer->HorizontalOffset)) * scaleFactor,
+							(coreWindow->Bounds.Y + (float)(cursorTrans->Y - editorScrollViewer->VerticalOffset) + 75) * scaleFactor,
+							textChildren->RenderSize.Width, fHeight);
 
-					auto request = args->Request;
-					request->LayoutBounds->ControlBounds = controlRect;
-					request->LayoutBounds->TextBounds = controlRect;
+						auto request = args->Request;
+						request->LayoutBounds->ControlBounds = controlRect;
+						request->LayoutBounds->TextBounds = controlRect;
+					}
 				});
 		coreTextContext->SelectionRequested 
 			+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextSelectionRequestedEventArgs^>
@@ -834,20 +837,15 @@ void DrnCoreEditor::CoreEditor_Loaded(Platform::Object^ sender, Windows::UI::Xam
 				{
 					isIME = true;
 					isIMEStopped = false;
-					lastRange.StartCaretPosition = 0;
-					lastRange.EndCaretPosition = 0;
+					lastRange = { 0,0 };
 				});
 		coreTextContext->CompositionCompleted
 			+= ref new Windows::Foundation::TypedEventHandler<Windows::UI::Text::Core::CoreTextEditContext^, Windows::UI::Text::Core::CoreTextCompositionCompletedEventArgs^>
 			([this](Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextCompositionCompletedEventArgs^ args)
 				{
 					isIME = false;
-					CoreTextRange tRange, nRange;
-					tRange.StartCaretPosition = 0;
-					tRange.EndCaretPosition = lastRange.EndCaretPosition;
-					nRange.StartCaretPosition = 0;
-					nRange.EndCaretPosition = 0;
-					sender->NotifyTextChanged(tRange, 0, nRange);
+					sender->NotifyTextChanged({ 0,lastRange.EndCaretPosition }, 0, { 0,0 });
+					lastRange = { 0,0 };
 					if (isIMEStopped)
 						AppendStrAtCursor(MsgTest->Content->ToString()->Data());
 					else
@@ -863,26 +861,26 @@ void DrnCoreEditor::CoreEditor_Loaded(Platform::Object^ sender, Windows::UI::Xam
 
 void DrnCoreEditor::CoreEditContext_TextRequested(Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextTextRequestedEventArgs^ args)
 {
+	if (args->Request->IsCanceled)
+		args->Request->Text = L"";
 }
 
 void DrnCoreEditor::CoreEditContext_TextUpdating(Windows::UI::Text::Core::CoreTextEditContext^ sender, Windows::UI::Text::Core::CoreTextTextUpdatingEventArgs^ args)
 {
 	if (IsTextSelected())
 		ClearSelection();
-	wchar_t fChar = *args->Text->Data();
-	if (!fChar)
+	auto fChar = args->Text->Data();
+	if (!fChar[0])
 		return;
-//	MsgTest->Text = args->InputLanguage->LanguageTag;
-	if (inputPane->Visible)
-	{
-		AppendStrAtCursor(&fChar);
-	}
-	else if (isIME && (fChar >= 65 || fChar == '\''))
+
+//	testBlock->Text = args->Range.StartCaretPosition.ToString();
+
+	if (isIME && (*fChar >= 65 || *fChar == '\''))
 	{
 		MsgTrans->X = cursorTrans->X;
 		MsgTrans->Y = cursorTrans->Y;
 
-		bool isAscii = fChar < 128;
+		bool isAscii = *fChar < 128;
 		if (isAscii && args->Range.EndCaretPosition == args->Range.StartCaretPosition)
 		{
 			MsgTest->Content += args->Text;
@@ -901,18 +899,14 @@ void DrnCoreEditor::CoreEditContext_TextUpdating(Windows::UI::Text::Core::CoreTe
 			MsgTest->Content = args->Text;
 			isIMEStopped = true;
 		}
+		lastRange.EndCaretPosition = args->NewSelection.EndCaretPosition;
 	}
 	else
 	{
-		AppendWCharAtCursor(fChar);
-		CoreTextRange tRange, nRange;
-		tRange.StartCaretPosition = 0;
-		tRange.EndCaretPosition = args->NewSelection.EndCaretPosition;
-		nRange.StartCaretPosition = 0;
-		nRange.EndCaretPosition = 0;
-		sender->NotifyTextChanged(tRange, 0, nRange);
+		fChar[1] ? AppendStrAtCursor(fChar) : AppendWCharAtCursor(*fChar);
+		sender->NotifyTextChanged({ 0,lastRange.EndCaretPosition }, 0, { 0,0 });
+		lastRange = { 0,0 };
 	}
-	lastRange.EndCaretPosition = args->NewSelection.EndCaretPosition;
 }
 
 void DrnCoreEditor::UnloadEditor()
