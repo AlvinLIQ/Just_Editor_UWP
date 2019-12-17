@@ -115,6 +115,7 @@ namespace Just_Editor_UWP
 			cursor = 0;
 			cursorX = 0;
 
+			AppendBlockAtEnd();
 			UpdateCursor();
 		}
 
@@ -237,6 +238,7 @@ namespace Just_Editor_UWP
 					
 					CursorChanged(cursor, cursor, textChildren->Items->Size);
 					EditorTextChanged();
+					AutoDetect();
 				}
 				MoveToPrevAction();
 			}
@@ -318,6 +320,7 @@ namespace Just_Editor_UWP
 					AppendStrAtCursor(CurrentAction->Text->Data(), false);
 				}
 				EditorActionChanged();
+				AutoDetect();
 			}
 			else
 				MoveToPrevAction();

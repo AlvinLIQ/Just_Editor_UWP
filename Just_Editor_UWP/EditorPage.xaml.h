@@ -7,6 +7,7 @@
 
 #include "EditorPage.g.h"
 #include "DrnControls/DrnTab.xaml.h"
+#include "DrnControls/DrnNotification.xaml.h"
 #include "DrnControls/DrnCodeEditor.xaml.h"
 
 
@@ -51,6 +52,7 @@ namespace Just_Editor_UWP
 		void drnCodeEditor_EditorSavedRequested();
 	private:
 		DrnTab^ thisTab = nullptr;
+
 		void saveBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void drnCodeEditor_EditorActionChanged();
 		void drnCodeEditor_EditorTextChanged();
@@ -60,5 +62,6 @@ namespace Just_Editor_UWP
 		void UndoBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void RedoBtn_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void drnCodeEditor_EditorReloadRequested(Windows::Storage::Streams::UnicodeEncoding encodeMode);
+		void reloadDialog_PrmBtnClick(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }

@@ -41,6 +41,9 @@
         </StackPanel>
         <local:DrnCodeEditor x:Name="drnCodeEditor" Grid.Row="1" Background="{x:Bind AppConfig.SubBackBrush}" LineNumBackground="{x:Bind AppConfig.SelectedBrush}"
                              EditorTextChanged="drnCodeEditor_EditorTextChanged" EditorSavedRequested="drnCodeEditor_EditorSavedRequested"
-                             EditorReloadRequested="drnCodeEditor_EditorReloadRequested" EditorActionChanged="drnCodeEditor_EditorActionChanged"/>
+                             EditorReloadRequested="drnCodeEditor_EditorReloadRequested" EditorActionChanged="drnCodeEditor_EditorActionChanged">
+        </local:DrnCodeEditor>
+        <local:DrnNotification x:Name="reloadDialog" Grid.Row="1" Background="{x:Bind AppConfig.CoverBrush}" msgContent="The file has been modified" prmBtnContent="Reload"
+                               PrmBtnClick="reloadDialog_PrmBtnClick" HorizontalAlignment="Right" Margin="0,0,20,0"/>
     </Grid>
 </ContentPresenter>

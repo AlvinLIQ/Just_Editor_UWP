@@ -101,10 +101,13 @@ public:
 				{
 					tVisual->Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new Windows::UI::Core::DispatchedHandler([tVisual, moveStep, finalValue, opacity]()
 						{
-							if (abs(finalValue - tVisual->Offset.x) < abs(moveStep))
-								tVisual->Offset = Windows::Foundation::Numerics::float3(finalValue, tVisual->Offset.y, tVisual->Offset.z);
-							else
-								tVisual->Offset = Windows::Foundation::Numerics::float3(tVisual->Offset.x + moveStep, tVisual->Offset.y, tVisual->Offset.z);
+							if (moveStep)
+							{
+								if (abs(finalValue - tVisual->Offset.x) < abs(moveStep))
+									tVisual->Offset = Windows::Foundation::Numerics::float3(finalValue, tVisual->Offset.y, tVisual->Offset.z);
+								else
+									tVisual->Offset = Windows::Foundation::Numerics::float3(tVisual->Offset.x + moveStep, tVisual->Offset.y, tVisual->Offset.z);
+							}
 							tVisual->Opacity += opacity;
 						}));
 					Sleep(10);

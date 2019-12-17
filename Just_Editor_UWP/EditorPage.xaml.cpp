@@ -40,8 +40,7 @@ EditorPage::EditorPage()
 			{
 				if (basicProperties->DateModified.UniversalTime != FileDialog->FileModifiedTime)
 				{
-					codeEditor->Clear();
-					UpdateEditor(Windows::Storage::Streams::UnicodeEncoding::Utf8);
+					reloadDialog->Show();
 					FileDialog->FileModifiedTime = basicProperties->DateModified.UniversalTime;
 				}
 			});
@@ -175,4 +174,11 @@ void Just_Editor_UWP::EditorPage::drnCodeEditor_EditorReloadRequested(Windows::S
 
 	drnCodeEditor->Clear();
 	UpdateEditor(encodeMode);
+}
+
+
+void Just_Editor_UWP::EditorPage::reloadDialog_PrmBtnClick(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	codeEditor->Clear();
+	UpdateEditor(Windows::Storage::Streams::UnicodeEncoding::Utf8);
 }

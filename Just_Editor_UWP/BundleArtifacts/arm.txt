@@ -1,6 +1,6 @@
-MainPackage=G:\UWP\Just_Editor_UWP\ARM\Release\Just_Editor_UWP\Just_Editor_UWP_0.2.2.0_ARM.appx
-SymbolPackage=G:\UWP\Just_Editor_UWP\Just_Editor_UWP\ARM\Release\Symbols\Just_Editor_UWP_0.2.2.0_ARM.appxsym
-ResourcePack=G:\UWP\Just_Editor_UWP\ARM\Release\Just_Editor_UWP\Just_Editor_UWP_0.2.2.0_scale-100.appx
-ResourcePack=G:\UWP\Just_Editor_UWP\ARM\Release\Just_Editor_UWP\Just_Editor_UWP_0.2.2.0_scale-125.appx
-ResourcePack=G:\UWP\Just_Editor_UWP\ARM\Release\Just_Editor_UWP\Just_Editor_UWP_0.2.2.0_scale-150.appx
-ResourcePack=G:\UWP\Just_Editor_UWP\ARM\Release\Just_Editor_UWP\Just_Editor_UWP_0.2.2.0_scale-400.appx
+MainPackage=G:\UWP\Just_Editor_UWP\ARM\Release\Just_Editor_UWP\Just_Editor_UWP_0.2.3.0_ARM.appx
+SymbolPackage=G:\UWP\Just_Editor_UWP\Just_Editor_UWP\ARM\Release\Symbols\Just_Editor_UWP_0.2.3.0_ARM.appxsym
+ResourcePack=G:\UWP\Just_Editor_UWP\ARM\Release\Just_Editor_UWP\Just_Editor_UWP_0.2.3.0_scale-100.appx
+ResourcePack=G:\UWP\Just_Editor_UWP\ARM\Release\Just_Editor_UWP\Just_Editor_UWP_0.2.3.0_scale-125.appx
+ResourcePack=G:\UWP\Just_Editor_UWP\ARM\Release\Just_Editor_UWP\Just_Editor_UWP_0.2.3.0_scale-150.appx
+ResourcePack=G:\UWP\Just_Editor_UWP\ARM\Release\Just_Editor_UWP\Just_Editor_UWP_0.2.3.0_scale-400.appx
