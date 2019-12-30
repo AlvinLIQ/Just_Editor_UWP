@@ -263,6 +263,9 @@
     <Page Include="DrnControls\DrnNotification.xaml">
       <Filter>DrnControls</Filter>
     </Page>
+    <Page Include="DrnControls\DrnMenuItem.xaml">
+      <Filter>DrnControls</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\SourceCodeVariable-Roman.ttf">

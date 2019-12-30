@@ -38,15 +38,13 @@ void DrnCoreEditor::CoreEditor_PointerPressed(Windows::UI::Core::CoreWindow^ sen
 		if (e->CurrentPoint->Position.Y - topMargin >= 0)
 			return;
 		else
-		{
 			RemoveFocus();
-		}
 	}
 	else
 	{
 		auto tPosition = e->CurrentPoint->Position;
 		leftMargin = tPosition.X - leftMargin + (float)editorScrollViewer->HorizontalOffset;
-		topMargin = tPosition.Y - selPosition.Y + (float)editorScrollViewer->VerticalOffset;
+		topMargin = tPosition.Y - topMargin + (float)editorScrollViewer->VerticalOffset;
 	}
 }
 
@@ -726,6 +724,7 @@ void DrnCoreEditor::EditorContent_PointerPressed(Platform::Object^ sender, Windo
 	auto curPosition = curPoint->Position;
 
 	leftMargin = curPosition.X;
+	topMargin = curPosition.Y;
 	if (!doubleClickLock && curPoint->Timestamp - pointTimeStamp < 200000 && abs(curPosition.X - selPosition.X) < fWidth && (unsigned int)(curPosition.Y / fHeight) == (unsigned int)(selPosition.Y / fHeight))
 	{
 		doubleClickLock = true;
@@ -747,7 +746,7 @@ void DrnCoreEditor::EditorContent_PointerPressed(Platform::Object^ sender, Windo
 	{
 		doubleClickLock = false;
 
-		curPosition.X += (float)(fWidth / 2);
+		curPosition.X += (float)(fWidth / 3);
 		MoveToPosition(curPosition);
 		selPosition.X = (float)cursorX;
 		selPosition.Y = (float)currentLine * fHeight;

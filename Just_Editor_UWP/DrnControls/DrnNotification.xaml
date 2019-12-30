@@ -14,7 +14,8 @@
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="Auto"/>
     </Grid.ColumnDefinitions>
-    <ContentPresenter Content="{x:Bind msgContent}" Padding="3"/>
-    <HyperlinkButton x:Name="prmBtn" Content="{x:Bind prmBtnContent}" Grid.Column="1" Click="clsBtn_Click"/>
+    <ContentPresenter Content="{x:Bind msgContent}" FontSize="14" VerticalContentAlignment="Center"/>
+    <HyperlinkButton x:Name="prmBtn" Content="{x:Bind prmBtnContent}" Grid.Column="1" Click="clsBtn_Click"
+                     VerticalContentAlignment="Center"/>
     <Button x:Name="clsBtn" Content="x" Grid.Column="2" Click="clsBtn_Click"/>
 </Grid>

@@ -651,6 +651,8 @@ namespace Just_Editor_UWP
 		{
 			Copy();
 			ClearSelection();
+
+			AutoDetect();
 		}
 		void Paste()
 		{

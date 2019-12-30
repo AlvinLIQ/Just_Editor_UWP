@@ -215,6 +215,9 @@
     <ClInclude Include="DrnControls\DrnMenu.xaml.h">
       <DependentUpon>DrnControls\DrnMenu.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="DrnControls\DrnMenuItem.xaml.h">
+      <DependentUpon>DrnControls\DrnMenuItem.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="DrnControls\DrnNotification.xaml.h">
       <DependentUpon>DrnControls\DrnNotification.xaml</DependentUpon>
     </ClInclude>
@@ -259,6 +262,9 @@
     <Page Include="DrnControls\DrnCoreEditorSelectionBlock.xaml" />
     <Page Include="DrnControls\DrnFileDialog.xaml" />
     <Page Include="DrnControls\DrnMenu.xaml" />
+    <Page Include="DrnControls\DrnMenuItem.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DrnControls\DrnNotification.xaml" />
     <Page Include="DrnControls\DrnTab.xaml" />
     <Page Include="DrnControls\DrnTabPanel.xaml" />
@@ -366,6 +372,9 @@
     </ClCompile>
     <ClCompile Include="DrnControls\DrnMenu.xaml.cpp">
       <DependentUpon>DrnControls\DrnMenu.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="DrnControls\DrnMenuItem.xaml.cpp">
+      <DependentUpon>DrnControls\DrnMenuItem.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="DrnControls\DrnNotification.xaml.cpp">
       <DependentUpon>DrnControls\DrnNotification.xaml</DependentUpon>
