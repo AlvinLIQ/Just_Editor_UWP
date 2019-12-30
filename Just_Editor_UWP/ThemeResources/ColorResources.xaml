@@ -7,13 +7,13 @@
             <SolidColorBrush x:Key="BackBrush" Color="#60787878"/>
             <SolidColorBrush x:Key="TextBoxBackBrush" Color="#6111"/>
             <SolidColorBrush x:Key="CoverBrush" Color="#232323"/>
-            <SolidColorBrush x:Key="SelectedBrush" Color="#CC343434"/>
+            <SolidColorBrush x:Key="SelectedBrush" Color="#6F343434"/>
         </ResourceDictionary>
         <ResourceDictionary x:Key="Light">
             <SolidColorBrush x:Key="BackBrush" Color="#60FFFFFF"/>
             <SolidColorBrush x:Key="TextBoxBackBrush" Color="#AEEE"/>
             <SolidColorBrush x:Key="CoverBrush" Color="#E0E0E0"/>
-            <SolidColorBrush x:Key="SelectedBrush" Color="#CCCBCBCB"/>
+            <SolidColorBrush x:Key="SelectedBrush" Color="#6FEFEFEF"/>
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 </ResourceDictionary>

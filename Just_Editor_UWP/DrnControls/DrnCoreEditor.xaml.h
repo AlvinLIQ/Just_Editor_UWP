@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "DrnControls/D2D/DrnContentPresenter.h"
 #include "DrnControls/DrnCoreEditor.g.h"
 #include "DrnCodeList.xaml.h"
 #include "DrnCoreEditorSelectionBlock.xaml.h"
@@ -15,6 +16,8 @@
 #define UpdateCursor() SetCursor(cursorX, currentLine * fHeight)
 
 #define TXTBLOCK Windows::UI::Xaml::Controls::ContentPresenter
+//#define TXTBLOCK Just_Editor_UWP::DrnContentPresenter
+
 #define newTextBlock NewTextBlock()
 
 #define curWidth 3
@@ -117,6 +120,8 @@ namespace Just_Editor_UWP
 
 			AppendBlockAtEnd();
 			UpdateCursor();
+
+			SetLineNum(1);
 		}
 
 		void SetFocus()
@@ -134,6 +139,21 @@ namespace Just_Editor_UWP
 			coreTextContext->NotifyFocusLeave();
 			inputPane->TryHide();
 //			Focus(Windows::UI::Xaml::FocusState::Unfocused);
+		}
+
+		void SetLineNum(unsigned int newLineNum)
+		{
+			while (drnLineNum->Items->Size < newLineNum)
+			{
+				auto tItem = ref new Windows::UI::Xaml::Controls::ContentPresenter;
+				tItem->Height = fHeight;
+				tItem->Content = (drnLineNum->Items->Size + 1).ToString();
+				drnLineNum->Items->Append(tItem);
+			}
+			while (drnLineNum->Items->Size > newLineNum)
+			{
+				drnLineNum->Items->RemoveAtEnd();
+			}
 		}
 
 		unsigned int GetCurrentLine()
@@ -327,6 +347,13 @@ namespace Just_Editor_UWP
 		}
 
 		property Windows::UI::Xaml::Controls::Flyout^ searchFlyout;
+		property Windows::UI::Xaml::Controls::ItemsControl^ DrnLineNum
+		{
+			Windows::UI::Xaml::Controls::ItemsControl^ get()
+			{
+				return drnLineNum;
+			}
+		}
 	private:
 		Windows::UI::Xaml::Media::SolidColorBrush^ IdentifiersHighlightColor = ref new Windows::UI::Xaml::Media::SolidColorBrush(Windows::UI::Colors::DeepSkyBlue);
 
@@ -470,10 +497,6 @@ namespace Just_Editor_UWP
 		void AppendStrAtCursor(const wchar_t* newWStr, bool withAction = true);
 		//void AppendStrAtCursorWithoutMove(const wchar_t* newWChar);
 
-		bool GetHighlihgtStatus(TXTBLOCK^ block)
-		{
-			return block->Foreground == (Windows::UI::Xaml::Media::Brush^)IdentifiersHighlightColor;
-		}
 		unsigned int GetColFromX(std::wstring wStr, double x)
 		{
 			double curX = 0;

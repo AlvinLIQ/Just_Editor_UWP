@@ -28,26 +28,10 @@ DrnCodeEditor::DrnCodeEditor()
 
 void Just_Editor_UWP::DrnCodeEditor::drnCoreEditor_CursorChanged(default::uint32 col, default::uint32 ln, default::uint32 lineNum)
 {
+	drnCoreEditor->SetLineNum(lineNum);
 	columnStatus->Text = (col + 1).ToString();
 	lineStatus->Text = (ln + 1).ToString();
-	SetLineNum(lineNum);
 }
-
-
-void Just_Editor_UWP::DrnCodeEditor::drnCoreEditor_EditorViewChanging(default::float64 verticalOffset)
-{
-	if (lineNumVisual != nullptr)
-		lineNumVisual->Offset = Windows::Foundation::Numerics::float3(lineNumVisual->Offset.x, (float)-verticalOffset, lineNumVisual->Offset.z);
-//	lineNumTrans->Y = -verticalOffset;
-//	lineNumScroll->ChangeView(lineNumScroll->HorizontalOffset, verticalOffset, lineNumScroll->ZoomFactor);
-}
-
-
-void Just_Editor_UWP::DrnCodeEditor::drnLineNum_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
-{
-	lineNumVisual = Hosting::ElementCompositionPreview::GetElementVisual(drnLineNum);
-}
-
 
 void Just_Editor_UWP::DrnCodeEditor::encodeMenu_MenuSelected(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e)
 {

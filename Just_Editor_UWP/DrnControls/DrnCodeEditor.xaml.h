@@ -51,40 +51,21 @@ namespace Just_Editor_UWP
 		}
 		void Clear()
 		{
-			drnLineNum->Children->Clear();
 			drnCoreEditor->Clear();
-			SetLineNum(1);
 		}
 		Platform::String^ GetStr()
 		{
 			Platform::String^ result = L"";
-			for (unsigned int i = 0; i < drnLineNum->Children->Size - 1; i++)
+			for (unsigned int i = 0; i < drnCoreEditor->DrnLineNum->Items->Size - 1; i++)
 				result += drnCoreEditor->GetLineStr(i) + ref new Platform::String(returnMap[returnMenu->SelectedIndex]);
-			if (drnLineNum->Children->Size)
-				result += drnCoreEditor->GetLineStr(drnLineNum->Children->Size - 1);
+			if (drnCoreEditor->DrnLineNum->Items->Size)
+				result += drnCoreEditor->GetLineStr(drnCoreEditor->DrnLineNum->Items->Size - 1);
 
 			return result;
 		}
-		void SetLineNum(unsigned int newLineNum)
-		{
-			while (drnLineNum->Children->Size < newLineNum)
-			{
-				auto tItem = ref new Windows::UI::Xaml::Controls::ContentPresenter;
-				tItem->Height = fHeight;
-				tItem->Content = (drnLineNum->Children->Size + 1).ToString();
-				drnLineNum->Children->Append(tItem);
-			}
-			while (drnLineNum->Children->Size > newLineNum)
-			{
-				drnLineNum->Children->RemoveAtEnd();
-			}
-		}
+		
 	private:
-		Windows::UI::Composition::Visual^ lineNumVisual = nullptr;
-
 		void drnCoreEditor_CursorChanged(default::uint32 col, default::uint32 ln, default::uint32 lineNum);
-		void drnCoreEditor_EditorViewChanging(default::float64 verticalOffset);
-		void drnLineNum_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void encodeMenu_MenuSelected(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e);
 	};
 }
