@@ -868,6 +868,7 @@ void DrnCoreEditor::CoreEditContext_TextUpdating(Windows::UI::Text::Core::CoreTe
 {
 	if (IsTextSelected())
 		ClearSelection();
+	
 	auto fChar = args->Text->Data();
 	if (!fChar[0])
 		return;
@@ -889,9 +890,9 @@ void DrnCoreEditor::CoreEditContext_TextUpdating(Windows::UI::Text::Core::CoreTe
 		{
 			std::wstring imeStr = MsgTest->Content->ToString()->Data();
 			MsgTest->Content = ref new Platform::String(imeStr.substr(0, imeStr.length() - (args->Range.EndCaretPosition - args->Range.StartCaretPosition)).c_str());
-			isIMEStopped = MsgTest->Content == L"";
 			if (lastRange.EndCaretPosition > 1)
-				MsgTest->Content += args->Text;
+				MsgTest->Content += args->Text;		
+			isIMEStopped = MsgTest->Content == L"";
 		}
 		else
 		{
