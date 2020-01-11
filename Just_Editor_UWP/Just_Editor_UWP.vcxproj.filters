@@ -23,9 +23,6 @@
     <Filter Include="ThemeResources">
       <UniqueIdentifier>{adb1abe2-ec1c-4a5a-86b1-729be720efcd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DrnControls\D2D">
-      <UniqueIdentifier>{aa9ed511-2ccb-4d05-b4e6-36d5c841e89b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
@@ -38,11 +35,11 @@
     <ClCompile Include="DrnHeaders\Drn_UWP.cpp">
       <Filter>DrnHeaders</Filter>
     </ClCompile>
-    <ClCompile Include="DrnControls\D2D\DrnContentPresenter.cpp">
-      <Filter>DrnControls\D2D</Filter>
-    </ClCompile>
     <ClCompile Include="DrnHeaders\DrnD2D.cpp">
       <Filter>DrnHeaders</Filter>
+    </ClCompile>
+    <ClCompile Include="DrnControls\DrnContentPresenters.xaml.cpp">
+      <Filter>DrnControls\DrnEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,11 +56,11 @@
     <ClInclude Include="DrnHeaders\universal.h">
       <Filter>DrnHeaders</Filter>
     </ClInclude>
-    <ClInclude Include="DrnControls\D2D\DrnContentPresenter.h">
-      <Filter>DrnControls\D2D</Filter>
-    </ClInclude>
     <ClInclude Include="DrnHeaders\DrnD2D.h">
       <Filter>DrnHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="DrnControls\DrnContentPresenters.xaml.h">
+      <Filter>DrnControls\DrnEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

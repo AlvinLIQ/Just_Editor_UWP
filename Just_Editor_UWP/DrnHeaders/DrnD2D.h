@@ -17,20 +17,19 @@ public:
 
 	Microsoft::WRL::ComPtr<ID2D1Factory> m_d2dFactory;
 	Microsoft::WRL::ComPtr<IDXGIDevice> m_d2dDevice;
-	ID2D1Factory* factory;
 	Microsoft::WRL::ComPtr<IDXGISurface> m_d2dSurface;
 
 	D2D1_RENDER_TARGET_PROPERTIES d2dProperties;
 
-	IDWriteFactory* wrtFactory;
-	IDWriteTextFormat* txtFormat;
+	Microsoft::WRL::ComPtr<IDWriteFactory> wrtFactory;
+	Microsoft::WRL::ComPtr<IDWriteTextFormat> txtFormat;
 
 
 	DWRITE_TEXT_METRICS GetWCharWidth(const wchar_t tWChar)
 	{
 		DWRITE_TEXT_METRICS textMetrics;
 		IDWriteTextLayout* idwrtLayout;
-		wrtFactory->CreateTextLayout(&tWChar, 1, txtFormat, 0, 0, &idwrtLayout);
+		wrtFactory->CreateTextLayout(&tWChar, 1, txtFormat.Get(), 0, 0, &idwrtLayout);
 		idwrtLayout->GetMetrics(&textMetrics);
 
 		delete[] idwrtLayout;
@@ -45,7 +44,7 @@ public:
 #endif
 		if (len == -1)
 			len = (UINT32)wcslen(tWCStr);
-		wrtFactory->CreateTextLayout(tWCStr, len, txtFormat, std::numeric_limits<float>::max(), 0, &idwrtLayout);
+		wrtFactory->CreateTextLayout(tWCStr, len, txtFormat.Get(), std::numeric_limits<float>::max(), 0, &idwrtLayout);
 		idwrtLayout->GetMetrics(&textMetrics);
 
 		delete[] idwrtLayout;

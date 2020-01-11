@@ -194,7 +194,6 @@
     <ClInclude Include="CryptPage.xaml.h">
       <DependentUpon>CryptPage.xaml</DependentUpon>
     </ClInclude>
-    <ClInclude Include="DrnControls\D2D\DrnContentPresenter.h" />
     <ClInclude Include="DrnControls\DrnCodeEditor.xaml.h">
       <DependentUpon>DrnControls\DrnCodeEditor.xaml</DependentUpon>
     </ClInclude>
@@ -204,6 +203,7 @@
     <ClInclude Include="DrnControls\DrnContentDialog.xaml.h">
       <DependentUpon>DrnControls\DrnContentDialog.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="DrnControls\DrnContentPresenters.xaml.h" />
     <ClInclude Include="DrnControls\DrnCoreEditor.xaml.h">
       <DependentUpon>DrnControls\DrnCoreEditor.xaml</DependentUpon>
     </ClInclude>
@@ -354,7 +354,6 @@
     <ClCompile Include="CryptPage.xaml.cpp">
       <DependentUpon>CryptPage.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="DrnControls\D2D\DrnContentPresenter.cpp" />
     <ClCompile Include="DrnControls\DrnCodeEditor.xaml.cpp">
       <DependentUpon>DrnControls\DrnCodeEditor.xaml</DependentUpon>
     </ClCompile>
@@ -364,6 +363,7 @@
     <ClCompile Include="DrnControls\DrnContentDialog.xaml.cpp">
       <DependentUpon>DrnControls\DrnContentDialog.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="DrnControls\DrnContentPresenters.xaml.cpp" />
     <ClCompile Include="DrnControls\DrnCoreEditor.xaml.cpp">
       <DependentUpon>DrnControls\DrnCoreEditor.xaml</DependentUpon>
     </ClCompile>

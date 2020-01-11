@@ -20,7 +20,6 @@ DrnD2D::~DrnD2D()
 void DrnD2D::InitD2D()
 {
 	D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, m_d2dFactory.GetAddressOf());
-	factory = m_d2dFactory.Get();
 
 	UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
@@ -66,6 +65,6 @@ void DrnD2D::InitD2D()
 	);
 	d2dProperties = D2D1::RenderTargetProperties(D2D1_RENDER_TARGET_TYPE_DEFAULT, pixelFormat);
 
-	DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(wrtFactory), reinterpret_cast<IUnknown**>(&wrtFactory));
+	DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(wrtFactory), reinterpret_cast<IUnknown**>(wrtFactory.GetAddressOf()));
 	wrtFactory->CreateTextFormat(L"Source Code Variable", NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, 18, L"", &txtFormat);
 }

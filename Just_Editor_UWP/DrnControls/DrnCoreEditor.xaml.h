@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include "DrnControls/D2D/DrnContentPresenter.h"
 #include "DrnControls/DrnCoreEditor.g.h"
 #include "DrnCodeList.xaml.h"
+#include "DrnContentPresenters.xaml.h"
 #include "DrnCoreEditorSelectionBlock.xaml.h"
 
 #define fHeight 23
@@ -15,8 +15,8 @@
 //#define fWidth 10.799999237060547
 #define UpdateCursor() SetCursor(cursorX, currentLine * fHeight)
 
+//#define TXTBLOCK Windows::UI::Xaml::Controls::ContentPresenter
 #define TXTBLOCK Windows::UI::Xaml::Controls::ContentPresenter
-//#define TXTBLOCK Just_Editor_UWP::DrnContentPresenter
 
 #define newTextBlock NewTextBlock()
 

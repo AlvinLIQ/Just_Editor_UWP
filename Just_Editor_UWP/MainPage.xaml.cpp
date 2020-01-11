@@ -39,3 +39,19 @@ void Just_Editor_UWP::MainPage::BitmapImage_ImageFailed(Platform::Object^ sender
 {
 	this->Background = ref new SolidColorBrush(this->RequestedTheme == ElementTheme::Dark ? Windows::UI::Colors::Black : Windows::UI::Colors::White);
 }
+
+
+void Just_Editor_UWP::MainPage::tabPanel_Drop(Platform::Object^ sender, Windows::UI::Xaml::DragEventArgs^ e)
+{
+	concurrency::create_task(e->DataView->GetStorageItemsAsync()).then([this](Windows::Foundation::Collections::IVectorView<Windows::Storage::IStorageItem^>^ thisItems) 
+		{
+			for (unsigned int i = 0; i < thisItems->Size; i++)
+				ReadToEditor((Windows::Storage::StorageFile^)thisItems->GetAt(i));
+		});
+}
+
+
+void Just_Editor_UWP::MainPage::tabPanel_DragEnter(Platform::Object^ sender, Windows::UI::Xaml::DragEventArgs^ e)
+{
+	e->AcceptedOperation = Windows::ApplicationModel::DataTransfer::DataPackageOperation::Copy;
+}

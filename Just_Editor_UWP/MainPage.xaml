@@ -20,6 +20,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Rectangle x:Name="titleRect" Fill="{x:Bind AppConfig.CoverBrush}"/>
-        <local:DrnTabPanel x:Name="tabPanel" Grid.RowSpan="2"/>
+        <local:DrnTabPanel x:Name="tabPanel" Grid.RowSpan="2" AllowDrop="True" 
+                           Drop="tabPanel_Drop" DragEnter="tabPanel_DragEnter"/>
     </Grid>
 </ContentPresenter>

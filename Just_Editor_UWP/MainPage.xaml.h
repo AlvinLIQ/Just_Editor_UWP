@@ -34,5 +34,7 @@ namespace Just_Editor_UWP
 		}
 	private:
 		void BitmapImage_ImageFailed(Platform::Object^ sender, Windows::UI::Xaml::ExceptionRoutedEventArgs^ e);
+		void tabPanel_Drop(Platform::Object^ sender, Windows::UI::Xaml::DragEventArgs^ e);
+		void tabPanel_DragEnter(Platform::Object^ sender, Windows::UI::Xaml::DragEventArgs^ e);
 	};
 }
