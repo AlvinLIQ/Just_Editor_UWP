@@ -15,8 +15,8 @@
 //#define fWidth 10.799999237060547
 #define UpdateCursor() SetCursor(cursorX, currentLine * fHeight)
 
-//#define TXTBLOCK Windows::UI::Xaml::Controls::ContentPresenter
 #define TXTBLOCK Windows::UI::Xaml::Controls::ContentPresenter
+//#define TXTBLOCK Just_Editor_UWP::DrnContentPresenters
 
 #define newTextBlock NewTextBlock()
 
@@ -696,7 +696,6 @@ namespace Just_Editor_UWP
 		void EditorContent_PointerExited(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);
 		void editorScrollViewer_ViewChanging(Platform::Object^ sender, Windows::UI::Xaml::Controls::ScrollViewerViewChangingEventArgs^ e);
 		void editorScrollViewer_ViewChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::ScrollViewerViewChangedEventArgs^ e);
-		void menuItem_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void AutoDetect()
 		{
 			if (isSmartDetectEnabled)
@@ -718,5 +717,6 @@ namespace Just_Editor_UWP
 			AutoDetect();
 		}
 		void IdentifiersList_WordRequested(Platform::String^ str, default::uint32 x, default::uint32 y);
+		void coreEditorMenu_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e);
 };
 }

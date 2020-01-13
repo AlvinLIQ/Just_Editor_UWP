@@ -937,11 +937,20 @@ void Just_Editor_UWP::DrnCoreEditor::editorScrollViewer_ViewChanged(Platform::Ob
 }
 
 
-void Just_Editor_UWP::DrnCoreEditor::menuItem_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+void Just_Editor_UWP::DrnCoreEditor::IdentifiersList_WordRequested(Platform::String^ str, default::uint32 x, default::uint32 y)
+{
+	if (x != cursor || y != currentLine)
+		MoveTo(x, y);
+	
+	AppendStrAtCursor(str->Data());
+}
+
+
+void Just_Editor_UWP::DrnCoreEditor::coreEditorMenu_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e)
 {
 	coreEditorFlyout->Hide();
 
-	switch (Drn_UWP::getChildNum(coreEditorMenu->Children, (UIElement^)sender))
+	switch (coreEditorMenu->SelectedIndex)
 	{
 	case 0:
 		if (IsTextSelected())
@@ -954,17 +963,9 @@ void Just_Editor_UWP::DrnCoreEditor::menuItem_Click(Platform::Object^ sender, Wi
 	case 2:
 		Paste();
 		break;
-	case 4:
+	case 3:
 		SelectAll();
 		break;
 	}
-}
-
-
-void Just_Editor_UWP::DrnCoreEditor::IdentifiersList_WordRequested(Platform::String^ str, default::uint32 x, default::uint32 y)
-{
-	if (x != cursor || y != currentLine)
-		MoveTo(x, y);
-	
-	AppendStrAtCursor(str->Data());
+	coreEditorMenu->SelectedItem = nullptr;
 }

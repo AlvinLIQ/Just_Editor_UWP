@@ -25,7 +25,6 @@ DrnContentPresenters::DrnContentPresenters()
 {
 	tVisual = Windows::UI::Xaml::Hosting::ElementCompositionPreview::GetElementVisual(this);
 
-	this->Orientation = Windows::UI::Xaml::Controls::Orientation::Horizontal;
 	if (drnD2D == nullptr)
 		drnD2D = new DrnD2D;
 
@@ -37,33 +36,25 @@ void DrnContentPresenters::Init()
 	auto surfaceSource = ref new VirtualSurfaceImageSource((int)this->RenderSize.Width, (int)this->RenderSize.Height);
 	IInspectable* sisInspectable = (IInspectable*) reinterpret_cast<IInspectable*>(surfaceSource);
 	sisInspectable->QueryInterface(__uuidof(IVirtualSurfaceImageSourceNative), (void**)&m_sisNative);
-	m_sisNative->SetDevice(drnD2D->m_d2dDevice.Get());
+	m_sisNative->SetDevice(drnD2D->dxgiDevice.Get());
 
 	ImageBrush^ brush = ref new ImageBrush();
 	brush->ImageSource = surfaceSource;
-	this->Background = brush;
+//	this->Background = brush;
 }
 
 void DrnContentPresenters::Draw()
 {
-	POINT offset = { 0, (long)tVisual->Offset.y};
-	
-	RECT rect = { 0L, 0L, (LONG)this->RenderSize.Width, (LONG)this->RenderSize.Height };
-	m_sisNative->BeginDraw(rect, &surface, &offset);
-
-	ComPtr<ID2D1RenderTarget> renderTarget;
-	drnD2D->m_d2dFactory->CreateDxgiSurfaceRenderTarget(surface.Get(), drnD2D->d2dProperties, &renderTarget);
-	renderTarget->BeginDraw();
+	drnD2D->d2dContext->BeginDraw();
 
 	ID2D1SolidColorBrush* colorBrush;
-	renderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White, 1.0f), &colorBrush);
-	renderTarget->Clear();
+	drnD2D->d2dContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White, 1.0f), &colorBrush);
+	drnD2D->d2dContext->Clear();
 	unsigned int sLen = textContent->Length();
 	if (sLen)
-		renderTarget->DrawText(textContent->Data(), sLen, drnD2D->txtFormat.Get(), D2D1::RectF(10.0f, 0.0f, std::numeric_limits<float>::max(), 23.0f), colorBrush);
+		drnD2D->d2dContext->DrawText(textContent->Data(), sLen, drnD2D->txtFormat.Get(), D2D1::RectF(0.0f, tVisual->Offset.y, std::numeric_limits<float>::max(), 23.0f), colorBrush);
 
-	renderTarget->EndDraw();
-	m_sisNative->EndDraw();
+	drnD2D->d2dContext->EndDraw();
 }
 
 

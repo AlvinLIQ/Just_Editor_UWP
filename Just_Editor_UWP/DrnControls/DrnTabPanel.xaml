@@ -20,11 +20,12 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <local:DrnMenu x:Name="justEditorBtn" IsCustom="true"
-                    VerticalAlignment="Stretch" IsTabStop="False" Padding="6, 8, 6, 4">
+                    VerticalAlignment="Stretch" IsTabStop="False" Padding="6, 8, 6, 4"
+                       >
             <local:DrnMenu.menuItems>
-                <x:String>New Socket</x:String>
-                <x:String>Open File</x:String>
-                <x:String>Exit</x:String>
+                <local:DrnMenuItem IconSrc="&#xE60d;" Text="New Socket"/>
+                <local:DrnMenuItem IconSrc="&#xE60c;" Text="Open Files"/>
+                <local:DrnMenuItem Text="Exit" Tip="Alt+F4"/>
             </local:DrnMenu.menuItems>
             <FontIcon FontFamily="../Fonts/Just_Editor_Icons.ttf#Just_Editor_Icons" Glyph="&#xE60F;" FontSize="11">
                 <FontIcon.RenderTransform>

@@ -13,7 +13,7 @@
 namespace Just_Editor_UWP
 {
 	[Windows::Foundation::Metadata::WebHostHidden]
-	public ref class DrnContentPresenters sealed : Windows::UI::Xaml::Controls::StackPanel
+	public ref class DrnContentPresenters sealed : Windows::UI::Xaml::FrameworkElement
 	{
 	public:
 		DrnContentPresenters();

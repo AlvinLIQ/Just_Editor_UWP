@@ -22,21 +22,22 @@
                           AllowFocusOnInteraction="False">
             <ScrollViewer.ContextFlyout>
                 <Flyout x:Name="coreEditorFlyout" Placement="BottomEdgeAlignedLeft">
-                    <StackPanel x:Name="coreEditorMenu">
+                    <ListView x:Name="coreEditorMenu" SelectionChanged="coreEditorMenu_SelectionChanged"
+                              SelectionMode="Single">
                         <local:DrnMenuItem HorizontalAlignment="Stretch" 
                                            Text="Cut" Tip="Ctrl+X" IconSrc="&#xE61E;"
-                                           Click="menuItem_Click"></local:DrnMenuItem>
+                                           ></local:DrnMenuItem>
                         <local:DrnMenuItem HorizontalAlignment="Stretch" 
                                            Text="Copy" Tip="Ctrl+C" IconSrc="&#xE618;"
-                                           Click="menuItem_Click"></local:DrnMenuItem>
+                                           ></local:DrnMenuItem>
                         <local:DrnMenuItem HorizontalAlignment="Stretch" 
                                            Text="Paste" Tip="Ctrl+V" IconSrc="&#xE61B;"
-                                           Click="menuItem_Click"></local:DrnMenuItem>
-                        <Rectangle Margin="10,0,10,0" Height="1" Fill="#3FFF"/>
-                        <local:DrnMenuItem HorizontalAlignment="Stretch" 
+                                           ></local:DrnMenuItem>
+                        <local:DrnMenuItem HorizontalAlignment="Stretch"
+                                           BorderBrush="#777" BorderThickness="0,0.3,0,0"
                                            Text="Select All" Tip="Ctrl+A"
-                                           Click="menuItem_Click"></local:DrnMenuItem>
-                    </StackPanel>
+                                           ></local:DrnMenuItem>
+                    </ListView>
                 </Flyout>
             </ScrollViewer.ContextFlyout>
             <Grid Background="{x:Bind Background}" PointerEntered="EditorContent_PointerEntered"

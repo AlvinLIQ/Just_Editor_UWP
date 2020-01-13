@@ -24,15 +24,15 @@ HomePage::HomePage(DrnMenu^ mBtn)
 	menuBtn->MenuSelected 
 		+= ref new SelectionChangedEventHandler([this](Object^ sender, SelectionChangedEventArgs^ e)
 		{
-				switch (sender->ToString()->Data()[0])
+				switch (menuBtn->SelectedIndex)
 				{
-				case L'N':
+				case 0:
 					newSocket_Click(sender, nullptr);
 					break;
-				case L'O':
+				case 1:
 					openText_Click(sender, nullptr);
 					break;
-				case L'E':
+				case 2:
 					App::Current->Exit();
 				//	exit(0);
 					break;
