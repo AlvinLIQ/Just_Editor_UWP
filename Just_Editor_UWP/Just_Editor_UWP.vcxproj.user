@@ -6,8 +6,8 @@
   <PropertyGroup>
     <UapAppxPackageBuildMode>StoreOnly</UapAppxPackageBuildMode>
     <AppxShowAllApps>True</AppxShowAllApps>
-    <AppxBuildConfigurationSelection>x86|x64|arm</AppxBuildConfigurationSelection>
-    <PackageOptionalProjectsInIdeBuilds>True</PackageOptionalProjectsInIdeBuilds>
+    <AppxBuildConfigurationSelection>x86|x64|arm|arm64</AppxBuildConfigurationSelection>
+    <PackageOptionalProjectsInIdeBuilds>False</PackageOptionalProjectsInIdeBuilds>
     <Source>F:\UWP\Just_Editor_UWP\Just_Editor_UWP\Assets\JustEditor_Logo.png</Source>
     <SmallTileSource>F:\UWP\Just_Editor_UWP\Just_Editor_UWP\Assets\JustEditor_Logo.png</SmallTileSource>
     <MediumTileSource>F:\UWP\Just_Editor_UWP\Just_Editor_UWP\Assets\JustEditor_Logo.png</MediumTileSource>

@@ -12,34 +12,41 @@
 
 namespace Just_Editor_UWP
 {
+	public ref class DrnContentPrensenter sealed
+	{
+	public:
+		DrnContentPrensenter()
+		{
+
+		}
+
+		property Platform::String^ Content
+		{
+			Platform::String^ get()
+			{
+				return content;
+			}
+			void set(Platform::String^ newStr)
+			{
+				content = newStr;
+			}
+		};
+	private:
+		Platform::String^ content;
+	};
 	[Windows::Foundation::Metadata::WebHostHidden]
 	public ref class DrnContentPresenters sealed : Windows::UI::Xaml::FrameworkElement
 	{
 	public:
 		DrnContentPresenters();
 
-		property Platform::String^ Content
+		property Windows::Foundation::Collections::IVector<DrnContentPrensenter^>^ Items
 		{
-			Platform::String^ get()
+			Windows::Foundation::Collections::IVector<DrnContentPrensenter^>^ get()
 			{
-				/*
-				unsigned int size = this->Children->Size;
-				Platform::String^ result = L"";
-				for (unsigned int i = 0; i < size; i++)
-				{
-					result += ((TXTCONTENT^)this->Children->GetAt(i))->Content;
-				}
-
-				return result;
-				*/
-				return textContent;
+				return items;
 			}
-			void set(Platform::String^ newStr)
-			{
-				textContent = newStr;
-				Draw();
-			}
-		}
+		};
 		property float cursorX;
 	private:
 		void Draw();
@@ -50,6 +57,8 @@ namespace Just_Editor_UWP
 //		Microsoft::WRL::ComPtr<ID2D1RenderTarget> renderTarget;
 
 		Windows::UI::Composition::Visual^ tVisual;
+
+		Windows::Foundation::Collections::IVector<DrnContentPrensenter^>^ items;
 
 		DrnD2D* drnD2D = nullptr;
 
