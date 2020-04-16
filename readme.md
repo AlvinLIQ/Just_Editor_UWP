@@ -4,9 +4,8 @@ Remake Version
 <br>
 coming soon
 
-<h3>policy</h3>
+<h3>Policy</h3>
 This app needs storage and network permissions, but we're not gonna collect your data.<br>
-
 
 <h3>Screenshot</h3>
 <img src="Designs/Just_Editor_s1.png">
