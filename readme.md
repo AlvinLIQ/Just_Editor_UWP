@@ -2,7 +2,7 @@
 ___________________________<br>
 Remake Version
 <br>
-coming soon
+deprecated
 
 <h3>Policy</h3>
 This app needs storage and network permissions, but we're not gonna collect your data.<br>
